@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="28" fill="#010029"/>
+  <g transform="translate(10.6 22) scale(0.92)">
+    <path fill="#ECB500" d="M0 20.25 C22 4 60 0.5 110 0 C85 2.5 45 17 31.25 36 C24 29.5 10 22 0 20.25 Z"/>
+    <path fill="#ECB500" fill-rule="evenodd" d="M35 39.75 C44 27.5 62 21.4 80.8 21.4 A35.2 35.2 0 1 1 52.32 77.29 C47.62 70.82 38.5 50 35 39.75 Z M99.5 56.6 A18.7 18.7 0 1 0 62.1 56.6 A18.7 18.7 0 1 0 99.5 56.6 Z"/>
+  </g>
+</svg>

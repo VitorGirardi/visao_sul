@@ -1,26 +1,1377 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * ============================================================================
+ * VISÃO SUL · DESIGN SYSTEM
+ * ============================================================================
+ *
+ * Duas fontes de verdade para a cor:
+ *   1. a lâmina oficial da marca (Instagram, 24/11/2022): amarelo #ECB500,
+ *      marinho quase preto #010029, branco gelo #EEEEEE;
+ *   2. a loja física (foto de 09/10/2026): parede grafite com o letreiro
+ *      aceso em amarelo e branco, móveis cinza-claro, piso de madeira.
+ *
+ * O TEMA ESCURO é a parede da loja: marinho profundo com o amarelo como luz
+ * (o letreiro). O TEMA CLARO é o resto da loja e a lâmina: gelo quente, texto
+ * marinho, amarelo como tinta. O Vitor pediu os dois para comparar
+ * (09/10/2026); o escuro abre por padrão e o botão do cabeçalho alterna.
+ *
+ * Os componentes só perguntam pelas variáveis semânticas (`--fundo`,
+ * `--texto`, `--destaque`...); quem decide o valor é o `data-tema` do <html>.
+ */
+
+@custom-variant escuro (&:where([data-tema="escuro"], [data-tema="escuro"] *));
+@custom-variant claro (&:where([data-tema="claro"], [data-tema="claro"] *));
+
+:root,
+[data-tema="escuro"] {
+  color-scheme: dark;
+  --fundo: #010029;
+  --fundo-2: #07073a;
+  --fundo-3: #0e0e4a;
+  --vitrine: #ececf3;
+  --texto: #eeeef7;
+  --texto-2: #b7b7d6;
+  --texto-3: #8383ad;
+  --linha: rgb(226 226 255 / 0.1);
+  --linha-forte: rgb(226 226 255 / 0.22);
+  --destaque: #ecb500;
+  --destaque-vivo: #ffcd33;
+  --sobre-destaque: #060523;
+  /* texto amarelo sobre o fundo: no escuro o próprio amarelo passa (11:1) */
+  --destaque-texto: #ecb500;
+  --brilho: rgb(236 181 0 / 0.42);
+  --vidro: rgb(5 5 48 / 0.66);
+  --sombra: 0 40px 90px -40px rgb(0 0 0 / 0.85);
+  --marca-simbolo: #ecb500;
+  --marca-nome: #ffffff;
+  --marca-info: #ecb500;
+}
+
+[data-tema="claro"] {
+  color-scheme: light;
+  --fundo: #f4f3ef;
+  --fundo-2: #ffffff;
+  --fundo-3: #eae8e1;
+  --vitrine: #ffffff;
+  --texto: #060523;
+  --texto-2: #46466b;
+  --texto-3: #6f6f95;
+  --linha: rgb(6 5 35 / 0.1);
+  --linha-forte: rgb(6 5 35 / 0.22);
+  --destaque: #ecb500;
+  --destaque-vivo: #ffc31f;
+  --sobre-destaque: #060523;
+  /* o amarelo sobre o gelo dá 1,8:1; texto "amarelo" no claro é este ouro (5,6:1) */
+  --destaque-texto: #7a5a00;
+  --brilho: rgb(236 181 0 / 0.34);
+  --vidro: rgb(255 255 255 / 0.74);
+  --sombra: 0 40px 70px -40px rgb(6 5 35 / 0.32);
+  --marca-simbolo: #ecb500;
+  --marca-nome: #060523;
+  --marca-info: #060523;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-fundo: var(--fundo);
+  --color-fundo-2: var(--fundo-2);
+  --color-fundo-3: var(--fundo-3);
+  --color-vitrine: var(--vitrine);
+  --color-texto: var(--texto);
+  --color-texto-2: var(--texto-2);
+  --color-texto-3: var(--texto-3);
+  --color-linha: var(--linha);
+  --color-linha-forte: var(--linha-forte);
+  --color-destaque: var(--destaque);
+  --color-destaque-vivo: var(--destaque-vivo);
+  --color-destaque-texto: var(--destaque-texto);
+  --color-sobre-destaque: var(--sobre-destaque);
+
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  --color-amarelo: #ecb500;
+  --color-marinho: #010029;
+  --color-tinta: #060523;
+  --color-gelo: #eeeeee;
+
+  --ease-saida: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-entrada-saida: cubic-bezier(0.7, 0, 0.2, 1);
+  --ease-mola: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --radius-cartao: 1.75rem;
+  --radius-squircle: 2.5rem;
+
+  --breakpoint-xs: 420px;
+}
+
+/* Botão compacto. É @utility (e não classe comum) para aceitar variantes: max-sm:btn-pequeno. */
+@utility btn-pequeno {
+  min-height: 2.6rem;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.88rem;
+}
+
+@layer base {
+/* ============================================================================
+   BASE
+   ============================================================================ */
+
+html {
+  background: var(--fundo);
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100svh;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--destaque);
+  color: var(--sobre-destaque);
+}
+
+:focus-visible {
+  outline: 2px solid var(--destaque);
+  outline-offset: 3px;
+}
+
+/* Âncoras param abaixo do cabeçalho fixo. */
+:target,
+[id] {
+  scroll-margin-top: 6rem;
+}
+
+img,
+svg,
+canvas {
+  display: block;
+}
+
+/* O Lenis cuida da rolagem suave; estas são as regras que ele pede. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+.pular-conteudo {
+  position: fixed;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  background: var(--destaque);
+  color: var(--sobre-destaque);
+  font-weight: 700;
+  transition: top 0.2s;
+}
+.pular-conteudo:focus {
+  top: 1rem;
+}
+
+}
+
+@layer components {
+/* ============================================================================
+   TIPOGRAFIA
+   ============================================================================ */
+
+.recipiente {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+.sobretitulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--destaque-texto);
+}
+.sobretitulo::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--destaque);
+  box-shadow: 0 0 14px var(--brilho);
+}
+
+.titulo-1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.7rem, 7.4vw, 6.6rem);
+  font-weight: 700;
+  line-height: 0.94;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.titulo-2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.05rem, 4.8vw, 4.1rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.titulo-3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  font-weight: 650;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.texto-grande {
+  font-size: clamp(1.04rem, 1.35vw, 1.22rem);
+  line-height: 1.65;
+  color: var(--texto-2);
+  text-wrap: pretty;
+}
+
+/* A palavra que acende: amarela no escuro, marca-texto no claro. */
+.acende {
+  color: var(--destaque);
+  text-shadow: 0 0 40px var(--brilho);
+}
+[data-tema="claro"] .acende {
+  color: inherit;
+  text-shadow: none;
+  background: linear-gradient(transparent 58%, var(--destaque) 58%, var(--destaque) 92%, transparent 92%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding-inline: 0.06em;
+}
+
+.rotulo-mono {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--texto-3);
+}
+
+/* ============================================================================
+   BOTÕES
+   ============================================================================ */
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3.25rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.97rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-align: center;
+  white-space: normal;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    transform 0.35s var(--ease-saida),
+    background-color 0.25s,
+    border-color 0.25s,
+    box-shadow 0.35s var(--ease-saida),
+    color 0.25s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn svg {
+  flex: none;
+}
+
+.btn-primario {
+  background: var(--destaque);
+  color: var(--sobre-destaque);
+  box-shadow: 0 10px 30px -12px var(--brilho);
+}
+/* O brilho que atravessa o botão, como luz passando no letreiro. */
+.btn-primario::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 30%, rgb(255 255 255 / 0.55) 50%, transparent 70%);
+  translate: -120% 0;
+  transition: translate 0.8s var(--ease-saida);
+}
+
+.btn-contorno {
+  border: 1px solid var(--linha-forte);
+  color: var(--texto);
+  background: transparent;
+}
+
+.btn-suave {
+  background: var(--fundo-3);
+  color: var(--texto);
+}
+
+@media (hover: hover) {
+  .btn-primario:hover {
+    background: var(--destaque-vivo);
+    box-shadow: 0 16px 44px -10px var(--brilho);
+    transform: translateY(-2px);
+  }
+  .btn-primario:hover::after {
+    translate: 120% 0;
+  }
+  .btn-contorno:hover {
+    border-color: var(--destaque);
+    background: var(--fundo-3);
+    transform: translateY(-2px);
+  }
+  .btn-suave:hover {
+    background: var(--linha-forte);
+  }
+}
+
+
+/* Botão redondo de ícone (alternar tema, pedido, fechar). 44 px de toque. */
+.btn-icone {
+  display: inline-grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--linha);
+  color: var(--texto);
+  transition:
+    background-color 0.25s,
+    border-color 0.25s,
+    transform 0.35s var(--ease-saida);
+}
+@media (hover: hover) {
+  .btn-icone:hover {
+    border-color: var(--destaque);
+    background: var(--fundo-3);
+  }
+}
+
+/* ============================================================================
+   SUPERFÍCIES
+   ============================================================================ */
+
+.cartao {
+  background: var(--fundo-2);
+  border: 1px solid var(--linha);
+  border-radius: var(--radius-cartao);
+}
+
+.vidro {
+  background: var(--vidro);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+}
+
+/* A grade fina do fundo, que some nas bordas. */
+.grade-de-fundo {
+  background-image:
+    linear-gradient(var(--linha) 1px, transparent 1px),
+    linear-gradient(90deg, var(--linha) 1px, transparent 1px);
+  background-size: 72px 72px;
+  background-position: center;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 72%);
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 72%);
+}
+
+/* Granulado de filme por cima dos fundos escuros (SVG de 2 KB, repetido). */
+.granulado::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+[data-tema="claro"] .granulado::after {
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+}
+
+/* Os arcos finos do canto da lâmina da marca, reaproveitados como ondas. */
+.arcos {
+  background:
+    radial-gradient(circle at 100% 0%, transparent 0 34%, var(--linha-forte) 34% calc(34% + 1px), transparent calc(34% + 1px)),
+    radial-gradient(circle at 100% 0%, transparent 0 48%, var(--linha) 48% calc(48% + 1px), transparent calc(48% + 1px)),
+    radial-gradient(circle at 100% 0%, transparent 0 62%, var(--linha) 62% calc(62% + 1px), transparent calc(62% + 1px));
+}
+
+/* ============================================================================
+   MOVIMENTO
+   ============================================================================
+   Entrada na rolagem em CSS puro (`animation-timeline: view()`), só onde o
+   navegador suporta e a pessoa não pediu menos movimento. Quem não suporta vê
+   tudo visível e parado: nada começa escondido fora do `@supports`.
+*/
+
+@keyframes revelar {
+  from {
+    opacity: 0;
+    translate: 0 2.25rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes revelar-escala {
+  from {
+    opacity: 0;
+    scale: 0.94;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .revelar {
+      animation: revelar linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 55%;
+    }
+    .revelar-escala {
+      animation: revelar-escala linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+  }
+}
+
+@keyframes faixa-rolante {
+  to {
+    translate: -50% 0;
+  }
+}
+
+.faixa-rolante {
+  display: flex;
+  width: max-content;
+  animation: faixa-rolante 38s linear infinite;
+}
+@media (hover: hover) {
+  .faixa:hover .faixa-rolante {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes pulso {
+  0%,
+  100% {
+    opacity: 0.35;
+    scale: 1;
+  }
+  50% {
+    opacity: 1;
+    scale: 1.15;
+  }
+}
+
+@keyframes descer {
+  0% {
+    translate: 0 -40%;
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    translate: 0 120%;
+    opacity: 0;
+  }
+}
+
+/* O cabeçalho ganha fundo depois dos primeiros 120 px de rolagem. */
+.cabecalho-fundo {
+  opacity: 1;
+}
+@supports (animation-timeline: scroll()) {
+  .cabecalho-fundo {
+    animation: aparecer linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 140px;
+  }
+}
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* A barrinha de progresso de leitura no topo. */
+.progresso {
+  position: fixed;
+  inset: 0 0 auto;
+  height: 2px;
+  z-index: 60;
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--destaque), var(--destaque-vivo));
+  box-shadow: 0 0 12px var(--brilho);
+  scale: 0 1;
+}
+@supports (animation-timeline: scroll()) {
+  .progresso {
+    animation: progresso linear both;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes progresso {
+  to {
+    scale: 1 1;
+  }
+}
+
+}
+
+/* Alternar o tema: a página nova entra num círculo que cresce do botão.
+   O JS (`lib/tema.ts`) anima o clip-path; aqui só se desliga o cross-fade. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* O Raio-X dos cartões anima esta variável (0 = foto, 1 = chapa). */
+@property --v {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@layer components {
+/* ============================================================================
+   COMPONENTES
+   ============================================================================ */
+
+/* --- Cartão do produto com Raio-X ---------------------------------------- */
+
+.cartao-produto {
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 30%;
+  --v: 0;
+  perspective: 1200px;
+  transition: --v 1.05s var(--ease-entrada-saida);
+}
+.cartao-produto-corpo {
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  transition:
+    transform 0.5s var(--ease-saida),
+    border-color 0.3s,
+    box-shadow 0.5s var(--ease-saida);
+}
+
+.raio-x {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+/* o palco: brilho do letreiro atrás do produto + grade de chapa que acende no Raio-X */
+.raio-x-fundo {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 55% at var(--mx) var(--my), rgb(236 181 0 / calc(0.1 + var(--v) * 0.12)), transparent 70%),
+    radial-gradient(80% 60% at 50% 100%, var(--fundo-3), transparent 70%);
+}
+.raio-x-fundo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: calc(var(--v) * 0.9);
+  background-image:
+    linear-gradient(var(--linha-forte) 1px, transparent 1px),
+    linear-gradient(90deg, var(--linha-forte) 1px, transparent 1px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 30%, transparent 75%);
+  mask-image: radial-gradient(circle at 50% 50%, black 30%, transparent 75%);
+}
+.raio-x-foto {
+  position: relative;
+  transition:
+    opacity 0.6s,
+    scale 0.8s var(--ease-saida);
+}
+.raio-x-chapa {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 0 calc((1 - var(--v)) * 100%) 0);
+  /* negativo amarelo: a chapa de raio-x no tom do letreiro */
+  filter: grayscale(1) invert(1) sepia(1) saturate(4.5) hue-rotate(-8deg) brightness(1.05) contrast(1.2)
+    drop-shadow(0 0 10px rgb(236 181 0 / 0.55));
+}
+[data-tema="claro"] .raio-x-chapa {
+  /* no claro a chapa é azul-marinho, como tinta de planta técnica */
+  filter: grayscale(1) contrast(1.5) brightness(0.55) sepia(1) hue-rotate(185deg) saturate(3.5)
+    drop-shadow(0 0 8px rgb(6 5 35 / 0.25));
+}
+.raio-x-linha {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: calc(var(--v) * 100%);
+  height: 2px;
+  margin-top: -1px;
+  background: linear-gradient(90deg, transparent, var(--destaque) 20%, #fff8d6 50%, var(--destaque) 80%, transparent);
+  box-shadow:
+    0 0 18px 3px var(--brilho),
+    0 0 60px 8px rgb(236 181 0 / 0.18);
+  opacity: calc(min(var(--v), 1 - var(--v)) * 4);
+  pointer-events: none;
+}
+.raio-x-rotulos {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.raio-x-rotulos li {
+  position: absolute;
+  left: 7%;
+  top: calc(var(--y) * 100%);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.28rem 0.55rem 0.28rem 0.4rem;
+  border-radius: 999px;
+  background: rgb(1 0 41 / 0.72);
+  border: 1px solid rgb(236 181 0 / 0.45);
+  color: #ffe08a;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  opacity: clamp(0, calc((var(--v) - var(--y)) * 7), 1);
+  translate: calc((1 - clamp(0, calc((var(--v) - var(--y)) * 7), 1)) * -10px) 0;
+}
+.raio-x-rotulos li:nth-child(even) {
+  left: auto;
+  right: 7%;
+}
+.raio-x-rotulos li::before {
+  content: "";
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: var(--destaque);
+  box-shadow: 0 0 8px var(--destaque);
+}
+[data-tema="claro"] .raio-x-rotulos li {
+  background: rgb(255 255 255 / 0.86);
+  border-color: rgb(6 5 35 / 0.18);
+  color: var(--texto);
+}
+
+@media (hover: hover) {
+  .cartao-produto:hover {
+    --v: 1;
+  }
+  .cartao-produto:hover .cartao-produto-corpo {
+    border-color: rgb(236 181 0 / 0.45);
+    box-shadow:
+      0 30px 70px -35px var(--brilho),
+      var(--sombra);
+  }
+  .cartao-produto:hover .raio-x-foto {
+    opacity: 0.12;
+    scale: 1.03;
+  }
+}
+
+/* a foto grande da ficha: o Raio-X liga no botão, não no mouse */
+.vitrine-produto {
+  --v: 0;
+  --mx: 50%;
+  --my: 40%;
+  transition: --v 1.05s var(--ease-entrada-saida);
+}
+.raio-x-ligado .raio-x-foto {
+  opacity: 0.12;
+}
+
+/* --- Menu do celular (popover em tela cheia) ------------------------------ */
+
+.menu-movel {
+  inset: 0;
+  opacity: 0;
+  translate: 0 -1.5rem;
+  transition:
+    opacity 0.35s var(--ease-saida),
+    translate 0.5s var(--ease-saida),
+    overlay 0.5s allow-discrete,
+    display 0.5s allow-discrete;
+}
+.menu-movel:popover-open {
+  opacity: 1;
+  translate: 0 0;
+}
+@starting-style {
+  .menu-movel:popover-open {
+    opacity: 0;
+    translate: 0 -1.5rem;
+  }
+}
+.menu-movel-item {
+  opacity: 0;
+  translate: 0 1rem;
+  transition:
+    opacity 0.5s var(--ease-saida),
+    translate 0.6s var(--ease-saida);
+  transition-delay: calc(var(--ordem) * 50ms + 80ms);
+}
+.menu-movel:popover-open .menu-movel-item {
+  opacity: 1;
+  translate: 0 0;
+}
+@starting-style {
+  .menu-movel:popover-open .menu-movel-item {
+    opacity: 0;
+    translate: 0 1rem;
+  }
+}
+
+/* --- Gaveta do pedido (<dialog> que entra pela direita) ------------------- */
+
+.gaveta {
+  margin: 0 0 0 auto;
+  height: 100dvh;
+  max-height: none;
+  width: min(30rem, 100vw);
+  max-width: none;
+  border: 0;
+  border-left: 1px solid var(--linha);
+  padding: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  translate: 100% 0;
+  transition:
+    translate 0.55s var(--ease-saida),
+    overlay 0.55s allow-discrete,
+    display 0.55s allow-discrete;
+}
+.gaveta[open] {
+  translate: 0 0;
+}
+@starting-style {
+  .gaveta[open] {
+    translate: 100% 0;
+  }
+}
+.gaveta::backdrop {
+  background: rgb(1 0 25 / 0);
+  -webkit-backdrop-filter: blur(0);
+  backdrop-filter: blur(0);
+  transition:
+    background 0.45s,
+    backdrop-filter 0.45s,
+    overlay 0.55s allow-discrete,
+    display 0.55s allow-discrete;
+}
+.gaveta[open]::backdrop {
+  background: rgb(1 0 25 / 0.55);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+@starting-style {
+  .gaveta[open]::backdrop {
+    background: rgb(1 0 25 / 0);
+    -webkit-backdrop-filter: blur(0);
+    backdrop-filter: blur(0);
+  }
+}
+
+/* Campo de formulário padrão (pedido, chamado, proposta). */
+.campo {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.9rem;
+  border: 1px solid var(--linha-forte);
+  background: var(--fundo-2);
+  color: var(--texto);
+  font-size: 1rem;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.campo::placeholder {
+  color: var(--texto-3);
+}
+.campo:focus {
+  outline: none;
+  border-color: var(--destaque);
+  box-shadow: 0 0 0 3px rgb(236 181 0 / 0.2);
+}
+
+/* Escolha em pílula (rádio/checkbox escondido, rótulo vira botão). */
+.escolha {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--linha-forte);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--texto-2);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    color 0.2s,
+    transform 0.3s var(--ease-saida);
+}
+.escolha input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.escolha:has(input:checked),
+  .escolha[aria-pressed="true"] {
+  border-color: var(--destaque);
+  background: rgb(236 181 0 / 0.14);
+  color: var(--texto);
+}
+.escolha:has(input:focus-visible) {
+  outline: 2px solid var(--destaque);
+  outline-offset: 2px;
+}
+@media (hover: hover) {
+  .escolha:hover {
+    border-color: var(--destaque);
+    color: var(--texto);
+  }
+}
+}
+
+/* --- A abertura: olho 3D e mergulho na loja ------------------------------- */
+
+@keyframes entra-subindo {
+  from {
+    opacity: 0;
+    translate: 0 1.4rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes arco-pulsa {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.035;
+  }
+}
+
+@layer components {
+  /* O furo do olho antes do 3D chegar: mesma posição e raio do primeiro quadro
+     (as contas estão em tres/olho-3d.tsx). A loja já aparece dentro do olho em SVG. */
+  .abertura {
+    --p: 0;
+    --portal-x: calc(50vw + 36.9svh);
+    --portal-y: 56.08svh;
+    --portal-r: 9.3svh;
+    isolation: isolate;
+  }
+  @media (max-aspect-ratio: 85/100) {
+    .abertura {
+      --portal-x: calc(50vw + 6.98svh);
+      --portal-y: 74.26svh;
+      --portal-r: 5.27svh;
+    }
+  }
+  .abertura-fundo {
+    background:
+      radial-gradient(55% 60% at 72% 52%, rgb(44 38 140 / 0.55), transparent 70%),
+      radial-gradient(40% 40% at 70% 50%, rgb(236 181 0 / 0.1), transparent 70%),
+      radial-gradient(80% 90% at 0% 100%, rgb(20 16 100 / 0.6), transparent 60%),
+      var(--fundo);
+  }
+  [data-tema="claro"] .abertura-fundo {
+    background:
+      radial-gradient(50% 55% at 72% 52%, rgb(236 181 0 / 0.16), transparent 70%),
+      radial-gradient(70% 80% at 0% 100%, rgb(6 5 35 / 0.05), transparent 60%),
+      var(--fundo);
+  }
+
+  /* a foto da loja, vista pelo furo do olho */
+  .abertura-portal {
+    z-index: 1;
+    clip-path: circle(var(--portal-r) at var(--portal-x) var(--portal-y));
+  }
+  .abertura-portal-sombra {
+    background: rgb(1 0 30);
+    opacity: calc(0.5 - var(--p) * 0.5);
+  }
+
+  /* as ondas da lâmina da marca, centradas no furo e abrindo no mergulho */
+  .abertura-arcos {
+    position: absolute;
+    z-index: 0;
+    left: var(--portal-x);
+    top: var(--portal-y);
+    width: 0;
+    height: 0;
+  }
+  .abertura-arcos span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(var(--portal-r, 60px) * var(--k) * 2);
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 999px;
+    border: 1px solid var(--linha-forte);
+    opacity: calc(var(--o) * (1 - var(--p) * 1.6));
+    animation: arco-pulsa 5s var(--ease-entrada-saida) infinite;
+    animation-delay: calc(var(--i) * -0.9s);
+  }
+
+  /* o olho em SVG, no mesmo lugar e tamanho do primeiro quadro do 3D */
+  .abertura-simbolo {
+    position: absolute;
+    z-index: 2;
+    left: calc(50vw - 7.98svh);
+    top: 24.3svh;
+    width: 65.07svh;
+    filter: drop-shadow(0 0 40px rgb(236 181 0 / 0.35));
+    transition: opacity 0.8s var(--ease-saida);
+  }
+  @media (max-aspect-ratio: 85/100) {
+    .abertura-simbolo {
+      left: calc(50vw - 18.38svh);
+      top: 56.31svh;
+      width: 36.76svh;
+    }
+  }
+  .abertura-simbolo-saiu {
+    opacity: 0;
+  }
+  .abertura canvas {
+    z-index: 2;
+  }
+  .abertura > div:has(> div > canvas) {
+    z-index: 2;
+  }
+
+  .abertura-titulo {
+    font-family: var(--font-display);
+    font-size: clamp(2.7rem, 6.1vw, 5.7rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+  }
+  .abertura-texto {
+    opacity: calc(1 - var(--p) * 5);
+    translate: 0 calc(var(--p) * -160px);
+  }
+  .abertura-dica {
+    opacity: calc(1 - var(--p) * 8);
+  }
+  .abertura-chegada {
+    background: linear-gradient(to top, rgb(1 0 30 / 0.88), rgb(1 0 30 / 0.4) 55%, transparent);
+    opacity: clamp(0, calc((var(--p) - 0.86) * 9), 1);
+  }
+  .abertura-chegada .titulo-2 {
+    translate: 0 calc((1 - clamp(0, calc((var(--p) - 0.86) * 9), 1)) * 2rem);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .abertura-entra {
+      animation: entra-subindo 1s var(--ease-saida) both;
+      animation-delay: calc(var(--i) * 90ms + 150ms);
+    }
+  }
+}
+
+/* --- Seções da página inicial ------------------------------------------- */
+
+@keyframes encher {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
+}
+
+@keyframes girar {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@layer components {
+  /* faixa de marcas: o nome só no contorno, acende ao passar o mouse */
+  .faixa-marca {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--linha-forte);
+    transition:
+      color 0.3s,
+      -webkit-text-stroke-color 0.3s;
+    white-space: nowrap;
+  }
+  @media (hover: hover) {
+    .faixa-marca:hover {
+      color: var(--texto);
+      -webkit-text-stroke-color: transparent;
+    }
+  }
+
+  /* quadro de categoria: a foto do produto sobe e gira um pouco no hover */
+  .categoria-quadro {
+    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition:
+      transform 0.5s var(--ease-saida),
+      border-color 0.3s;
+  }
+  .categoria-quadro::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(50% 50% at var(--mx, 70%) var(--my, 70%), rgb(236 181 0 / 0.14), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .categoria-capa {
+    transition:
+      translate 0.7s var(--ease-saida),
+      rotate 0.7s var(--ease-saida),
+      scale 0.7s var(--ease-saida);
+  }
+  @media (hover: hover) {
+    .group:hover .categoria-quadro {
+      border-color: rgb(236 181 0 / 0.5);
+    }
+    .group:hover .categoria-quadro::before {
+      opacity: 1;
+    }
+    .group:hover .categoria-capa {
+      translate: -4% -6%;
+      rotate: -4deg;
+      scale: 1.06;
+    }
+  }
+
+  /* diferenciais: a palavra grande enche de amarelo no meio da tela */
+  .diferencial-destaque {
+    font-size: clamp(3.6rem, 11vw, 9.5rem);
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--linha-forte);
+    background-image: linear-gradient(90deg, var(--destaque) 0 50%, transparent 50%);
+    background-size: 200% 100%;
+    background-position: 0% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .diferencial-destaque {
+        animation: encher linear both;
+        animation-timeline: view();
+        animation-range: entry 35% cover 50%;
+      }
+    }
+  }
+  [data-tema="escuro"] .diferencial-destaque {
+    filter: drop-shadow(0 0 30px rgb(236 181 0 / 0.18));
+  }
+
+  /* gabinete ilustrado (chamada do Monte seu PC) */
+  .gabinete {
+    --rgb: #ecb500;
+    aspect-ratio: 0.82;
+    perspective: 1400px;
+  }
+  .gabinete-corpo {
+    position: relative;
+    height: 100%;
+    border-radius: 1.6rem;
+    background: linear-gradient(160deg, #1b1b4f, #08082a 55%);
+    border: 1px solid rgb(255 255 255 / 0.12);
+    box-shadow:
+      0 60px 120px -40px color-mix(in srgb, var(--rgb) 55%, transparent),
+      inset 0 0 0 1px rgb(255 255 255 / 0.04);
+    transform: rotateY(-16deg) rotateX(4deg);
+    transform-style: preserve-3d;
+    display: grid;
+    grid-template-columns: 1fr 26%;
+    gap: 5%;
+    padding: 6%;
+    animation: arco-pulsa 6s var(--ease-entrada-saida) infinite;
+  }
+  .gabinete-vidro {
+    position: relative;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, rgb(255 255 255 / 0.09), rgb(255 255 255 / 0.02) 40%, rgb(255 255 255 / 0.06));
+    border: 1px solid rgb(255 255 255 / 0.14);
+    overflow: hidden;
+    padding: 8%;
+    display: flex;
+    flex-direction: column;
+    gap: 9%;
+    box-shadow: inset 0 0 60px color-mix(in srgb, var(--rgb) 22%, transparent);
+  }
+  .gabinete-placa-mae {
+    flex: 1;
+    border-radius: 0.6rem;
+    background:
+      repeating-linear-gradient(90deg, rgb(255 255 255 / 0.04) 0 2px, transparent 2px 14px),
+      #10103a;
+    border: 1px solid rgb(255 255 255 / 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 6%;
+  }
+  .gabinete-cooler {
+    width: 42%;
+    aspect-ratio: 1;
+    border-radius: 0.6rem;
+    background: #17174a;
+    display: grid;
+    place-items: center;
+  }
+  .gabinete-memorias {
+    display: flex;
+    gap: 10%;
+    height: 70%;
+    width: 22%;
+  }
+  .gabinete-memorias span {
+    flex: 1;
+    border-radius: 3px;
+    background: linear-gradient(180deg, var(--rgb), #2a2a66 35%);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--rgb) 60%, transparent);
+  }
+  .gabinete-placa-de-video {
+    position: relative;
+    height: 26%;
+    border-radius: 0.6rem;
+    background: linear-gradient(180deg, #23235e, #12123d);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    box-shadow: 0 -2px 0 0 var(--rgb) inset;
+  }
+  .gabinete-placa-de-video i {
+    position: absolute;
+    right: 6%;
+    bottom: 10%;
+    font: 600 0.5rem/1 var(--font-mono);
+    letter-spacing: 0.15em;
+    color: rgb(255 255 255 / 0.45);
+    font-style: normal;
+  }
+  .gabinete-frente {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 0.8rem;
+    background: rgb(255 255 255 / 0.03);
+    border: 1px solid rgb(255 255 255 / 0.08);
+  }
+  .gabinete-fan {
+    width: 78%;
+    aspect-ratio: 1;
+    border-radius: 999px;
+    background:
+      radial-gradient(circle, #0a0a2e 0 18%, transparent 19%),
+      repeating-conic-gradient(from 0deg, rgb(255 255 255 / 0.22) 0 14deg, transparent 14deg 45deg),
+      radial-gradient(circle, transparent 58%, var(--rgb) 60% 66%, transparent 68%);
+    box-shadow:
+      0 0 24px color-mix(in srgb, var(--rgb) 70%, transparent),
+      inset 0 0 18px color-mix(in srgb, var(--rgb) 45%, transparent);
+    animation: girar 1.6s linear infinite;
+  }
+  .gabinete-fan-gpu {
+    width: 30%;
+  }
+  .gabinete-fan-pequeno {
+    width: 74%;
+  }
+  .gabinete-logo {
+    position: absolute;
+    left: 7%;
+    bottom: 3%;
+    width: 9%;
+    opacity: 0.9;
+  }
+}
+
+/* --- Raio-X do notebook ------------------------------------------------- */
+
+@keyframes etiqueta-entra {
+  from {
+    opacity: 0;
+    scale: 0.85;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@layer components {
+  .raio-x-secao {
+    --p: 0;
+  }
+  .raio-x-ceu {
+    background:
+      radial-gradient(45% 55% at 68% 48%, rgb(60 50 170 / 0.45), transparent 70%),
+      radial-gradient(30% 35% at 66% 52%, rgb(236 181 0 / calc(0.06 + var(--p) * 0.08)), transparent 70%),
+      var(--fundo);
+  }
+  [data-tema="claro"] .raio-x-ceu {
+    background:
+      radial-gradient(45% 55% at 68% 48%, rgb(236 181 0 / 0.14), transparent 70%),
+      var(--fundo);
+  }
+
+  .raio-x-veu {
+    background: linear-gradient(90deg, var(--fundo) 0%, color-mix(in srgb, var(--fundo) 85%, transparent) 30%, transparent 48%);
+  }
+
+  .raio-x-passo {
+    position: relative;
+    padding: 0.6rem 0 0.6rem 1.1rem;
+    border-left: 2px solid var(--linha);
+    transition:
+      opacity 0.4s,
+      border-color 0.4s;
+  }
+  .raio-x-passo-texto {
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+  }
+  /* Com a cena rodando, só o passo da vez fica aceso e aberto. */
+  [data-animado="sim"] .raio-x-passo {
+    opacity: 0.32;
+  }
+  [data-animado="sim"] .raio-x-passo-texto {
+    max-height: 0;
+    transition: max-height 0.5s var(--ease-saida);
+  }
+  [data-animado="sim"][data-etapa="0"] .raio-x-passo[data-i="0"],
+  [data-animado="sim"][data-etapa="1"] .raio-x-passo[data-i="1"],
+  [data-animado="sim"][data-etapa="2"] .raio-x-passo[data-i="2"],
+  [data-animado="sim"][data-etapa="3"] .raio-x-passo[data-i="3"],
+  [data-animado="sim"][data-etapa="4"] .raio-x-passo[data-i="4"] {
+    opacity: 1;
+    border-color: var(--destaque);
+  }
+  [data-animado="sim"][data-etapa="0"] .raio-x-passo[data-i="0"] .raio-x-passo-texto,
+  [data-animado="sim"][data-etapa="1"] .raio-x-passo[data-i="1"] .raio-x-passo-texto,
+  [data-animado="sim"][data-etapa="2"] .raio-x-passo[data-i="2"] .raio-x-passo-texto,
+  [data-animado="sim"][data-etapa="3"] .raio-x-passo[data-i="3"] .raio-x-passo-texto,
+  [data-animado="sim"][data-etapa="4"] .raio-x-passo[data-i="4"] .raio-x-passo-texto {
+    max-height: 6rem;
+  }
+  [data-animado="sim"] .raio-x-final {
+    opacity: clamp(0, calc((var(--p) - 0.93) * 14), 1);
+    translate: 0 calc((1 - clamp(0, calc((var(--p) - 0.93) * 14), 1)) * 1rem);
+  }
+  /* No celular a lista não cabe inteira: aparece só o passo da vez. */
+  @media (max-width: 1023px) {
+    [data-animado="sim"] .raio-x-passo {
+      display: none;
+    }
+    [data-animado="sim"][data-etapa="0"] .raio-x-passo[data-i="0"],
+    [data-animado="sim"][data-etapa="1"] .raio-x-passo[data-i="1"],
+    [data-animado="sim"][data-etapa="2"] .raio-x-passo[data-i="2"],
+    [data-animado="sim"][data-etapa="3"] .raio-x-passo[data-i="3"],
+    [data-animado="sim"][data-etapa="4"] .raio-x-passo[data-i="4"] {
+      display: block;
+    }
+  }
+
+  /* a etiqueta que flutua junto da peça acesa (Html do drei) */
+  .raio-x-etiqueta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.75rem 0.4rem 0.55rem;
+    border-radius: 999px;
+    background: rgb(1 0 41 / 0.82);
+    border: 1px solid rgb(236 181 0 / 0.6);
+    color: #ffe08a;
+    font: 600 0.72rem/1 var(--font-mono);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    translate: 0 -2.6rem;
+    box-shadow: 0 0 30px rgb(236 181 0 / 0.35);
+    animation: etiqueta-entra 0.45s var(--ease-mola) both;
+  }
+  .raio-x-etiqueta span {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--destaque);
+    box-shadow: 0 0 10px var(--destaque);
+  }
 }

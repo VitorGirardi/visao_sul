@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "visao-sul",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "-H", "127.0.0.1"],
+      "port": 3010,
+      "autoPort": true
+    },
+    {
+      "name": "visao-sul-producao",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["next", "start", "-p", "3110"],
+      "port": 3110
+    }
+  ]
+}

@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# agentes e ferramentas
+.claude/worktrees/
+.playwright-mcp/
+
+# material bruto do levantamento (Instagram, foto da loja, originais de produto):
+# o que vai para o site sai tratado em src/fotos e public/
+/referencias/
