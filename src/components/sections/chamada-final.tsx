@@ -6,7 +6,7 @@ import { DONO, LOJA } from "@/data/loja";
 /** O fecho da página: o letreiro aceso e o WhatsApp. */
 export function ChamadaFinal() {
   return (
-    <section className="relative overflow-hidden py-24 md:py-36" aria-labelledby="titulo-chamada-final">
+    <section className="longe-da-tela relative overflow-hidden py-24 md:py-36" aria-labelledby="titulo-chamada-final">
       <div className="absolute left-1/2 top-1/2 size-[48rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,var(--brilho),transparent_62%)] opacity-60" aria-hidden />
       <div className="recipiente relative flex flex-col items-center text-center">
         <Marca arranjo="simbolo" titulo="" className="revelar-escala w-20 drop-shadow-[0_0_30px_rgb(236_181_0/0.6)] md:w-24" />

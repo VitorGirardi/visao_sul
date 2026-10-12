@@ -1,7 +1,8 @@
 import { negrito, type LinhaDaMensagem } from "@/data/contato";
 import { servicoParaEmpresaPorSlug } from "@/data/empresas";
 import { coresDeLuz, jogos, nivelPorId, totalDoNivel } from "@/data/pc-gamer";
-import { produtoPorSlug, produtos, QUANTIDADE_MAXIMA } from "@/data/produtos";
+import { QUANTIDADE_MAXIMA } from "@/data/pedido";
+import { produtoPorSlug, produtos } from "@/data/produtos";
 import { aparelhoPorValor, locaisDeAtendimento, problemas } from "@/data/servicos";
 import { formatarPreco } from "@/lib/utils";
 

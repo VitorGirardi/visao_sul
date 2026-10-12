@@ -44,8 +44,10 @@ export function CategoriasEmDestaque() {
             const grande = categoria.slug === "notebooks";
             return (
               <Inclinacao key={categoria.slug} intensidade={5} className={cn("revelar-escala group [perspective:1000px]", tamanho[categoria.slug], grande && "col-span-2 md:row-span-2")}>
+                {/* sem prefetch: os nove quadros baixavam a mesma página de produtos ao aparecer */}
                 <Link
                   href={`/produtos?categoria=${categoria.slug}`}
+                  prefetch={false}
                   className="categoria-quadro relative flex h-full flex-col overflow-hidden rounded-cartao border border-linha bg-fundo-2 p-5 md:p-6"
                 >
                   <div className="relative z-10 flex items-start justify-between gap-3">
@@ -71,7 +73,11 @@ export function CategoriasEmDestaque() {
                             : "-bottom-[12%] -right-[10%] w-[66%]",
                       )}
                     >
-                      <FotoDoProduto produto={capa} sizes={grande ? "(min-width: 768px) 40vw, 80vw" : "(min-width: 768px) 18vw, 40vw"} />
+                      {/* sizes medidos na largura real da capa em 390, 768 e 1440 px (antes vinha foto até 2,4 vezes maior) */}
+                      <FotoDoProduto
+                        produto={capa}
+                        sizes={grande ? "(min-width: 768px) 34vw, 52vw" : largo[categoria.slug] ? "(min-width: 768px) 16vw, 20vw" : "(min-width: 768px) 14vw, 29vw"}
+                      />
                     </div>
                   )}
                 </Link>

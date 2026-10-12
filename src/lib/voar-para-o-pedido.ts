@@ -30,8 +30,12 @@ export function voarParaOPedido(origem: HTMLElement | null) {
     pointerEvents: "none",
     margin: "0",
   } satisfies Partial<CSSStyleDeclaration>);
+  // a cópia fica com a imagem que já está na tela: sem o srcset, ela caía no
+  // `src` (a de 3840 px), baixada e decodificada no meio do voo (12/10/2026)
+  copia.src = imagem.currentSrc || imagem.src;
   copia.removeAttribute("srcset");
   copia.removeAttribute("sizes");
+  copia.loading = "eager";
   document.body.appendChild(copia);
 
   const dx = para.left + para.width / 2 - (de.left + de.width / 2);

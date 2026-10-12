@@ -14,7 +14,7 @@ const icones = [IconeImpressora, IconeWifi, IconeChave, IconeNotebook];
 export default function PaginaDeEmpresas() {
   return (
     <div className="pb-28">
-      <section className="granulado relative overflow-hidden pb-16 pt-32 md:pt-40">
+      <section className="relative overflow-hidden pb-16 pt-32 md:pt-40">
         <div className="grade-de-fundo pointer-events-none absolute inset-0 opacity-50" aria-hidden />
         <div className="recipiente relative max-w-4xl text-center">
           <span className="mx-auto grid size-14 place-items-center rounded-2xl bg-destaque text-sobre-destaque">

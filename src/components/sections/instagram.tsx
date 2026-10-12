@@ -20,7 +20,7 @@ const posts: [StaticImageData, string][] = [
 
 export function Instagram() {
   return (
-    <section className="py-24 md:py-28" aria-labelledby="titulo-instagram">
+    <section className="longe-da-tela py-24 md:py-28" aria-labelledby="titulo-instagram">
       <div className="recipiente">
         <div className="revelar flex flex-wrap items-end justify-between gap-6">
           <div>

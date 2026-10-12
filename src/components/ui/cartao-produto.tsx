@@ -13,23 +13,42 @@ import { cn } from "@/lib/utils";
  * escuro, azul no claro), com a ficha técnica aparecendo conforme a linha
  * passa. É o conceito do site em miniatura: Visão Sul, enxergar por dentro.
  *
- * Tudo em CSS (`--v` de 0 a 1, registrado com @property e animado por
- * transição); o JS daqui é só a inclinação e o botão de adicionar.
+ * Tudo em CSS, com transições de `opacity` e `translate` (`globals.css`);
+ * o JS daqui é só a inclinação e o botão de adicionar.
  */
-export function CartaoProduto({ produto, prioridade = false, className }: { produto: Produto; prioridade?: boolean; className?: string }) {
-  const sizes = "(min-width: 1280px) 300px, (min-width: 768px) 33vw, 80vw";
+export function CartaoProduto({
+  produto,
+  prioridade = false,
+  className,
+  ...dados
+}: {
+  produto: Produto;
+  prioridade?: boolean;
+  className?: string;
+  /** marcas para quem filtra os cartões no navegador (o catálogo) */
+  [dado: `data-${string}`]: string | number;
+}) {
+  // A foto ocupa de 240 a 295 px do cartão em qualquer grade acima de 640 px
+  // (conta feita em 640, 768, 1024, 1280 e 1440). Com 256, a tela comum baixa
+  // a de 256 em vez da de 384; a de alta densidade dobra sozinha.
+  const sizes = "(min-width: 640px) 256px, 76vw";
   return (
-    <Inclinacao className={cn("cartao-produto group relative", className)}>
+    <Inclinacao className={cn("cartao-produto group relative", className)} {...dados}>
       <article className="cartao-produto-corpo relative flex h-full flex-col overflow-hidden rounded-cartao border border-linha bg-fundo-2">
-        <Link href={`/produtos/${produto.slug}`} className="absolute inset-0 z-10" aria-label={produto.nome} />
+        {/* sem prefetch: cada cartão que aparecia na tela baixava a ficha inteira (41 fetches em /produtos) */}
+        <Link href={`/produtos/${produto.slug}`} prefetch={false} className="absolute inset-0 z-10" aria-label={produto.nome} />
 
         <div className="raio-x relative" data-foto-do-pedido data-foto={produto.slug}>
           <div className="raio-x-fundo" aria-hidden />
           <FotoDoProduto produto={produto} sizes={sizes} prioridade={prioridade} className="raio-x-foto m-[8%]" />
           <div className="raio-x-chapa" aria-hidden>
-            <FotoDoProduto produto={produto} sizes={sizes} className="m-[8%]" />
+            <div className="raio-x-chapa-filme">
+              <FotoDoProduto produto={produto} sizes={sizes} semSombra className="m-[8%]" />
+            </div>
           </div>
-          <div className="raio-x-linha" aria-hidden />
+          <div className="raio-x-linha" aria-hidden>
+            <span />
+          </div>
           <ul className="raio-x-rotulos" aria-hidden>
             {produto.raioX.slice(0, 4).map((linha, i, todas) => (
               <li key={linha} style={{ "--y": 0.2 + (i / Math.max(1, todas.length - 1)) * 0.55 } as CSSProperties}>
@@ -45,7 +64,7 @@ export function CartaoProduto({ produto, prioridade = false, className }: { prod
             )}
           </div>
           {produto.testeGratis && (
-            <span className="absolute bottom-3 left-4 rounded-full border border-linha bg-fundo/70 px-2.5 py-1 font-mono text-[0.6rem] uppercase tracking-wider text-texto-2 backdrop-blur-sm">
+            <span className="absolute bottom-3 left-4 rounded-full border border-linha bg-fundo/90 px-2.5 py-1 font-mono text-[0.6rem] uppercase tracking-wider text-texto-2">
               Teste grátis na loja
             </span>
           )}

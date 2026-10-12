@@ -1,6 +1,7 @@
 /**
- * O ESTADO DA ABERTURA, dividido entre quem rola (o GSAP, em
- * `abertura-animada.tsx`) e quem desenha (a cena 3D, em `tres/olho-3d.tsx`).
+ * O ESTADO DA ABERTURA, dividido entre quem rola (o controle, em
+ * `sections/controle-da-abertura.tsx`) e quem desenha (a cena 3D, em
+ * `tres/olho-3d.tsx`).
  * É um objeto mutável de propósito: a cena lê 60 vezes por segundo, e isso
  * não pode passar pelo estado do React.
  */
@@ -22,6 +23,9 @@ export function podeUsar3D() {
     const canvas = document.createElement("canvas");
     const gl = canvas.getContext("webgl2") ?? canvas.getContext("webgl");
     podeCache = Boolean(gl) && !reduzido;
+    // Solto o contexto do teste na hora: preso, ele ficava vivo ao lado do da
+    // cena, e o navegador limita quantos contextos WebGL vivem juntos (12/10/2026).
+    gl?.getExtension("WEBGL_lose_context")?.loseContext();
   } catch {
     podeCache = false;
   }

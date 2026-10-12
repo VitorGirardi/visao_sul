@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { BotaoWhatsApp } from "@/components/layout/botao-whatsapp";
 import { Cabecalho } from "@/components/layout/cabecalho";
 import { GavetaDoPedido } from "@/components/layout/gaveta-do-pedido";
-import { RolagemSuave } from "@/components/layout/rolagem-suave";
+import { MarcadorDeRolagem } from "@/components/layout/marcador-de-rolagem";
 import { Rodape } from "@/components/layout/rodape";
 
 /**
@@ -15,12 +15,12 @@ export default function LayoutDoSite({ children }: { children: ReactNode }) {
   return (
     <>
       <div className="progresso" aria-hidden />
-      <RolagemSuave />
       <Cabecalho />
       <main id="conteudo">{children}</main>
       <Rodape />
       <BotaoWhatsApp />
       <GavetaDoPedido />
+      <MarcadorDeRolagem />
     </>
   );
 }

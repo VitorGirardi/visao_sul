@@ -35,9 +35,6 @@ export type Produto = {
 
 export const PARCELAS = 10;
 
-/** Teto de unidades por produto num pedido (a rota do WhatsApp confere). */
-export const QUANTIDADE_MAXIMA = 20;
-
 export const produtos: Produto[] = [
   // NOTEBOOKS ------------------------------------------------------------
   {

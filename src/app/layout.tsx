@@ -34,10 +34,13 @@ const manrope = Manrope({
   display: "swap",
 });
 
+/* Sem pré-carga: a mono só aparece em rótulos pequenos, e a banda da primeira
+   tela é do título e do texto. */
 const mono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono",
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {

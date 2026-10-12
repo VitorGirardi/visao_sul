@@ -7,7 +7,7 @@ import { formatarPrecoCurto } from "@/lib/utils";
 /** A chamada do montador de PC: escolha o jogo, a loja monta. */
 export function MonteSeuPcChamada() {
   return (
-    <section className="relative overflow-hidden bg-marinho py-24 text-white md:py-32" aria-labelledby="titulo-monte-seu-pc">
+    <section className="longe-da-tela relative overflow-hidden bg-marinho py-24 text-white md:py-32" aria-labelledby="titulo-monte-seu-pc">
       <div className="grade-de-fundo absolute inset-0 opacity-40" aria-hidden />
       <div className="absolute -left-40 top-1/3 size-[40rem] rounded-full bg-[radial-gradient(circle,rgb(236_181_0/0.18),transparent_65%)]" aria-hidden />
       <div className="recipiente relative grid items-center gap-14 lg:grid-cols-[1fr_0.9fr]">

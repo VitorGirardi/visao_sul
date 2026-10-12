@@ -3,9 +3,12 @@
  *
  *   node scripts/marca/gerar-icones.mjs
  *
- * Gera: src/app/icon.svg (favicon), src/app/apple-icon.png (180 px) e
+ * Gera: src/app/icon.svg (favicon), src/app/apple-icon.png (180 px),
  * src/app/opengraph-image.jpg (1200 × 630, a prévia do link no WhatsApp:
- * a foto da loja escurecida, o letreiro e o lema da parede).
+ * a foto da loja escurecida, o letreiro e o lema da parede) e
+ * public/marca/letreiro.svg (o "VisãoSul" e o "INFORMÁTICA" que a logo do
+ * site usa por <use>; cores por variável CSS, com o padrão da lâmina).
+ * Mudou o desenho: suba o ?v= em components/layout/marca.tsx.
  * O Node 24 lê o `.ts` da marca direto (tipos apagados na importação).
  */
 import fs from "node:fs";
@@ -15,6 +18,16 @@ import { ANEL, INFORMATICA, LAMINA, NOME } from "../../src/data/marca.ts";
 
 const RAIZ = path.resolve(import.meta.dirname, "../..");
 const APP = path.join(RAIZ, "src/app");
+const MARCA = path.join(RAIZ, "public/marca");
+fs.mkdirSync(MARCA, { recursive: true });
+fs.writeFileSync(
+  path.join(MARCA, "letreiro.svg"),
+  `<svg xmlns="http://www.w3.org/2000/svg"><defs>
+<g id="nome"><path fill-rule="evenodd" style="fill:var(--marca-nome,#060523)" d="${NOME}"/></g>
+<g id="informatica"><path fill-rule="evenodd" style="fill:var(--marca-info,#060523)" d="${INFORMATICA}"/></g>
+</defs></svg>
+`,
+);
 
 // favicon: o olho amarelo num quadrado marinho de cantos redondos
 const icone = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">

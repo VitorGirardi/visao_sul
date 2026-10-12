@@ -8,7 +8,7 @@ import fotoDaPastaTermica from "@/fotos/instagram/pasta-termica.webp";
 /** A assistência técnica na página inicial: o que fazem e o chamado aberto ali mesmo. */
 export function AssistenciaChamada() {
   return (
-    <section id="assistencia" className="py-24 md:py-32" aria-labelledby="titulo-da-assistencia">
+    <section id="assistencia" className="longe-da-tela py-24 md:py-32" aria-labelledby="titulo-da-assistencia">
       <div className="recipiente grid gap-14 lg:grid-cols-[1fr_minmax(0,30rem)] lg:gap-20">
         <div className="revelar">
           <p className="sobretitulo">Assistência técnica</p>

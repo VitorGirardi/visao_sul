@@ -56,6 +56,11 @@ lugar, parando fora da tela, e nada disso no cabeçalho. GSAP e Lenis estão no
 layout do site (≈40 KB). Gatilho para reabrir: medição no celular de verdade
 mostrar travada na rolagem.
 
+Reaberto pelo próprio Vitor, que achou o site travado: o Lenis saiu em 09/10
+e o GSAP em 12/10/2026. A rolagem é nativa, e as cenas presas usam
+`position: sticky` (`lib/rolagem-presa.ts`). Medições e motivos em
+`desempenho.md`.
+
 ## Dois temas (09/10/2026)
 
 Escuro por padrão (a parede grafite com o letreiro aceso é a cara da loja) e

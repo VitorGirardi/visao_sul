@@ -68,7 +68,11 @@ const nextConfig: NextConfig = {
     root: path.resolve(import.meta.dirname),
   },
   async headers() {
-    return [{ source: "/:caminho*", headers: cabecalhos }];
+    return [
+      { source: "/:caminho*", headers: cabecalhos },
+      /* o letreiro da logo muda só com ?v= novo: cache de um ano */
+      { source: "/marca/:arquivo*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] },
+    ];
   },
 };
 

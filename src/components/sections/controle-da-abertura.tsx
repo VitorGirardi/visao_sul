@@ -1,20 +1,24 @@
 "use client";
 
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect } from "react";
 import { estadoDaAbertura, podeUsar3D } from "@/lib/abertura";
+import { acompanharPercurso } from "@/lib/rolagem-presa";
 
 /**
- * Prende a abertura na tela enquanto a pessoa rola 170% da altura e
- * transforma essa rolagem no progresso do mergulho (0 a 1). O progresso vai
- * para a cena 3D (`estadoDaAbertura`) e para o CSS (`--p` na seção), que
- * apaga o texto e acende a chegada. Também leva o mouse para o olho seguir.
+ * Transforma a rolagem pelo percurso da abertura (a seção fica presa por
+ * `position: sticky` enquanto se rola 170% da altura da tela) no progresso
+ * do mergulho, de 0 a 1. O progresso vai para a cena 3D (`estadoDaAbertura`)
+ * e para o CSS (`--p` na seção), que apaga o texto e acende a chegada.
+ * Também leva o mouse para o olho seguir.
+ *
+ * Sem 3D não há mergulho: `data-sem3d` no percurso tira a altura extra, e a
+ * seção rola como qualquer outra. Com "menos movimento", o CSS já faz isso.
  */
 export function ControleDaAbertura({ alvo }: { alvo: string }) {
   useEffect(() => {
     const secao = document.getElementById(alvo);
-    if (!secao) return;
+    const percurso = secao?.parentElement;
+    if (!secao || !percurso) return;
     estadoDaAbertura.portal = secao;
 
     const mover = (e: PointerEvent) => {
@@ -24,26 +28,24 @@ export function ControleDaAbertura({ alvo }: { alvo: string }) {
     };
     window.addEventListener("pointermove", mover, { passive: true });
 
-    let gatilho: ScrollTrigger | undefined;
+    let desligar: (() => void) | undefined;
     if (podeUsar3D()) {
-      gsap.registerPlugin(ScrollTrigger);
-      gatilho = ScrollTrigger.create({
-        trigger: secao,
-        start: "top top",
-        end: "+=170%",
-        pin: true,
-        scrub: true,
-        anticipatePin: 1,
-        onUpdate: (self) => {
-          estadoDaAbertura.progresso = self.progress;
-          secao.style.setProperty("--p", self.progress.toFixed(4));
-        },
+      let escrito = "";
+      desligar = acompanharPercurso(percurso, secao, (progresso) => {
+        estadoDaAbertura.progresso = progresso;
+        const p = progresso.toFixed(4);
+        if (p === escrito) return;
+        escrito = p;
+        secao.style.setProperty("--p", p);
       });
+    } else {
+      percurso.dataset.sem3d = "";
     }
 
     return () => {
       window.removeEventListener("pointermove", mover);
-      gatilho?.kill();
+      desligar?.();
+      delete percurso.dataset.sem3d;
       estadoDaAbertura.portal = null;
       estadoDaAbertura.progresso = 0;
     };

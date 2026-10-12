@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Marca } from "@/components/layout/marca";
 import { IconeCalendario, IconeInstagram, IconeLocal, IconeRelogio, IconeWhatsApp } from "@/components/ui/icones";
+import { SoNaTela } from "@/components/ui/so-na-tela";
 import { INSTAGRAM, linkDaConversa, WHATSAPP_EXIBICAO } from "@/data/contato";
 import { DONO, enderecoOuEmBreve, horarioOuEmBreve, LOJA } from "@/data/loja";
 import fotoDoLetreiro from "@/fotos/loja/loja-letreiro.jpg";
@@ -32,8 +33,8 @@ export function ALoja() {
               className="object-cover object-[55%_50%]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
-            <figcaption className="absolute left-5 top-5 flex md:bottom-5 md:top-auto items-center gap-2 rounded-full bg-black/55 px-3.5 py-2 font-mono text-[0.68rem] uppercase tracking-wider text-white backdrop-blur-md">
-              <span className="size-2 rounded-full bg-amarelo shadow-[0_0_10px_#ecb500] [animation:pulso_2s_infinite]" />
+            <figcaption className="absolute left-5 top-5 flex md:bottom-5 md:top-auto items-center gap-2 rounded-full bg-black/70 px-3.5 py-2 font-mono text-[0.68rem] uppercase tracking-wider text-white">
+              <SoNaTela className="size-2 rounded-full bg-amarelo shadow-[0_0_10px_#ecb500] [animation:pulso_2s_infinite]" />
               Loja nova · {LOJA.cidade}/{LOJA.estado}
             </figcaption>
           </figure>

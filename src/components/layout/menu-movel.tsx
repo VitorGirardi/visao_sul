@@ -25,7 +25,6 @@ export function MenuMovel() {
         id="menu-movel"
         popover="auto"
         ref={menu}
-        data-lenis-prevent
         className="menu-movel m-0 h-dvh max-h-none w-full max-w-none bg-fundo p-0 text-texto"
       >
         <div className="grade-de-fundo pointer-events-none absolute inset-0 opacity-60" aria-hidden />

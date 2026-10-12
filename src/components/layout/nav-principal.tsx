@@ -17,17 +17,19 @@ export function NavPrincipal() {
             <li key={item.href}>
               <Link
                 href={item.href}
+                // "A loja" é a própria página inicial: sem prefetch, a home não baixa a si mesma (34 KB)
+                prefetch={item.href.startsWith("/#") ? false : undefined}
                 aria-current={atual ? "page" : undefined}
                 className={cn(
-                  "group relative inline-flex h-10 items-center rounded-full px-4 text-[0.94rem] font-semibold text-texto-2 transition-colors hover:text-texto",
-                  atual && "text-texto",
+                  "group relative inline-flex h-10 items-center rounded-full px-4 text-[0.94rem] font-semibold transition-colors hover:text-texto",
+                  atual ? "text-texto" : "text-texto-2",
                 )}
               >
                 {item.rotulo}
                 <span
                   className={cn(
-                    "absolute bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-full bg-destaque opacity-0 shadow-[0_0_10px_var(--brilho)] transition-opacity",
-                    atual ? "opacity-100" : "group-hover:opacity-60",
+                    "absolute bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-full bg-destaque shadow-[0_0_10px_var(--brilho)] transition-opacity",
+                    atual ? "opacity-100" : "opacity-0 group-hover:opacity-60",
                   )}
                 />
               </Link>

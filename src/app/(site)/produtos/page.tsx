@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
-import { Catalogo } from "@/components/ui/catalogo";
+import { CartaoProduto } from "@/components/ui/cartao-produto";
+import { Catalogo, type ItemDoCatalogo } from "@/components/ui/catalogo";
 import { IconeCaminhao, IconeCalendario, IconeEscudo } from "@/components/ui/icones";
+import { categorias } from "@/data/categorias";
+import { produtos } from "@/data/produtos";
 import { AVISO_DE_PRECO } from "@/data/site";
+import { paraBusca } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Produtos",
@@ -15,6 +18,16 @@ const garantias = [
   { Icone: IconeEscudo, texto: "Defeito em 30 dias: troca na hora" },
   { Icone: IconeCaminhao, texto: "Entrega imediata em Tapejara" },
 ];
+
+/* O que o filtro do navegador precisa saber de cada cartão (o resto já vem desenhado). */
+const porPreco = [...produtos].sort((a, b) => a.preco - b.preco).map((p) => p.slug);
+const itens: ItemDoCatalogo[] = produtos.map((p) => ({
+  slug: p.slug,
+  categoria: p.categoria,
+  busca: paraBusca(`${p.nome} ${p.marca} ${p.destaques.join(" ")} ${p.categoria}`),
+  porPreco: porPreco.indexOf(p.slug),
+}));
+const contagem = categorias.map((c) => ({ slug: c.slug, nome: c.nome, quantos: produtos.filter((p) => p.categoria === c.slug).length }));
 
 export default function PaginaDeProdutos() {
   return (
@@ -36,10 +49,14 @@ export default function PaginaDeProdutos() {
         </ul>
       </div>
       <div className="mt-10">
-        {/* useSearchParams pede um limite de Suspense para a página sair pronta do build */}
-        <Suspense fallback={<div className="h-96 animate-pulse rounded-cartao bg-fundo-2" />}>
-          <Catalogo />
-        </Suspense>
+        {/* os 26 cartões saem no HTML; o catálogo (cliente) só filtra e ordena */}
+        <Catalogo itens={itens} categorias={contagem}>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {produtos.map((produto, i) => (
+              <CartaoProduto key={produto.slug} produto={produto} prioridade={i < 4} data-produto={produto.slug} />
+            ))}
+          </div>
+        </Catalogo>
       </div>
       <p className="mt-12 text-center text-xs text-texto-3">{AVISO_DE_PRECO}</p>
     </div>

@@ -27,6 +27,10 @@ export function MontadorDePc() {
   const [escolhaManual, setEscolhaManual] = useState<string | null>(null);
   const [cor, setCor] = useState<string>(coresDeLuz[0].valor);
   const pode3D = useSyncExternalStore(semAssinatura, podeUsar3D, () => false);
+  // O 3D avisa quando os shaders compilaram; até lá fica o gabinete em CSS.
+  const [pronto3D, setPronto3D] = useState(false);
+  const [ilustracaoSaiu, setIlustracaoSaiu] = useState(false);
+  const com3D = pode3D && pronto3D;
 
   const recomendado = nivelParaOsJogos(marcados);
   const nivel = niveis.find((n) => n.id === (escolhaManual ?? recomendado)) ?? niveis[0];
@@ -43,15 +47,20 @@ export function MontadorDePc() {
         <div className="relative aspect-square overflow-hidden rounded-squircle border border-linha bg-marinho">
           <div className="grade-de-fundo absolute inset-0 opacity-50" aria-hidden />
           <div className="absolute inset-0 transition-[background] duration-700" style={{ background: `radial-gradient(55% 55% at 50% 55%, ${cor}33, transparent 70%)` }} aria-hidden />
-          {pode3D ? (
-            <Gabinete3D cor={cor} porte={nivel.porteDaPlaca} />
-          ) : (
-            <div className="grid h-full place-items-center">
+          {/* Fade cruzado com o 3D e, no fim, sai da página: as animações infinitas dele custam pintura a cada quadro. */}
+          {!ilustracaoSaiu && (
+            <div
+              className={cn("absolute inset-0 grid place-items-center transition-opacity duration-700", com3D && "opacity-0")}
+              onTransitionEnd={(evento) => {
+                if (com3D && evento.target === evento.currentTarget) setIlustracaoSaiu(true);
+              }}
+            >
               <GabineteIlustrado cor={cor} className="w-[58%]" />
             </div>
           )}
+          {pode3D && <Gabinete3D cor={cor} porte={nivel.porteDaPlaca} aoFicarPronto={() => setPronto3D(true)} />}
           <p className="pointer-events-none absolute bottom-4 left-0 right-0 text-center font-mono text-[0.68rem] uppercase tracking-[0.2em] text-white/50">
-            {pode3D ? "Arraste para girar" : "PC Gamer Visão Sul"}
+            {com3D ? "Arraste para girar" : "PC Gamer Visão Sul"}
           </p>
         </div>
       </div>

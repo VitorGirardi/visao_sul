@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { produtoPorSlug, QUANTIDADE_MAXIMA } from "@/data/produtos";
+import { QUANTIDADE_MAXIMA } from "@/data/pedido";
 
 /**
  * "MEU PEDIDO": a sacola do site, guardada no navegador (localStorage), sem
@@ -10,6 +10,11 @@ import { produtoPorSlug, QUANTIDADE_MAXIMA } from "@/data/produtos";
  * Mesmo desenho do prime-collection: estado do navegador com
  * `useSyncExternalStore`, sem biblioteca de estado. A foto do que está
  * guardado é sempre a mesma lista até mudar (o React exige isso).
+ *
+ * Sem o catálogo aqui (12/10/2026): a sacola entra em toda página pelo botão
+ * do cabeçalho, e importar `data/produtos` levava os textos dos 26 produtos
+ * junto. Ela confere só o formato do código; quem mostra o produto (a gaveta)
+ * ignora o que não estiver no catálogo, e a rota do WhatsApp confere tudo.
  */
 export type ItemDoPedido = { slug: string; qtd: number };
 
@@ -18,12 +23,15 @@ const VAZIO: ItemDoPedido[] = [];
 const ouvintes = new Set<() => void>();
 let itens: ItemDoPedido[] | null = null;
 
+/** O código de um produto: "hp-victus-15". */
+const FORMATO_DO_CODIGO = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
 function validos(bruto: unknown): ItemDoPedido[] {
   if (!Array.isArray(bruto)) return [];
   return bruto.flatMap((item) => {
     const slug = typeof item?.slug === "string" ? item.slug : "";
     const qtd = Math.floor(Number(item?.qtd));
-    return produtoPorSlug(slug) && qtd >= 1 ? [{ slug, qtd: Math.min(qtd, QUANTIDADE_MAXIMA) }] : [];
+    return FORMATO_DO_CODIGO.test(slug) && qtd >= 1 ? [{ slug, qtd: Math.min(qtd, QUANTIDADE_MAXIMA) }] : [];
   });
 }
 
@@ -68,7 +76,7 @@ export function usePedido(): ItemDoPedido[] {
 }
 
 export function adicionarAoPedido(slug: string, qtd = 1) {
-  if (!produtoPorSlug(slug)) return;
+  if (!FORMATO_DO_CODIGO.test(slug)) return;
   const atual = ler();
   const existente = atual.find((i) => i.slug === slug);
   gravar(
@@ -92,9 +100,6 @@ export function limparPedido() {
 }
 
 export const totalDeItens = (lista: ItemDoPedido[]) => lista.reduce((soma, i) => soma + i.qtd, 0);
-
-export const totalDoPedido = (lista: ItemDoPedido[]) =>
-  lista.reduce((soma, i) => soma + (produtoPorSlug(i.slug)?.preco ?? 0) * i.qtd, 0);
 
 /** A gaveta do pedido abre por evento: qualquer botão do site pode pedir. */
 export const EVENTO_ABRIR_PEDIDO = "visao:abrir-pedido";

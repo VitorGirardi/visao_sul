@@ -35,7 +35,7 @@ const perguntas = [
 export default function PaginaDaAssistencia() {
   return (
     <div className="pb-28">
-      <section className="granulado relative overflow-hidden pb-20 pt-32 md:pt-40">
+      <section className="relative overflow-hidden pb-20 pt-32 md:pt-40">
         <div className="arcos pointer-events-none absolute inset-0 opacity-70" aria-hidden />
         <div className="recipiente relative grid gap-12 lg:grid-cols-[1fr_minmax(0,30rem)] lg:gap-16">
           <div className="lg:pt-6">
@@ -111,7 +111,7 @@ export default function PaginaDaAssistencia() {
       <section className="recipiente grid items-center gap-12 py-16 md:py-24 lg:grid-cols-2" aria-labelledby="titulo-preventiva">
         <figure className="revelar-escala relative overflow-hidden rounded-squircle border border-linha">
           <Image src={fotoDaPastaTermica} alt="Placa de notebook com a pasta térmica aplicada errado, de um atendimento da Visão Sul" sizes="(min-width: 1024px) 45vw, 90vw" className="h-auto w-full" />
-          <figcaption className="absolute bottom-4 left-4 rounded-full bg-black/60 px-3 py-1.5 font-mono text-[0.68rem] uppercase tracking-wider text-white backdrop-blur-md">
+          <figcaption className="absolute bottom-4 left-4 rounded-full bg-black/70 px-3 py-1.5 font-mono text-[0.68rem] uppercase tracking-wider text-white">
             Da bancada da loja
           </figcaption>
         </figure>

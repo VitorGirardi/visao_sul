@@ -1,10 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { FotoDoProduto } from "@/components/ui/foto-do-produto";
-import { PRODUTO_DO_RAIO_X } from "@/data/raio-x";
-import { produtoPorSlug } from "@/data/produtos";
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { podeUsar3D } from "@/lib/abertura";
 import { cn } from "@/lib/utils";
 
@@ -14,14 +11,14 @@ const semAssinatura = () => () => {};
 /**
  * Monta o notebook 3D só quando a seção chega perto da tela (o three já veio
  * com a abertura; aqui é só a cena). Até lá, e sem WebGL, fica a foto do
- * produto.
+ * produto, que chega pronta do servidor (`children`): assim o mapa de fotos
+ * e o componente de foto não entram no JS da home (12/10/2026).
  */
-export function CenaDoNotebook() {
+export function CenaDoNotebook({ children }: { children: ReactNode }) {
   const pode3D = useSyncExternalStore(semAssinatura, podeUsar3D, () => false);
   const caixa = useRef<HTMLDivElement>(null);
   const [perto, setPerto] = useState(false);
   const [pronto, setPronto] = useState(false);
-  const produto = produtoPorSlug(PRODUTO_DO_RAIO_X);
 
   useEffect(() => {
     const el = caixa.current;
@@ -41,11 +38,7 @@ export function CenaDoNotebook() {
 
   return (
     <div ref={caixa} className="absolute inset-0">
-      {produto && (
-        <div className={cn("absolute inset-0 grid place-items-center transition-opacity duration-700", pronto && "opacity-0")}>
-          <FotoDoProduto produto={produto} sizes="(min-width: 1024px) 50vw, 90vw" className="w-[min(80%,34rem)]" />
-        </div>
-      )}
+      <div className={cn("absolute inset-0 grid place-items-center transition-opacity duration-700", pronto && "opacity-0")}>{children}</div>
       {pode3D && perto && <Notebook3D aoFicarPronto={() => setPronto(true)} />}
     </div>
   );

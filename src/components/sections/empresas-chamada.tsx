@@ -5,7 +5,7 @@ import { servicosParaEmpresas } from "@/data/empresas";
 /** Para empresas: locação de impressoras, redes, servidores e suporte. */
 export function EmpresasChamada() {
   return (
-    <section className="py-24 md:py-32" aria-labelledby="titulo-empresas">
+    <section className="longe-da-tela py-24 md:py-32" aria-labelledby="titulo-empresas">
       <div className="recipiente">
         <div className="revelar grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>

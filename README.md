@@ -5,7 +5,7 @@ pedido pelo WhatsApp, Raio-X dos produtos, assistência técnica, soluções par
 empresas e montador de PC gamer, com 3D e animação de rolagem.
 
 - **Front**: Next.js 16 (App Router, React Compiler, Turbopack), Tailwind v4,
-  three/R3F/drei, GSAP e Lenis, em `src/`.
+  three/R3F/drei, em `src/`. Rolagem nativa (sem Lenis nem GSAP).
 - **Backend**: ainda não existe; entra Convex sobre Synapse com o painel.
 - **Regras do projeto**: `AGENTS.md`, `PRINCIPIOS.md`, `PENDENCIAS.md` e
   `docs/decisoes/`.

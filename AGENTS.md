@@ -27,7 +27,7 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
 | camada | o quê |
 | --- | --- |
 | front | Next.js 16.3.8 (App Router, Turbopack, React Compiler), React 19.2, Tailwind v4 CSS-first (`@theme` no `globals.css`) |
-| 3D e movimento | three 0.186 + @react-three/fiber 9 + drei 10 (só por `next/dynamic`), GSAP 3 com ScrollTrigger, Lenis |
+| 3D e movimento | three 0.186 + @react-three/fiber 9 + drei 10 (só por `next/dynamic`), materiais matcap. Rolagem nativa e sem biblioteca de animação: o Lenis saiu em 09/10 e o GSAP em 12/10 (as cenas presas são `position: sticky`) |
 | backend | ainda não existe. Entra Convex sobre Synapse com o painel (fase 2) |
 | fontes | Sora (títulos), Manrope (texto), Geist Mono (rótulos e Raio-X), pelo `next/font/google` |
 | hospedagem | Vercel (repositório `VitorGirardi/visao_sul`, público) |
@@ -38,6 +38,8 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   (fila viva), `README.md` (rodar, portões, deploy). `CLAUDE.md` só importa os
   dois primeiros.
 - `docs/decisoes/site-publico.md`: as decisões, com data e motivo.
+  `docs/decisoes/desempenho.md`: as medições e o porquê de cada regra de
+  desempenho.
 - `referencias/` (FORA do git): o levantamento bruto. Instagram (legendas,
   posts), a foto da loja, a lâmina da logo, as fotos originais dos produtos
   com `fontes.json` (de onde veio cada uma) e `levantamento.md`.
@@ -66,14 +68,17 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
 
 - `components/layout/`: `cabecalho` (sem biblioteca de animação), `nav-principal`,
   `menu-movel` (Popover API), `alternar-tema`, `botao-pedido`,
-  `gaveta-do-pedido` (`<dialog>`), `botao-whatsapp`, `rolagem-suave` (Lenis +
-  GSAP), `marca`, `rodape`.
+  `gaveta-do-pedido` (`<dialog>`), `botao-whatsapp`, `marca` (olho inline,
+  letreiro por `<use>` de `public/marca/letreiro.svg`), `rodape`.
 - `components/sections/`: seções da página inicial. As de 3D vêm em trio:
   `abertura` (servidor) + `cena-do-olho` (carrega o 3D) + `controle-da-abertura`
-  (prende a rolagem); idem `raio-x` + `cena-do-notebook` + `controle-do-raio-x`.
+  (lê a rolagem pelo percurso); idem `raio-x` + `cena-do-notebook` +
+  `controle-do-raio-x`.
 - `components/tres/`: as cenas 3D, sempre `export default` para o
-  `next/dynamic`: `olho-3d` (a logo extrudada), `notebook-3d` (o Raio-X),
-  `gabinete-3d` (o montador).
+  `next/dynamic`: `olho-3d` (a logo extrudada, em three puro, sem R3F),
+  `notebook-3d` (o Raio-X), `gabinete-3d` (o montador), `matcap.ts` (as
+  texturas de luz pintadas em canvas que todas usam no lugar de luz e
+  ambiente) e `ritmo.tsx` (o limite de 60 quadros por segundo das cenas R3F).
 - `components/ui/`: `cartao-produto` (com o Raio-X no hover), `foto-do-produto`,
   `preco` (sempre com o selo "ilustrativo"), `botao-adicionar`, `inclinacao`,
   `trilho-horizontal`, `catalogo`, `vitrine-do-produto`, `agendar-teste`,
@@ -84,8 +89,10 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   `empresas.ts`, `diferenciais.ts`, `pc-gamer.ts`, `raio-x.ts` e
   `fotos-de-produto.ts` (GERADO pelo script).
 - `lib/`: `tema.ts` (+ `tema-script.ts`), `pedido.ts` (a sacola),
-  `conversa.ts`, `abertura.ts` e `raio-x.ts` (o estado que o GSAP escreve e o
-  3D lê), `rolagem.ts`, `voar-para-o-pedido.ts`, `utils.ts`.
+  `conversa.ts`, `abertura.ts` e `raio-x.ts` (o estado que o controle da
+  rolagem escreve e o 3D lê), `rolagem-presa.ts` (o progresso de uma seção
+  sticky), `sessenta-quadros.ts` (o relógio de no máximo 60 quadros por
+  segundo), `voar-para-o-pedido.ts`, `utils.ts`.
 - `fotos/`: imagens por import estático (produtos, loja, instagram).
 
 ### Padrões do frontend
@@ -101,9 +108,13 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   primeiro quadro, e parando de desenhar fora da tela. Lógica de cada quadro
   em função comum do módulo (o lint do React Compiler barra mutação de valor
   de hook).
-- **Rolagem presa** (abertura e Raio-X): GSAP ScrollTrigger com `pin` e
-  `scrub`; o progresso vai para o 3D por objeto mutável e para o CSS por
-  `--p`. Sem 3D ou com "menos movimento", nada fica preso.
+- **Rolagem presa** (abertura, Raio-X e vitrine): a seção é
+  `position: sticky` dentro de um percurso mais alto (`.abertura-percurso`,
+  `.raio-x-percurso`, o percurso do `trilho-horizontal`), e
+  `lib/rolagem-presa.ts` lê quanto já foi rolado. O progresso, alisado e a
+  no máximo 60 por segundo, vai para o 3D por objeto mutável e para o CSS
+  por `--p`. Sem 3D ou com "menos movimento", o percurso perde a altura
+  extra e nada fica preso.
 - **Entrada na rolagem** em CSS (`.revelar`, `.revelar-escala`, com
   `animation-timeline: view()` sob `@supports`). Nada começa escondido fora do
   `@supports`.
@@ -124,6 +135,24 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
 - O 3D nunca entra por import direto numa página: `next/dynamic` de
   componente, com fallback. `three` direto devolve ~150 KB a quem nem vê a cena.
 - Nada de biblioteca de animação no cabeçalho.
+- DESEMPENHO (medido na Intel UHD do Vitor, 09 a 12/10/2026; detalhes em
+  `docs/decisoes/desempenho.md`):
+  - 3D só com material matcap ou básico, sem luz, sem `<Environment>` e sem
+    material físico;
+  - sem tone mapping (`<Canvas flat>`);
+  - shaders compilados com `compileAsync` antes do primeiro quadro;
+  - `dpr` no máximo 1,5;
+  - no máximo 60 quadros por segundo (`lib/sessenta-quadros.ts`).
+
+  CSS e rolagem:
+  - nada de biblioteca de rolagem ou de animação (Lenis e GSAP saíram);
+  - nada de `backdrop-filter`, `mix-blend-mode` ou `filter: drop-shadow` em
+    elemento grande ou repetido;
+  - animação de rolagem só em `opacity`, `translate`, `scale`;
+  - nada escrito no CSS a cada quadro se o valor não mudou.
+- Seção presa é `position: sticky`, nunca `pin` de biblioteca. O `pin` do
+  GSAP embrulhava a seção num `.pin-spacer`, refazia o layout da página na
+  entrada e na saída e quebrava o React ao trocar de página ("removeChild").
 - A foto do Marciano, da atleta patrocinada ou de cliente só entra com
   autorização. O post da atleta (uma criança) ficou de fora de propósito.
 - O site está fora do Google (`robots` + `noindex`) enquanto for protótipo.

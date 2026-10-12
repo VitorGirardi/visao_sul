@@ -19,7 +19,8 @@ export function Cabecalho() {
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="cabecalho-fundo vidro absolute inset-0 border-b border-linha" aria-hidden />
       <div className="recipiente relative flex h-16 items-center gap-3 md:h-[4.5rem]">
-        <Link href="/" className="-ml-1 shrink-0 rounded-lg p-1" aria-label="Visão Sul Informática, página inicial">
+        {/* sem prefetch: na home, o logo fazia a página baixar a si mesma */}
+        <Link href="/" prefetch={false} className="-ml-1 shrink-0 rounded-lg p-1" aria-label="Visão Sul Informática, página inicial">
           <Marca arranjo="horizontal" className="w-[142px] md:w-[168px]" titulo="Visão Sul Informática" />
         </Link>
         <div className="ml-auto flex items-center gap-1.5 md:gap-2">

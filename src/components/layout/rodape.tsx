@@ -9,7 +9,7 @@ import { AVISO_DE_PRECO, LEMA } from "@/data/site";
 
 export function Rodape() {
   return (
-    <footer className="granulado relative overflow-hidden border-t border-linha bg-fundo-2">
+    <footer className="longe-da-tela relative overflow-hidden border-t border-linha bg-fundo-2">
       <div className="arcos pointer-events-none absolute inset-0 opacity-70" aria-hidden />
       <div className="recipiente relative pb-10 pt-16 md:pt-24">
         <div className="grid gap-12 lg:grid-cols-[1.2fr_2fr]">
@@ -60,7 +60,7 @@ export function Rodape() {
               <ul className="space-y-2.5">
                 {categorias.map((c) => (
                   <li key={c.slug}>
-                    <Link href={`/produtos?categoria=${c.slug}`} className="text-texto-2 transition-colors hover:text-texto">
+                    <Link href={`/produtos?categoria=${c.slug}`} prefetch={false} className="text-texto-2 transition-colors hover:text-texto">
                       {c.nome}
                     </Link>
                   </li>
