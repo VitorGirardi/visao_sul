@@ -44,8 +44,10 @@ export function Marca({
       <path d={ANEL} fillRule="evenodd" style={{ fill: "var(--marca-simbolo)" }} />
     </>
   );
+  // sem título é enfeite (ao lado de um texto que já diz o nome): fica fora do leitor de tela
+  const acessivel = titulo ? { role: "img", "aria-label": titulo } : { "aria-hidden": true };
   return (
-    <svg viewBox={caixa[arranjo]} className={cn("h-auto", className)} role="img" aria-label={titulo}>
+    <svg viewBox={caixa[arranjo]} className={cn("h-auto", className)} {...acessivel}>
       {arranjo === "horizontal" ? <g transform="translate(-272 103) scale(1.2)">{simbolo}</g> : simbolo}
       {arranjo !== "simbolo" && (
         <>

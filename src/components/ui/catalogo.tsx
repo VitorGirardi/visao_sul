@@ -102,7 +102,7 @@ export function Catalogo({
             type="search"
             value={busca}
             onChange={(e) => mudar("busca", e.target.value || null)}
-            placeholder="Buscar: iPhone, JBL, notebook gamer, RTX..."
+            placeholder="Buscar: iPhone, JBL, RTX..."
             className="campo !min-h-[3.25rem] !rounded-full !pl-5"
           />
         </label>

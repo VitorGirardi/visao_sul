@@ -8,7 +8,7 @@ import { IconeCaminhao, IconeEscudo, IconeWhatsApp } from "@/components/ui/icone
 import { Preco } from "@/components/ui/preco";
 import { VitrineDoProduto } from "@/components/ui/vitrine-do-produto";
 import { DadosEstruturados } from "@/components/dados-estruturados";
-import { categoriaPorSlug } from "@/data/categorias";
+import { categoriaPorSlug, combinaCom } from "@/data/categorias";
 import { linkDaConversa } from "@/data/contato";
 import { fotosDeProduto } from "@/data/fotos-de-produto";
 import { produtoPorSlug, produtos } from "@/data/produtos";
@@ -38,8 +38,12 @@ export default async function PaginaDoProduto({ params }: PageProps<"/produtos/[
   const produto = produtoPorSlug(slug);
   if (!produto) notFound();
   const categoria = categoriaPorSlug(produto.categoria);
-  const parecidos = produtos.filter((p) => p.categoria === produto.categoria && p.slug !== produto.slug).slice(0, 4);
-  const complemento = parecidos.length < 4 ? produtos.filter((p) => p.categoria !== produto.categoria).slice(0, 4 - parecidos.length) : [];
+  // o que completa a categoria; se faltar, a mesma categoria e por fim o resto da vitrine
+  const combina = [...combinaCom[produto.categoria], ...produtos.filter((p) => p.categoria === produto.categoria).map((p) => p.slug), ...produtos.map((p) => p.slug)]
+    .filter((s, i, todos) => s !== produto.slug && todos.indexOf(s) === i)
+    .map((s) => produtoPorSlug(s))
+    .filter((p) => p !== undefined)
+    .slice(0, 4);
   const fotos = [fotosDeProduto[produto.slug], segundasFotos[produto.slug]?.foto].filter((f) => f !== undefined);
 
   const dados = {
@@ -138,9 +142,9 @@ export default async function PaginaDoProduto({ params }: PageProps<"/produtos/[
         <h2 id="titulo-parecidos" className="titulo-2 !text-[clamp(1.7rem,3vw,2.6rem)]">
           Combina com <span className="acende">este</span>
         </h2>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {[...parecidos, ...complemento].map((p) => (
-            <CartaoProduto key={p.slug} produto={p} />
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+          {combina.map((p) => (
+            <CartaoProduto key={p.slug} produto={p} densa />
           ))}
         </div>
       </section>

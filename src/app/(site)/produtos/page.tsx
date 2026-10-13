@@ -51,9 +51,11 @@ export default function PaginaDeProdutos() {
       <div className="mt-10">
         {/* os 26 cartões saem no HTML; o catálogo (cliente) só filtra e ordena */}
         <Catalogo itens={itens} categorias={contagem}>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {/* o nome de cada cartão é h3: sem este h2, o leitor de tela pulava do h1 direto para eles */}
+          <h2 className="sr-only">Lista de produtos</h2>
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
             {produtos.map((produto, i) => (
-              <CartaoProduto key={produto.slug} produto={produto} prioridade={i < 4} data-produto={produto.slug} />
+              <CartaoProduto key={produto.slug} produto={produto} prioridade={i < 4} densa data-produto={produto.slug} />
             ))}
           </div>
         </Catalogo>

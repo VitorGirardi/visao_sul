@@ -32,7 +32,8 @@
   --vitrine: #ececf3;
   --texto: #eeeef7;
   --texto-2: #b7b7d6;
-  --texto-3: #8383ad;
+  /* 4,8:1 ou mais em todo fundo escuro, até no dia escolhido do teste grátis (13/10/2026) */
+  --texto-3: #8a8ab3;
   --linha: rgb(226 226 255 / 0.1);
   --linha-forte: rgb(226 226 255 / 0.22);
   --destaque: #ecb500;
@@ -41,7 +42,7 @@
   /* texto amarelo sobre o fundo: no escuro o próprio amarelo passa (11:1) */
   --destaque-texto: #ecb500;
   --brilho: rgb(236 181 0 / 0.42);
-  --vidro: rgb(3 2 40 / 0.97);
+  --vidro: rgb(3 2 40);
   --sombra: 0 40px 90px -40px rgb(0 0 0 / 0.85);
   --marca-simbolo: #ecb500;
   --marca-nome: #ffffff;
@@ -56,7 +57,8 @@
   --vitrine: #ffffff;
   --texto: #060523;
   --texto-2: #46466b;
-  --texto-3: #6f6f95;
+  /* 4,7:1 ou mais em todo fundo claro, até no realce amarelo da escolha (13/10/2026) */
+  --texto-3: #626288;
   --linha: rgb(6 5 35 / 0.1);
   --linha-forte: rgb(6 5 35 / 0.22);
   --destaque: #ecb500;
@@ -65,7 +67,7 @@
   /* o amarelo sobre o gelo dá 1,8:1; texto "amarelo" no claro é este ouro (5,6:1) */
   --destaque-texto: #7a5a00;
   --brilho: rgb(236 181 0 / 0.34);
-  --vidro: rgb(250 249 246 / 0.97);
+  --vidro: rgb(250 249 246);
   --sombra: 0 40px 70px -40px rgb(6 5 35 / 0.32);
   --marca-simbolo: #ecb500;
   --marca-nome: #060523;
@@ -380,7 +382,8 @@ canvas {
 
 /* Fundo do cabeçalho. Era vidro fosco (backdrop-filter): em cima do 3D, que
    muda todo quadro, o navegador tinha de borrar a tela inteira de novo a
-   cada quadro. Agora é cor quase opaca, que custa nada (09/10/2026). */
+   cada quadro. Agora é cor opaca, que custa nada (09/10/2026). Com 97% de
+   opacidade, título grande passando por baixo aparecia de raspão (13/10). */
 .vidro {
   background: var(--vidro);
 }
@@ -852,9 +855,12 @@ canvas {
 
 /* enquanto a página rola, os cartões não pegam o mouse: nada de Raio-X
    disparado por um cartão passando debaixo do cursor parado
-   (`layout/marcador-de-rolagem.tsx`) */
-[data-rolando] .cartao-produto {
-  pointer-events: none;
+   (`layout/marcador-de-rolagem.tsx`). Só onde existe mouse: no toque não
+   há hover, e o toque logo depois de parar a rolagem se perdia (13/10/2026). */
+@media (hover: hover) {
+  [data-rolando] .cartao-produto {
+    pointer-events: none;
+  }
 }
 
 /* --- Menu do celular (popover em tela cheia) ------------------------------ */

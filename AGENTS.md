@@ -70,9 +70,10 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
 - `components/layout/`: `cabecalho` (sem biblioteca de animação), `nav-principal`,
   `menu-movel` (Popover API), `alternar-tema`, `botao-pedido`,
   `gaveta-do-pedido` (`<dialog>`; o `corpo-da-gaveta` carrega com o navegador
-  ocioso), `botao-whatsapp`, `marca` (olho inline, letreiro por `<use>` de
-  `public/marca/letreiro.svg`), `marcador-de-rolagem` (sem hover nos cartões
-  enquanto a página rola), `rodape`.
+  ocioso), `botao-whatsapp` (o flutuante do celular, que some quando outro
+  caminho para o WhatsApp está na tela), `marca` (olho inline, letreiro por
+  `<use>` de `public/marca/letreiro.svg`), `marcador-de-rolagem` (sem hover
+  nos cartões enquanto a página rola), `rodape`.
 - `components/sections/`: seções da página inicial. As de 3D vêm em trio:
   `abertura` (servidor) + `cena-do-olho` (carrega o 3D) + `controle-da-abertura`
   (lê a rolagem pelo percurso); idem `raio-x` + `cena-do-notebook` +
@@ -82,7 +83,8 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   `notebook-3d` (o Raio-X), `gabinete-3d` (o montador), `matcap.ts` (as
   texturas de luz pintadas em canvas que todas usam no lugar de luz e
   ambiente) e `ritmo.tsx` (o limite de 60 quadros por segundo das cenas R3F).
-- `components/ui/`: `cartao-produto` (com o Raio-X no hover), `foto-do-produto`,
+- `components/ui/`: `cartao-produto` (com o Raio-X no hover; `densa` são as
+  duas colunas do celular no catálogo e no "Combina com este"), `foto-do-produto`,
   `preco` (sempre com o selo "ilustrativo"), `botao-adicionar`, `inclinacao`,
   `trilho-horizontal`, `catalogo`, `vitrine-do-produto` (a foto grande da
   ficha, com a galeria) + `interruptor-do-raio-x`, `miniaturas-da-vitrine` e
@@ -90,7 +92,8 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   `montador-de-pc`, `gabinete-ilustrado` (o PC em CSS), `so-na-tela`
   (animação em loop só quando aparece), `icones`.
 - `data/`: todo texto e constante. `marca.ts` (os caminhos da logo), `site.ts`,
-  `contato.ts`, `loja.ts`, `produtos.ts`, `categorias.ts`, `servicos.ts`,
+  `contato.ts`, `loja.ts`, `produtos.ts`, `categorias.ts` (com o `combinaCom`
+  da ficha), `servicos.ts`,
   `empresas.ts`, `diferenciais.ts`, `pc-gamer.ts`, `raio-x.ts`,
   `fotos-de-produto.ts` e `segundas-fotos.ts` (GERADOS pelo script).
 - `lib/`: `tema.ts` (+ `tema-script.ts`), `pedido.ts` (a sacola),
