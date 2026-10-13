@@ -70,6 +70,7 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
 | `/monte-seu-pc` | `(site)/monte-seu-pc/page.tsx` + `ui/montador-de-pc.tsx` | jogos → nível → cor → orçamento, com gabinete 3D |
 | `/whatsapp` | `whatsapp/route.ts` | monta a mensagem (`lib/conversa.ts`) e responde 303 para o `wa.me`. **Toda conversa passa por aqui** |
 | `/admin` | `admin/` | PRÉVIA do painel (fase 2) com dados de exemplo, sem backend: visão geral, pedidos (e `pedidos/[numero]`), chamados, testes grátis e produtos. Layout próprio, `noindex`, sem link no site |
+| `/conserto/[numero]` | `(site)/conserto/[numero]/page.tsx` | PRÉVIA (fase 2) do que o cliente vê pelo link do WhatsApp: a OS, o momento (orçamento para aprovar, peça, pronto) e a linha do tempo da bancada. Uma página por chamado de exemplo do painel; `noindex` sempre, fora do sitemap. Textos em `data/conserto.ts` |
 | metadados | `icon.svg`, `apple-icon.png`, `opengraph-image.jpg`, `robots.ts`, `sitemap.ts`, `not-found.tsx` | |
 
 ### Pastas de apoio (`src/`)
@@ -106,7 +107,8 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   `empresas.ts`, `diferenciais.ts`, `pc-gamer.ts`, `raio-x.ts`, `busca.ts`
   (os sinônimos de como o cliente escreve),
   `fotos-de-produto.ts` e `segundas-fotos.ts` (GERADOS pelo script),
-  `amostra-do-painel.ts` (os dados de exemplo da prévia do painel).
+  `amostra-do-painel.ts` (os dados de exemplo da prévia do painel),
+  `conserto.ts` (os textos da página do conserto, do lado do cliente).
 - `app/admin/`: a prévia do painel. `concha.tsx` (lateral, topo, abas do
   celular; painel sempre claro com `data-tema="claro"` na moldura),
   `estado.tsx` (a memória no navegador, o pedido simulado, o Pix que cai

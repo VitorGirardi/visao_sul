@@ -107,6 +107,33 @@ A "mensagem que chegou" no pedido é a mesma que a rota `/whatsapp` monta
 hoje, e os botões de WhatsApp do painel só mostram e copiam a mensagem:
 com telefones de exemplo, abrir conversa poderia cair em alguém de verdade.
 
+## Acompanhe seu conserto (13/10/2026)
+
+O argumento mais forte da fase 2 é o que o cliente da loja ganha, e a
+prévia do painel só mostrava o lado do Marciano. Agora há o outro lado:
+`/conserto/<número>`, a página que o cliente abre pelo link que recebe no
+WhatsApp quando o chamado é aberto. Ela mostra a OS (aparelho, defeito,
+onde é atendido), o momento em destaque e a linha do tempo da bancada
+(recebido, diagnóstico, orçamento, conserto, pronto, entregue; "aguardando
+peça" aparece no lugar do conserto).
+
+- Com orçamento para aprovar, a página mostra o que o técnico encontrou, o
+  valor e "Aprovar pelo WhatsApp" a um toque. Pronto, "Combinar a
+  retirada". As respostas passam pela rota `/whatsapp` (assunto `os`), que
+  só aceita o número no formato de quatro dígitos e as três ações
+  conhecidas: na fase 2, é ali que a aprovação anda o chamado sozinha.
+- No painel, toda mensagem para o cliente leva o link, e o cartão da OS tem
+  "Ver como o cliente vê".
+- Os títulos falam do conserto, nunca do aparelho ("o seu impressora" e
+  "pronto/pronta" não fecham). Os textos só dizem o que a assistência já
+  promete: diagnóstico explicado, nada trocado sem aprovar, devolvido
+  funcionando.
+- É página de cliente: `noindex` sempre e fora do sitemap. Na prévia,
+  mostra a etapa da amostra, não a que foi andada no painel (a memória do
+  painel fica só na aba dele), e avisa que é exemplo.
+
+O argumento para a reunião: o cliente para de perguntar "já está pronto?".
+
 ## Home compacta no celular (13/10/2026)
 
 Aberta num celular de verdade, a home ficou "muito extensa". Medida: 23,5 telas

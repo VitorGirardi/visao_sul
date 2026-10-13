@@ -28,7 +28,7 @@ Nada disso é trabalho de front: está do lado dele e trava o conteúdo.
 
 | O que | Observação |
 | --- | --- |
-| Painel `/admin` | produtos, preços e estoque; pedidos, chamados e agendamentos que chegam pela rota `/whatsapp` (a rota já é o ponto de gravação). Convex sobre Synapse, como no vivenna-imoveis. A PRÉVIA, com dados de exemplo e sem backend, já está em `/admin` (13/10/2026); falta o Convex, o login e trocar a amostra pelos dados reais |
+| Painel `/admin` | produtos, preços e estoque; pedidos, chamados e agendamentos que chegam pela rota `/whatsapp` (a rota já é o ponto de gravação). Convex sobre Synapse, como no vivenna-imoveis. A PRÉVIA, com dados de exemplo e sem backend, já está em `/admin` (13/10/2026), com a página que o cliente acompanha em `/conserto/<número>`; falta o Convex, o login, trocar a amostra pelos dados reais e um código no link do conserto (hoje o número basta para abrir a página) |
 | WhatsApp do cliente nos formulários | os formulários pedem o nome, não o telefone, e a rota `/whatsapp` não sabe quem escreveu. Para o painel avisar o cliente, a fase 2 precisa pedir o WhatsApp ou fazer a mensagem levar o número do pedido |
 | Pagamento online | Pix e cartão (Mercado Pago, como no luccerna-ecom), frete e retirada na loja |
 | Integração com o estoque dele | se ele usa ERP (Bling, por exemplo), o catálogo vem de lá |

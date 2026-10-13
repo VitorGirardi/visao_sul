@@ -52,7 +52,7 @@ Roteiro da reunião em que o Vitor mostra o protótipo (preparado em
 Os preços são de exemplo e aparecem com o selo "ilustrativo". Vale dizer
 isso logo no começo: no ar, quem define o preço é ele.
 
-## A prévia do painel (2 minutos)
+## A prévia do painel (2 minutos e meio)
 
 Deixe aberta numa outra aba: `http://localhost:3110/admin` (o painel não tem
 link no site). Tudo nela é de exemplo e fica só no navegador: recarregar a
@@ -64,10 +64,11 @@ painel, sem recarregar, para os passos ficarem guardados.
 | 0:00 | Visão geral | Clicar em "Simular pedido chegando": o sino acende e o pedido 0043 entra no topo | "Isto é o que hoje chega solto no seu WhatsApp" |
 | 0:15 | Pedido 0043 | Mostrar "A mensagem que chegou" e clicar em "Confirmar e mandar link de pagamento" | A mensagem com o link sai pronta para o cliente |
 | 0:30 | Pedido 0043 | Fechar a janela e esperar uns segundos: o Pix cai sozinho e o pedido vira "Pago" | "O dinheiro entra e o pedido anda sozinho. Essa é a fase 2" |
-| 0:45 | Chamados | Abrir a OS 0108 (esperando aprovação), "Avisar no WhatsApp" com o orçamento, depois "Cliente aprovou" | Nenhum conserto esquecido no fundo da bancada |
-| 1:10 | Testes grátis | Marcar "Virou venda" num teste da semana | O número de cima mostra quanto o teste grátis vende |
-| 1:30 | Produtos | Mudar o preço do HP Victus 15 | O cartão do site, ao lado, muda na hora: "você mexe aqui, o site muda" |
-| 1:50 | Celular | Abrir o painel no celular | Cabe no bolso, no balcão |
+| 0:45 | Chamados | Abrir a OS 0108 (esperando aprovação), "Avisar no WhatsApp" com o orçamento: a mensagem já leva o link do conserto | Nenhum conserto esquecido no fundo da bancada |
+| 1:00 | Página do conserto | Na OS 0108, "Ver como o cliente vê" (abre noutra aba; melhor ainda no celular dele): o que o técnico encontrou, o valor e "Aprovar pelo WhatsApp". Depois, de volta ao painel, "Cliente aprovou" | "O cliente para de perguntar se já está pronto" |
+| 1:40 | Testes grátis | Marcar "Virou venda" num teste da semana | O número de cima mostra quanto o teste grátis vende |
+| 2:00 | Produtos | Mudar o preço do HP Victus 15 | O cartão do site, ao lado, muda na hora: "você mexe aqui, o site muda" |
+| 2:20 | Celular | Abrir o painel no celular | Cabe no bolso, no balcão |
 
 Os botões de WhatsApp do painel não abrem conversa: com telefones de
 exemplo, eles mostram a mensagem pronta e copiam.
