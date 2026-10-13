@@ -69,6 +69,7 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
 | `/empresas` | `(site)/empresas/page.tsx` | locação de impressoras, redes, suporte, equipamentos, proposta |
 | `/monte-seu-pc` | `(site)/monte-seu-pc/page.tsx` + `ui/montador-de-pc.tsx` | jogos → nível → cor → orçamento, com gabinete 3D |
 | `/whatsapp` | `whatsapp/route.ts` | monta a mensagem (`lib/conversa.ts`) e responde 303 para o `wa.me`. **Toda conversa passa por aqui** |
+| `/indice-de-busca` | `indice-de-busca/route.ts` | o índice da busca do topo em JSON (nome, categoria, preço, índice e miniatura de cada produto), estático no build |
 | `/admin` | `admin/` | PRÉVIA do painel (fase 2) com dados de exemplo, sem backend: visão geral, pedidos (e `pedidos/[numero]`), chamados, testes grátis e produtos. Layout próprio, `noindex`, sem link no site |
 | `/conserto/[numero]` | `(site)/conserto/[numero]/page.tsx` | PRÉVIA (fase 2) do que o cliente vê pelo link do WhatsApp: a OS, o momento (orçamento para aprovar, peça, pronto) e a linha do tempo da bancada. Uma página por chamado de exemplo do painel; `noindex` sempre, fora do sitemap. Textos em `data/conserto.ts` |
 | metadados | `icon.svg`, `apple-icon.png`, `opengraph-image.jpg`, `robots.ts`, `sitemap.ts`, `not-found.tsx` | |
@@ -78,7 +79,9 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
 - `components/layout/`: `cabecalho` (sem biblioteca de animação), `nav-principal`,
   `menu-movel` (Popover API), `alternar-tema`, `botao-pedido`,
   `gaveta-do-pedido` (`<dialog>`; o `corpo-da-gaveta` carrega com o navegador
-  ocioso), `botao-whatsapp` (o flutuante do celular, que some quando outro
+  ocioso), `busca-rapida` (a lupa do topo, `<dialog>`; o `corpo-da-busca` e o
+  índice carregam quando a pessoa chega perto da lupa; atalhos "/" e Ctrl+K),
+  `botao-whatsapp` (o flutuante do celular, que some quando outro
   caminho para o WhatsApp está na tela), `marca` (olho inline, letreiro por
   `<use>` de `public/marca/letreiro.svg`), `marcador-de-rolagem` (sem hover
   nos cartões enquanto a página rola), `rodape`.
@@ -108,7 +111,9 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   (os sinônimos de como o cliente escreve),
   `fotos-de-produto.ts` e `segundas-fotos.ts` (GERADOS pelo script),
   `amostra-do-painel.ts` (os dados de exemplo da prévia do painel),
-  `conserto.ts` (os textos da página do conserto, do lado do cliente).
+  `conserto.ts` (os textos da página do conserto, do lado do cliente),
+  `indice-de-busca.ts` (o índice de cada produto, o mesmo na vitrine e na
+  busca do topo; só no servidor).
 - `app/admin/`: a prévia do painel. `concha.tsx` (lateral, topo, abas do
   celular; painel sempre claro com `data-tema="claro"` na moldura),
   `estado.tsx` (a memória no navegador, o pedido simulado, o Pix que cai
@@ -120,7 +125,8 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   rolagem escreve e o 3D lê), `rolagem-presa.ts` (o progresso de uma seção
   sticky), `sessenta-quadros.ts` (o compasso único de no máximo 60 quadros por
   segundo), `busca.ts` (a busca da vitrine: índice, sinônimos, plural e erro
-  de digitação), `voar-para-o-pedido.ts`, `utils.ts`.
+  de digitação), `indice-da-busca.ts` (baixa o índice da busca do topo uma
+  vez por visita), `voar-para-o-pedido.ts`, `utils.ts`.
 - `fotos/`: imagens por import estático (produtos, loja, instagram).
 
 ### Padrões do frontend

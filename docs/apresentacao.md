@@ -40,7 +40,7 @@ Roteiro da reunião em que o Vitor mostra o protótipo (preparado em
 | 1 | Início | Esperar o olho 3D e rolar devagar | "Role para entrar na loja." O site abre pelo olho da marca e mergulha na foto da loja dele |
 | 2 | A loja | Parar no cartão do Marciano | "Quem atende é você. Online desde 2021, agora de portas abertas" |
 | 3 | Raio-X | Rolar pela cena do notebook | O diferencial: ver por dentro antes de levar. Cada peça acende com a ficha |
-| 4 | Vitrine | Passar o mouse nos cartões. Em "Ver produtos", buscar "cadeira gamer" | O mesmo Raio-X em cada produto. E quem não acha o que procura não vai embora: a conversa sai com o que a pessoa buscou |
+| 4 | Vitrine | Passar o mouse nos cartões. Na lupa do topo, buscar "ps5" e depois "cadeira gamer" | O mesmo Raio-X em cada produto. A busca está em toda página e entende como o cliente escreve; e quem não acha o que procura não vai embora: a conversa sai com o que a pessoa buscou |
 | 5 | Ficha do HP Victus | Trocar a foto pelas miniaturas, ligar "Ver no Raio-X", mostrar o teste grátis | "Teste grátis antes de comprar", a frase que mais aparece nos posts dele |
 | 6 | Pedido | Adicionar 2 produtos, abrir a sacola, enviar | O pedido chega pronto no WhatsApp dele, com itens, total, nome e entrega. É o momento de mostrar o celular dele recebendo |
 | 7 | Assistência | Abrir um chamado em 3 toques | Chamado em 30 segundos, mensagem pronta para a loja |

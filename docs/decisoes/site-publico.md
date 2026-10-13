@@ -107,6 +107,33 @@ A "mensagem que chegou" no pedido é a mesma que a rota `/whatsapp` monta
 hoje, e os botões de WhatsApp do painel só mostram e copiam a mensagem:
 com telefones de exemplo, abrir conversa poderia cair em alguém de verdade.
 
+## Busca no topo (13/10/2026)
+
+A busca só existia dentro da vitrine. Quem chegava pela home (quase todo
+mundo, vindo do Instagram) precisava abrir o menu e ir em Produtos para
+procurar um PS5. Agora há uma lupa no cabeçalho de toda página:
+
+- abre um painel com o campo já em foco e, antes de digitar, os mais
+  procurados ("Notebook", "iPhone", "PS5", "JBL", "Impressora",
+  "Roteador");
+- os resultados aparecem enquanto se digita (até seis, com foto, categoria
+  e preço, e o aviso de valor ilustrativo), com a mesma busca da vitrine:
+  sinônimos, plural e erro de digitação;
+- Enter ou "Ver na vitrine" levam à vitrine filtrada; sem resultado, o
+  "Perguntar no WhatsApp" já leva o termo;
+- "/" e Ctrl+K (⌘K) abrem; Esc fecha.
+
+Nada a mais no JS das páginas (a home segue com 167 KB até o load): no
+cabeçalho fica só a lupa e a moldura do `<dialog>`. O miolo da busca e o
+índice dos produtos (`/indice-de-busca`, 14 KB de JSON pronto no build)
+só baixam quando o dedo ou o mouse chega perto da lupa, como a gaveta do
+pedido.
+
+No celular, a lupa ocupa o lugar do botão de tema na barra (o tema
+continua no menu). Entre 1024 e 1279 px, os links do menu ficaram com menos
+folga e o WhatsApp do topo mostra só o ícone: com a lupa, "Monte seu PC"
+quebrava em duas linhas.
+
 ## Acompanhe seu conserto (13/10/2026)
 
 O argumento mais forte da fase 2 é o que o cliente da loja ganha, e a
