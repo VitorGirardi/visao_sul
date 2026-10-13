@@ -63,7 +63,8 @@ que a thread principal está livre em todo quadro (o 3D em si desenha a 60).
   quadro. Antes, a chegada ao Raio-X travava 5 s na UHD.
 - **No máximo 60 quadros por segundo** (`lib/sessenta-quadros.ts`). Com
   `frameloop="always"`, o R3F desenhava 144 vezes por segundo na tela do
-  Vitor. `dpr` no máximo 1,5.
+  Vitor. `dpr` no máximo 1,5. Desde 13/10, num compasso só para a página
+  (ver "Abertura e Raio-X mais lisos").
 - **Olho em three puro** (`components/tres/olho-3d.tsx`), sem o R3F: é a
   primeira cena, e o reconciliador do React pesava em quem acabou de chegar.
 - **A etiqueta do Raio-X** virou elemento comum, posto no lugar a cada
@@ -77,9 +78,9 @@ que a thread principal está livre em todo quadro (o 3D em si desenha a 60).
   `lib/rolagem-presa.ts` lê o progresso, alisado. O `pin` refazia o layout
   da página inteira na entrada e na saída de cada cena, e quebrava o React
   ao trocar de página ("removeChild"). Também saíram 44 KB gz.
-- **O portal da abertura** só é escrito no CSS quando muda meio pixel. Os
-  valores padrão batem com o furo do SVG, então a foto da loja aparece sem
-  esperar o 3D.
+- **O furo da abertura** só é escrito quando muda meio pixel, direto nas
+  três camadas que o seguem (desde 13/10). Os valores padrão do CSS batem
+  com o furo do SVG, então a foto da loja aparece sem esperar o 3D.
 - **O céu do Raio-X** é estático, com o brilho numa camada que só muda
   `opacity`. Ele repintava a tela inteira a cada quadro.
 
@@ -180,9 +181,78 @@ Medido contra o commit `89ed7e7`, as duas versões em produção, alternadas.
 Uma rodada só engana: o mergulho (a cena do olho, que não mudou) variou de
 66 a 95 fps entre rodadas da mesma versão.
 
+## Abertura e Raio-X mais lisos no celular (13/10/2026)
+
+No celular médio (CPU 4 vezes mais lenta), o mergulho da abertura era o
+trecho mais fraco do site. O perfil mostrou o porquê: a cada quadro, o
+navegador recalculava o estilo da abertura inteira, 11,6 ms por quadro só
+nisso. O controle escrevia o progresso (`--p`) e a cena escrevia o furo
+(`--portal-x/y/r`) como variáveis CSS na seção, e variável é herdada: cada
+palavra, botão e ícone do texto era recalculado, mesmo sem usar nenhuma
+delas. O Raio-X tinha o mesmo desenho, com 12 ms por quadro.
+
+O que mudou:
+
+- **Propriedade pronta, só no que muda.** A cena escreve o recorte da foto
+  (`clip-path`), o lugar do brilho e o lugar e o tamanho dos arcos. O
+  controle escreve a opacidade e o deslocamento de cada camada, pela
+  coreografia de `controle-da-abertura.tsx`, e só quando o valor muda. O
+  CSS ficou com a cena parada. O estilo de um quadro do mergulho passou de
+  11,6 para 1,1 ms; o do Raio-X, de 12 para menos de 1 ms.
+- **Um compasso só de 60 quadros** (`horaDoQuadro`). Cada laço tinha o seu
+  relógio, e na tela de 144 Hz a rolagem e o olho batiam em tiques
+  diferentes: 4 de cada 10 tiques com trabalho eram a mais.
+- **Os arcos** andam e crescem como um grupo (muda um elemento, não cinco)
+  e saem da pintura quando apagam. **O brilho** ganhou camada própria.
+- **O brilho do céu do Raio-X** virou elemento (era `::before`), para
+  receber a opacidade pronta.
+
+De quebra, **o olho 3D voltou para cima da foto da loja**, como o de SVG. A
+regra que o punha em cima mirava o canvas do R3F e deixou de valer quando o
+olho virou three puro (12/10): desde então, a foto cobria a borda do anel
+quando ele girava.
+
+Medido contra o commit `0663ff5`, as duas versões em produção, alternadas,
+6 rodadas de cada (celular 390 × 844, CPU 4x, roda do mouse). Todas as
+rodadas da versão nova ficaram acima de todas as da antiga:
+
+| | antes | depois |
+| --- | --- | --- |
+| mergulho: fps (mediana) | 55 | 82 |
+| mergulho: quadros travados | 17% | 1% |
+| mergulho: p95 do quadro | 42 ms | 21 ms |
+| mergulho: thread principal por quadro | 15,9 ms | 9,4 ms |
+| mergulho: estilo por quadro | 6,3 ms | 0,55 ms |
+| Raio-X: fps (mediana) | 50 | 82 |
+| Raio-X: quadros travados | 15% | 2% |
+| Raio-X: thread principal por quadro | 18,9 ms | 10,4 ms |
+| Raio-X: estilo por quadro | 7,6 ms | 0,6 ms |
+
+A máquina estava ocupada com outros programas, e uma rodada só enganava (a
+mesma versão foi de 52 a 74 fps no mergulho). Por isso as medianas e o
+custo por quadro, que muda pouco de uma rodada para outra.
+
+Prints antes e depois em seis pontos do mergulho e quatro do Raio-X, nos
+dois temas, no celular e no computador, e sem WebGL e com "menos
+movimento": iguais (menos de 1% dos pixels, do balanço do olho), fora o anel
+por cima da foto.
+
+O que ainda pesa no mergulho (medido, não mexido):
+
+- **A rolagem com a seção presa** refaz as camadas (Layerize) e o commit a
+  cada quadro, uns 2 ms por quadro na CPU 4x, mesmo com nada repintando.
+  Vem do `sticky`.
+- **A foto recortada** é redesenhada a cada quadro do mergulho. Congelada
+  num teste, a GPU trabalhou 25% menos. Um recorte composto (um círculo que
+  cresce por `scale`, com a foto em escala inversa dentro) tiraria isso,
+  mas mexe no coração da abertura: só vale se o celular de verdade pedir.
+
 ## Para depois
 
 - Medir num celular de verdade (Android médio e iPhone) antes da reunião.
+- A inclinação dos cartões (só com mouse) ainda escreve variáveis no
+  cartão a cada quadro do hover. Medir no computador e, se pesar, passar
+  para propriedade pronta, como na abertura.
 
 ## Como medir
 
@@ -209,6 +279,22 @@ Ferramentas em `%TEMP%` (fora do repositório; refazer se sumirem):
   dedo, Raio-X, foto que voa, teclado, troca de produto, toque antes do
   load). O arrasto vale pelo `arrasto.mjs`, com toque cru: o gesto
   sintético do `galeria.mjs` não move o trilho.
+- `visaosul-pesquisa/comparar-cenas.mjs <url-a> <url-b> <rodadas>`: as duas
+  versões alternadas no mergulho e no Raio-X (celular, CPU 4x), com as
+  medianas de fps, travados, quadros, thread principal e estilo por quadro.
+  `--so-mergulho` e `--css-b=...` (CSS injetado num lado) servem para
+  experimento.
+- `visaosul-pesquisa/perfil-abertura.mjs <url> --celular --cpu=4`: para
+  onde vai o tempo de cada thread no mergulho, por etapa (estilo, pintura,
+  camadas, commit). `--bloquear=--x,--y` ignora essas escritas.
+- `visaosul-pesquisa/estilo-quadro.mjs`, `estilo-direto.mjs` e
+  `estilo-raio-x.mjs`: quanto custa o estilo de um quadro, conforme onde e
+  como se escreve. `camadas-pintadas.mjs`: quais camadas repintam no
+  mergulho. `compasso.mjs`: se os laços de animação batem no mesmo tique.
+- `visaosul-pesquisa/prints-mergulho.mjs`, `prints-raio-x.mjs` e
+  `prints-parado.mjs` (sem WebGL e com "menos movimento"), mais
+  `diferenca.mjs`: prints em pontos fixos e a diferença entre versões, com
+  lado a lado.
 
 Para o "antes", monte o commit antigo numa pasta separada:
 `git worktree add --detach <pasta> <commit>`, depois `npm ci`,

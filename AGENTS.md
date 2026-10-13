@@ -115,7 +115,7 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
 - `lib/`: `tema.ts` (+ `tema-script.ts`), `pedido.ts` (a sacola),
   `conversa.ts`, `abertura.ts` e `raio-x.ts` (o estado que o controle da
   rolagem escreve e o 3D lê), `rolagem-presa.ts` (o progresso de uma seção
-  sticky), `sessenta-quadros.ts` (o relógio de no máximo 60 quadros por
+  sticky), `sessenta-quadros.ts` (o compasso único de no máximo 60 quadros por
   segundo), `voar-para-o-pedido.ts`, `utils.ts`.
 - `fotos/`: imagens por import estático (produtos, loja, instagram).
 
@@ -136,9 +136,10 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   `position: sticky` dentro de um percurso mais alto (`.abertura-percurso`,
   `.raio-x-percurso`, o percurso do `trilho-horizontal`), e
   `lib/rolagem-presa.ts` lê quanto já foi rolado. O progresso, alisado e a
-  no máximo 60 por segundo, vai para o 3D por objeto mutável e para o CSS
-  por `--p`. Sem 3D ou com "menos movimento", o percurso perde a altura
-  extra e nada fica preso.
+  no máximo 60 por segundo, vai para o 3D por objeto mutável e para as
+  camadas como propriedade pronta (`opacity`, `translate`), escrita pelo
+  controle da cena só no que mudou. O CSS desenha a cena parada. Sem 3D ou
+  com "menos movimento", o percurso perde a altura extra e nada fica preso.
 - **Entrada na rolagem** em CSS (`.revelar`, `.revelar-escala`, com
   `animation-timeline: view()` sob `@supports`). Nada começa escondido fora do
   `@supports`.
@@ -173,14 +174,21 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   - sem tone mapping (`<Canvas flat>`);
   - shaders compilados com `compileAsync` antes do primeiro quadro;
   - `dpr` no máximo 1,5;
-  - no máximo 60 quadros por segundo (`lib/sessenta-quadros.ts`).
+  - no máximo 60 quadros por segundo, num compasso só para a página
+    (`horaDoQuadro` em `lib/sessenta-quadros.ts`): laço novo de animação
+    pergunta a ele, nunca conta o próprio tempo, senão cada laço bate num
+    tique diferente da tela.
 
   CSS e rolagem:
   - nada de biblioteca de rolagem ou de animação (Lenis e GSAP saíram);
   - nada de `backdrop-filter`, `mix-blend-mode` ou `filter: drop-shadow` em
     elemento grande ou repetido;
   - animação de rolagem só em `opacity`, `translate`, `scale`;
-  - nada escrito no CSS a cada quadro se o valor não mudou.
+  - nada escrito no CSS a cada quadro se o valor não mudou;
+  - a cada quadro, a propriedade pronta no elemento que muda, nunca uma
+    variável CSS num pai: variável é herdada, e o navegador recalcula o
+    estilo da subárvore inteira (13/10/2026: 9 a 12 ms por quadro no
+    celular médio, na abertura e no Raio-X).
 - Seção presa é `position: sticky`, nunca `pin` de biblioteca. O `pin` do
   GSAP embrulhava a seção num `.pin-spacer`, refazia o layout da página na
   entrada e na saída e quebrava o React ao trocar de página ("removeChild").

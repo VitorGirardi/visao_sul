@@ -21,7 +21,9 @@ export function RaioX() {
     // o percurso é mais alto que a tela: a seção fica presa (sticky) enquanto a rolagem passa pelas peças
     <div className="raio-x-percurso">
       <section id="raio-x" className="raio-x-secao sticky top-0 h-svh min-h-[640px] overflow-hidden" data-etapa="-1" aria-labelledby="titulo-raio-x">
-        <div className="raio-x-ceu absolute inset-0" aria-hidden />
+        <div className="raio-x-ceu absolute inset-0" aria-hidden>
+          <div className="raio-x-brilho" />
+        </div>
         <div className="absolute inset-x-0 top-16 h-[50%] lg:inset-0 lg:h-full">
           <CenaDoNotebook>
             <FotoDoProduto produto={produto} sizes="(min-width: 1024px) 50vw, 90vw" className="w-[min(80%,34rem)]" />

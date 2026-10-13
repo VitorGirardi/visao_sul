@@ -14,9 +14,15 @@ import fotoDaLojaEmPe from "@/fotos/loja/loja-retrato.jpg";
  * A ABERTURA: o olho da marca em 3D e o mergulho para dentro da loja.
  *
  * Camadas, de trás para a frente:
- *   fundo (marinho e grade) → arcos (as ondas da lâmina da marca, centradas
- *   no furo do olho) → foto da loja (recortada num círculo do tamanho do
- *   furo: `--portal-x/y/r`, escritos pela cena) → cena 3D → texto.
+ *   fundo (marinho e grade) → brilho e arcos (as ondas da lâmina da marca,
+ *   centrados no furo do olho) → foto da loja (recortada num círculo do
+ *   tamanho do furo) → cena 3D → texto.
+ *
+ * O CSS desenha a abertura parada. No mergulho, a cena escreve onde está o
+ * furo e o controle escreve o resto, sempre a propriedade pronta em cada
+ * camada (13/10/2026). Antes era uma variável na seção, e o navegador
+ * recalculava o estilo de cada palavra, botão e ícone a cada quadro: 9 ms
+ * por quadro no celular médio, o mergulho inteiro aos trancos.
  *
  * Rolando, a câmera atravessa o furo e a loja toma a tela: "online desde
  * 2021, agora de portas abertas". A foto é a que o Vitor tirou na loja em

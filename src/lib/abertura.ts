@@ -10,8 +10,17 @@ export const estadoDaAbertura = {
   progresso: 0,
   /** Mouse de -1 a 1 nos dois eixos (0 no centro da tela). */
   ponteiro: { x: 0, y: 0 },
-  /** A camada da foto da loja: a cena escreve nela onde está o furo do olho. */
-  portal: null as HTMLElement | null,
+  /** As camadas que acompanham o furo do olho: a cena escreve nelas onde ele está na tela. */
+  furo: null as CamadasDoFuro | null,
+};
+
+export type CamadasDoFuro = {
+  /** a foto da loja, recortada no círculo do furo */
+  foto: HTMLElement;
+  /** o brilho do letreiro, atrás do olho */
+  brilho: HTMLElement;
+  /** as ondas da marca, centradas no furo */
+  arcos: HTMLElement;
 };
 
 /** WebGL disponível e a pessoa não pediu menos movimento. Lido uma vez. */

@@ -1066,9 +1066,11 @@ canvas {
 
 @layer components {
   /* O furo do olho antes do 3D chegar: mesma posição e raio do primeiro quadro
-     (as contas estão em tres/olho-3d.tsx). A loja já aparece dentro do olho em SVG. */
+     (as contas estão em tres/olho-3d.tsx). A loja já aparece dentro do olho em SVG.
+     Tudo aqui é o estado parado. Rolando, nenhuma variável muda: a cena e o
+     controle escrevem a propriedade pronta em cada camada (13/10/2026, ver
+     controle-da-abertura.tsx). */
   .abertura {
-    --p: 0;
     --portal-x: calc(50vw + 36.9svh);
     --portal-y: 56.08svh;
     --portal-r: 9.3svh;
@@ -1119,7 +1121,9 @@ canvas {
   }
 
   /* o brilho do letreiro atrás do olho (era um plano no 3D; em CSS custa nada).
-     Anda por transform, acompanhando o furo, e apaga no começo do mergulho. */
+     Acompanha o furo e apaga no começo do mergulho. O `translate` leva ao furo
+     (a cena o reescreve), o `transform` põe o brilho atrás dele. Camada
+     própria: andar e apagar não redesenham o fundo. */
   .abertura-halo {
     position: absolute;
     z-index: 0;
@@ -1127,11 +1131,12 @@ canvas {
     top: 0;
     width: 78svh;
     aspect-ratio: 1;
-    translate: calc(var(--portal-x) - 58%) calc(var(--portal-y) - 56%);
+    translate: var(--portal-x) var(--portal-y);
+    transform: translate(-58%, -56%);
     border-radius: 999px;
     background: radial-gradient(closest-side, rgb(255 210 80 / 0.42), rgb(236 181 0 / 0.16) 45%, transparent);
-    opacity: calc(1 - var(--p) * 3.2);
     pointer-events: none;
+    will-change: transform, opacity;
   }
   [data-tema="claro"] .abertura-halo {
     background: radial-gradient(closest-side, rgb(236 181 0 / 0.3), rgb(236 181 0 / 0.1) 45%, transparent);
@@ -1143,14 +1148,14 @@ canvas {
   }
   .abertura-portal-sombra {
     background: rgb(1 0 30);
-    opacity: calc(0.5 - var(--p) * 0.5);
+    opacity: 0.5;
   }
 
   /* as ondas da lâmina da marca, centradas no furo e abrindo no mergulho */
   /* Tudo por transform (translate/scale), nada de left/top/width: abrir os
-     arcos no mergulho não recalcula layout. A escala vem da cena
-     (`--portal-escala` = raio do furo ÷ 50 px); o valor daqui é o do olho em
-     SVG antes do 3D chegar. */
+     arcos no mergulho não recalcula layout. O grupo anda e cresce inteiro (a
+     cena escreve `translate` e `scale` = raio do furo ÷ 50 px); os valores
+     daqui são os do olho em SVG antes do 3D chegar. */
   .abertura-arcos {
     position: absolute;
     z-index: 0;
@@ -1159,11 +1164,11 @@ canvas {
     width: 0;
     height: 0;
     translate: var(--portal-x) var(--portal-y);
-    --portal-escala: 1.67;
+    scale: 1.67;
   }
   @media (max-aspect-ratio: 85/100) {
     .abertura-arcos {
-      --portal-escala: 0.89;
+      scale: 0.89;
     }
   }
   .abertura-arcos span {
@@ -1175,8 +1180,8 @@ canvas {
     border-radius: 999px;
     border: 1px solid var(--linha-forte);
     /* sem animação contínua: parado, a abertura não gasta nada além do olho */
-    scale: calc(var(--portal-escala) * var(--k));
-    opacity: calc(var(--o) * (1 - var(--p) * 1.6));
+    scale: var(--k);
+    opacity: var(--o);
   }
 
   /* o olho em SVG, no mesmo lugar e tamanho do primeiro quadro do 3D */
@@ -1204,10 +1209,10 @@ canvas {
       opacity 0.8s var(--ease-saida),
       visibility 0s linear 0.8s;
   }
-  .abertura canvas {
-    z-index: 2;
-  }
-  .abertura > div:has(> div > canvas) {
+  /* O olho 3D por cima da foto da loja, como o de SVG: quando ele gira, o
+     anel cobre a borda do círculo. A regra antiga mirava o canvas do R3F e
+     deixou de valer quando o olho virou three puro (12 a 13/10/2026). */
+  .abertura-olho {
     z-index: 2;
   }
 
@@ -1218,23 +1223,21 @@ canvas {
     line-height: 0.95;
     letter-spacing: -0.045em;
   }
-  /* camadas próprias: mudam a cada quadro do mergulho e só se movem/apagam */
+  /* camadas próprias: mudam a cada quadro do mergulho e só se movem/apagam
+     (os valores, escritos pelo controle, estão em controle-da-abertura.tsx) */
   .abertura-texto {
-    opacity: calc(1 - var(--p) * 5);
-    translate: 0 calc(var(--p) * -160px);
     will-change: opacity, translate;
   }
   .abertura-dica {
-    opacity: calc(1 - var(--p) * 8);
     will-change: opacity;
   }
   .abertura-chegada {
     background: linear-gradient(to top, rgb(1 0 30 / 0.88), rgb(1 0 30 / 0.4) 55%, transparent);
-    opacity: clamp(0, calc((var(--p) - 0.86) * 9), 1);
+    opacity: 0;
     will-change: opacity;
   }
   .abertura-chegada .titulo-2 {
-    translate: 0 calc((1 - clamp(0, calc((var(--p) - 0.86) * 9), 1)) * 2rem);
+    translate: 0 2rem;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -1485,9 +1488,6 @@ canvas {
 }
 
 @layer components {
-  .raio-x-secao {
-    --p: 0;
-  }
   /* o percurso da rolagem presa: 260% da altura da tela passando pelas peças
      (sem 3D ou com "menos movimento", nada fica preso e a lista aparece inteira) */
   .raio-x-percurso {
@@ -1504,27 +1504,29 @@ canvas {
   /* O céu é estático e o brilho amarelo que cresce com a rolagem fica numa
      camada própria, que só muda de opacidade (09/10/2026: o alfa do
      gradiente vinha de --p e a tela inteira era repintada a cada quadro).
-     A ordem das camadas é a de antes: fundo, brilho amarelo, violeta. */
+     O controle escreve a opacidade pronta no brilho, que por isso é um
+     elemento e não um ::before (13/10/2026). A ordem das camadas é a de
+     antes: fundo, brilho amarelo, violeta. */
   .raio-x-ceu {
     background: var(--fundo);
   }
-  .raio-x-ceu::before,
+  .raio-x-brilho,
   .raio-x-ceu::after {
-    content: "";
     position: absolute;
     inset: 0;
   }
-  .raio-x-ceu::before {
+  .raio-x-brilho {
     /* 0,14 × (0,43 + 0,57 p) = 0,06 + 0,08 p de alfa, como era */
     background: radial-gradient(30% 35% at 66% 52%, rgb(236 181 0 / 0.14), transparent 70%);
-    opacity: calc(0.43 + var(--p) * 0.57);
+    opacity: 0.43;
     will-change: opacity;
   }
   .raio-x-ceu::after {
+    content: "";
     background: radial-gradient(45% 55% at 68% 48%, rgb(60 50 170 / 0.45), transparent 70%);
   }
-  [data-tema="claro"] .raio-x-ceu::before {
-    content: none;
+  [data-tema="claro"] .raio-x-brilho {
+    display: none;
   }
   [data-tema="claro"] .raio-x-ceu::after {
     background: radial-gradient(45% 55% at 68% 48%, rgb(236 181 0 / 0.14), transparent 70%);
@@ -1575,9 +1577,12 @@ canvas {
     max-height: 6rem;
     opacity: 1;
   }
+  /* o fim (preço e botões) começa escondido; o controle escreve nele a
+     opacidade e o deslocamento prontos (herdado, o `--p` recalculava cada
+     passo da lista a cada quadro) */
   [data-animado="sim"] .raio-x-final {
-    opacity: clamp(0, calc((var(--p) - 0.93) * 14), 1);
-    translate: 0 calc((1 - clamp(0, calc((var(--p) - 0.93) * 14), 1)) * 1rem);
+    opacity: 0;
+    translate: 0 1rem;
   }
   /* No celular a lista não cabe inteira: aparece só o passo da vez. */
   @media (max-width: 1023px) {
