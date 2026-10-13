@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { GabineteIlustrado } from "@/components/ui/gabinete-ilustrado";
 import { IconeCheck, IconeWhatsApp } from "@/components/ui/icones";
 import { CAMINHO_DA_CONVERSA } from "@/data/contato";
@@ -15,17 +15,69 @@ import { cn, formatarPreco, parcela } from "@/lib/utils";
 const Gabinete3D = dynamic(() => import("@/components/tres/gabinete-3d"), { ssr: false });
 const semAssinatura = () => () => {};
 
+/* A montagem guardada neste navegador (13/10/2026): quem sai e volta encontra o PC como deixou. */
+const CHAVE = "visao-pc";
+type Montagem = { jogos: string[]; nivel: string | null; cor: string };
+const PADRAO: Montagem = { jogos: [], nivel: null, cor: coresDeLuz[0].valor };
+
+/** Lida e conferida contra as listas do site: jogo, nível ou cor que saiu da lista, some. */
+function lerMontagem(): Montagem {
+  try {
+    const salva: unknown = JSON.parse(localStorage.getItem(CHAVE) ?? "null");
+    if (!salva || typeof salva !== "object") return PADRAO;
+    const m = salva as Partial<Record<keyof Montagem, unknown>>;
+    return {
+      jogos: Array.isArray(m.jogos) ? m.jogos.filter((nome): nome is string => jogos.some((j) => j.nome === nome)) : [],
+      nivel: niveis.some((n) => n.id === m.nivel) ? (m.nivel as string) : null,
+      cor: coresDeLuz.some((c) => c.valor === m.cor) ? (m.cor as string) : PADRAO.cor,
+    };
+  } catch {
+    return PADRAO;
+  }
+}
+
 /**
  * O MONTADOR: jogos → nível recomendado (a pessoa pode trocar) → cor da luz
- * → lista de peças com o total → orçamento no WhatsApp. Os jogos chegam
- * pela URL quando a pessoa clica num jogo da página inicial.
+ * → lista de peças com o total → orçamento no WhatsApp.
+ *
+ * A montagem fica guardada no navegador e volta quando a pessoa volta. Os
+ * jogos também chegam pela URL, quando a pessoa clica num jogo da página
+ * inicial: aí a URL vale, e sai do endereço logo depois, para recarregar a
+ * página não desfazer o que ela mudou. O componente só monta no navegador
+ * (o `useSearchParams` o tira do HTML estático), então ler o guardado no
+ * primeiro estado não descasa da hidratação.
  */
 export function MontadorDePc() {
   const parametros = useSearchParams();
-  const daUrl = (parametros.get("jogos") ?? "").split("|").filter((nome) => jogos.some((j) => j.nome === nome));
-  const [marcados, setMarcados] = useState<string[]>(daUrl);
-  const [escolhaManual, setEscolhaManual] = useState<string | null>(null);
-  const [cor, setCor] = useState<string>(coresDeLuz[0].valor);
+  const [inicio] = useState(() => {
+    const guardada = lerMontagem();
+    const daUrl = (parametros.get("jogos") ?? "").split("|").filter((nome) => jogos.some((j) => j.nome === nome));
+    if (daUrl.length > 0) return { ...guardada, jogos: daUrl, nivel: null, voltou: false };
+    const voltou = guardada.jogos.length > 0 || guardada.nivel !== null || guardada.cor !== PADRAO.cor;
+    return { ...guardada, voltou };
+  });
+  const [marcados, setMarcados] = useState<string[]>(inicio.jogos);
+  const [escolhaManual, setEscolhaManual] = useState<string | null>(inicio.nivel);
+  const [cor, setCor] = useState<string>(inicio.cor);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(CHAVE, JSON.stringify({ jogos: marcados, nivel: escolhaManual, cor } satisfies Montagem));
+    } catch {
+      // navegador sem armazenamento (aba anônima antiga): a montagem só não fica guardada
+    }
+  }, [marcados, escolhaManual, cor]);
+
+  useEffect(() => {
+    if (window.location.search) window.history.replaceState(window.history.state, "", window.location.pathname);
+  }, []);
+
+  const mexeu = marcados.length > 0 || escolhaManual !== null || cor !== PADRAO.cor;
+  const recomecar = () => {
+    setMarcados([]);
+    setEscolhaManual(null);
+    setCor(PADRAO.cor);
+  };
   const pode3D = useSyncExternalStore(semAssinatura, podeUsar3D, () => false);
   // O 3D avisa quando os shaders compilaram; até lá fica o gabinete em CSS.
   const [pronto3D, setPronto3D] = useState(false);
@@ -70,6 +122,15 @@ export function MontadorDePc() {
         <input type="hidden" name="nivel" value={nivel.id} />
         <input type="hidden" name="cor" value={cor} />
         <input type="hidden" name="jogos" value={marcados.join("|")} />
+
+        {inicio.voltou && mexeu && (
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-linha bg-fundo-2 px-4 py-3 text-sm text-texto-2">
+            Voltamos com a montagem que você deixou.
+            <button type="button" onClick={recomecar} className="font-semibold text-texto underline underline-offset-4 hover:text-destaque-texto">
+              Começar de novo
+            </button>
+          </p>
+        )}
 
         <fieldset>
           <legend className="flex items-baseline gap-3 font-display text-xl font-semibold">

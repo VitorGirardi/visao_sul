@@ -103,7 +103,8 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   `trilho-horizontal`, `catalogo`, `vitrine-do-produto` (a foto grande da
   ficha, com a galeria) + `interruptor-do-raio-x`, `miniaturas-da-vitrine` e
   `quadro-adiado`, `agendar-teste`, `abrir-chamado`, `pedir-proposta`,
-  `montador-de-pc`, `gabinete-ilustrado` (o PC em CSS), `so-na-tela`
+  `montador-de-pc` (lembra a montagem no navegador, `visao-pc`),
+  `gabinete-ilustrado` (o PC em CSS), `so-na-tela`
   (animação em loop só quando aparece), `icones`.
 - `data/`: todo texto e constante. `marca.ts` (os caminhos da logo), `site.ts`,
   `contato.ts`, `loja.ts`, `produtos.ts`, `categorias.ts` (com o `combinaCom`
