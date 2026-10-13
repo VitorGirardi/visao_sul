@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { AgendarTeste } from "@/components/ui/agendar-teste";
 import { BotaoAdicionar } from "@/components/ui/botao-adicionar";
 import { CartaoProduto } from "@/components/ui/cartao-produto";
+import { ComoComprar } from "@/components/ui/como-comprar";
 import { IconeCaminhao, IconeEscudo, IconeWhatsApp } from "@/components/ui/icones";
 import { Preco } from "@/components/ui/preco";
 import { VitrineDoProduto } from "@/components/ui/vitrine-do-produto";
@@ -113,6 +114,8 @@ export default async function PaginaDoProduto({ params }: PageProps<"/produtos/[
                 </li>
               </ul>
             </div>
+
+            <ComoComprar jeito="ficha" className="mt-6" />
 
             {produto.testeGratis && (
               <div className="mt-6">

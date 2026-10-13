@@ -98,7 +98,8 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   cenas desenham).
 - `components/ui/`: `cartao-produto` (com o Raio-X no hover; `densa` são as
   duas colunas do celular no catálogo e no "Combina com este"), `foto-do-produto`,
-  `preco` (sempre com o selo "ilustrativo"), `botao-adicionar`, `inclinacao`,
+  `preco` (sempre com o selo "ilustrativo"), `botao-adicionar`, `como-comprar`
+  (os três passos da compra, na ficha e na sacola), `inclinacao`,
   `trilho-horizontal`, `catalogo`, `vitrine-do-produto` (a foto grande da
   ficha, com a galeria) + `interruptor-do-raio-x`, `miniaturas-da-vitrine` e
   `quadro-adiado`, `agendar-teste`, `abrir-chamado`, `pedir-proposta`,
@@ -112,6 +113,7 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   `fotos-de-produto.ts` e `segundas-fotos.ts` (GERADOS pelo script),
   `amostra-do-painel.ts` (os dados de exemplo da prévia do painel),
   `conserto.ts` (os textos da página do conserto, do lado do cliente),
+  `como-comprar.ts` (os três passos da compra pelo WhatsApp),
   `indice-de-busca.ts` (o índice de cada produto, o mesmo na vitrine e na
   busca do topo; só no servidor).
 - `app/admin/`: a prévia do painel. `concha.tsx` (lateral, topo, abas do
