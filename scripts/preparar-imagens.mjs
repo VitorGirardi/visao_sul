@@ -6,8 +6,10 @@
  * PRODUTOS: lê `referencias/produtos/originais/<slug>.{png,webp,jpg,jpeg}`
  * (fotos oficiais dos fabricantes, buscadas em 09/10/2026 para o protótipo),
  * apara a borda vazia, centraliza num quadrado de 1200 px com folga igual
- * para todas e grava `src/fotos/produtos/<slug>.webp`. No fim reescreve
- * `src/data/fotos-de-produto.ts` com um import estático por foto, que é o que
+ * para todas e grava `src/fotos/produtos/<slug>.webp`. O segundo ângulo
+ * (`<slug>-2`) passa pelo mesmo tratamento e vira a galeria da ficha
+ * (13/10/2026). No fim reescreve `src/data/fotos-de-produto.ts` (as capas) e
+ * `src/data/segundas-fotos.ts` com um import estático por foto, que é o que
  * dá ao `next/image` o tamanho e o borrão de carregamento.
  *
  * LOJA: recorta a foto que o Vitor tirou em 09/10/2026
@@ -27,6 +29,7 @@ const ORIGINAIS = path.join(RAIZ, "referencias/produtos/originais");
 const DESTINO_PRODUTOS = path.join(RAIZ, "src/fotos/produtos");
 const DESTINO_LOJA = path.join(RAIZ, "src/fotos/loja");
 const MAPA = path.join(RAIZ, "src/data/fotos-de-produto.ts");
+const MAPA_DAS_SEGUNDAS = path.join(RAIZ, "src/data/segundas-fotos.ts");
 const FOTO_DA_LOJA = path.join(RAIZ, "referencias/loja/loja-interior-2026-10-09.jpg");
 
 const LADO = 1200;
@@ -140,8 +143,9 @@ async function tirarFundoBranco(buffer, slug) {
 fs.mkdirSync(DESTINO_PRODUTOS, { recursive: true });
 fs.mkdirSync(DESTINO_LOJA, { recursive: true });
 
-async function tratarProduto(arquivo) {
-  const slug = path.basename(arquivo).replace(/\.(png|webp|jpe?g|avif)$/i, "");
+// `slug` é o do produto: o segundo ângulo segue as regras dele (fundo mantido, sombra suave)
+async function tratarProduto(arquivo, slug) {
+  const radical = path.basename(arquivo).replace(/\.(png|webp|jpe?g|avif)$/i, "");
   const original = await sharp(path.join(ORIGINAIS, arquivo), { limitInputPixels: false }).rotate().toBuffer();
   const meta = await sharp(original).metadata();
   let temAlfa = Boolean(meta.hasAlpha);
@@ -155,12 +159,12 @@ async function tratarProduto(arquivo) {
   const fundo = temAlfa ? { r: 0, g: 0, b: 0, alpha: 0 } : { r: 255, g: 255, b: 255, alpha: 1 };
   const miolo = await sharp(aparada.data).resize(util, util, { fit: "inside", withoutEnlargement: false }).toBuffer();
   const { width = util, height = util } = await sharp(miolo).metadata();
-  const saida = path.join(DESTINO_PRODUTOS, `${slug}.webp`);
+  const saida = path.join(DESTINO_PRODUTOS, `${radical}.webp`);
   await sharp({ create: { width: LADO, height: LADO, channels: 4, background: fundo } })
     .composite([{ input: miolo, left: Math.round((LADO - width) / 2), top: Math.round((LADO - height) / 2) }])
     .webp({ quality: 86, alphaQuality: 90, effort: 5 })
     .toFile(saida);
-  return { slug, temAlfa };
+  return { slug, radical, temAlfa };
 }
 
 async function tratarLoja() {
@@ -179,24 +183,23 @@ async function tratarLoja() {
   console.log("loja: 3 recortes");
 }
 
-// "<slug>-2.ext" é o segundo ângulo de um produto, e fica de fora; mas o slug pode
-// terminar em "-2" por si (hyperx-cloud-stinger-2): só é segundo ângulo se existir o primeiro.
+// "<slug>-2.ext" é o segundo ângulo de um produto; mas o slug pode terminar em
+// "-2" por si (hyperx-cloud-stinger-2): só é segundo ângulo se existir o primeiro.
 const todos = fs.existsSync(ORIGINAIS) ? fs.readdirSync(ORIGINAIS).filter((a) => /\.(png|webp|jpe?g|avif)$/i.test(a)) : [];
 const radicais = new Set(todos.map((a) => a.replace(/\.\w+$/, "")));
-const arquivos = todos.filter((a) => {
-  const radical = a.replace(/\.\w+$/, "");
-  return !(radical.endsWith("-2") && radicais.has(radical.slice(0, -2)));
-});
+const produtoDoArquivo = (radical) => (radical.endsWith("-2") && radicais.has(radical.slice(0, -2)) ? radical.slice(0, -2) : radical);
 const tratados = [];
-for (const arquivo of arquivos.sort()) {
+for (const arquivo of todos.sort()) {
   try {
-    tratados.push(await tratarProduto(arquivo));
+    tratados.push(await tratarProduto(arquivo, produtoDoArquivo(arquivo.replace(/\.\w+$/, ""))));
   } catch (erro) {
     console.log("falhou", arquivo, String(erro).slice(0, 120));
   }
 }
+const capas = tratados.filter((t) => t.radical === t.slug);
+const segundas = tratados.filter((t) => t.radical !== t.slug);
 
-const nomeDoImport = (slug) => "foto_" + slug.replace(/[^a-z0-9]/gi, "_");
+const nomeDoImport = (radical) => "foto_" + radical.replace(/[^a-z0-9]/gi, "_");
 const mapa = `/**
  * GERADO por \`scripts/preparar-imagens.mjs\`. Não edite à mão: rode o script.
  *
@@ -204,16 +207,36 @@ const mapa = `/**
  * \`next/image\`). Produto sem foto aqui aparece com o desenho da categoria.
  */
 import type { StaticImageData } from "next/image";
-${tratados.map(({ slug }) => `import ${nomeDoImport(slug)} from "@/fotos/produtos/${slug}.webp";`).join("\n")}
+${capas.map(({ slug }) => `import ${nomeDoImport(slug)} from "@/fotos/produtos/${slug}.webp";`).join("\n")}
 
 export const fotosDeProduto: Record<string, StaticImageData> = {
-${tratados.map(({ slug }) => `  "${slug}": ${nomeDoImport(slug)},`).join("\n")}
+${capas.map(({ slug }) => `  "${slug}": ${nomeDoImport(slug)},`).join("\n")}
 };
 
 /** Fotos com fundo transparente de origem (as outras vieram em fundo branco). */
-export const fotosComFundoTransparente = new Set<string>([${tratados.filter((t) => t.temAlfa).map((t) => `"${t.slug}"`).join(", ")}]);
+export const fotosComFundoTransparente = new Set<string>([${capas.filter((t) => t.temAlfa).map((t) => `"${t.slug}"`).join(", ")}]);
 `;
 fs.writeFileSync(MAPA, mapa);
+
+const mapaDasSegundas = `/**
+ * GERADO por \`scripts/preparar-imagens.mjs\`. Não edite à mão: rode o script.
+ *
+ * O segundo ângulo dos produtos que têm, para a galeria da ficha. Fica fora
+ * de \`fotos-de-produto.ts\` de propósito: aquele mapa vai no JS da gaveta do
+ * pedido (que carrega em toda página), e este só o servidor lê. Juntos, a
+ * gaveta crescia 5 KB gz (13/10/2026).
+ */
+import type { StaticImageData } from "next/image";
+${segundas.map(({ radical }) => `import ${nomeDoImport(radical)} from "@/fotos/produtos/${radical}.webp";`).join("\n")}
+
+/** \`comFundo\`: a foto manteve o branco (produto branco) e aparece num cartão claro. */
+export type SegundaFoto = { foto: StaticImageData; comFundo: boolean };
+
+export const segundasFotos: Record<string, SegundaFoto> = {
+${segundas.map(({ slug, radical, temAlfa }) => `  "${slug}": { foto: ${nomeDoImport(radical)}, comFundo: ${!temAlfa} },`).join("\n")}
+};
+`;
+fs.writeFileSync(MAPA_DAS_SEGUNDAS, mapaDasSegundas);
 await tratarLoja();
 
 /*
@@ -233,4 +256,4 @@ if (fs.existsSync(origemInstagram)) {
   }
   console.log(`instagram: ${Object.keys(POSTS).length} posts`);
 }
-console.log(`produtos: ${tratados.length} fotos (${tratados.filter((t) => t.temAlfa).length} com fundo transparente)`);
+console.log(`produtos: ${capas.length} fotos e ${segundas.length} segundos ângulos (${tratados.filter((t) => t.temAlfa).length} sem fundo)`);

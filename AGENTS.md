@@ -45,9 +45,10 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   com `fontes.json` (de onde veio cada uma) e `levantamento.md`.
 - `scripts/preparar-imagens.mjs`: trata fotos de produto (tira o fundo
   branco, centraliza), recorta a foto da loja e os posts, e reescreve
-  `src/data/fotos-de-produto.ts`. `scripts/marca/`: a vetorização da logo
-  (`logo-final.mjs`, `letreiro-curvas.mjs`) e `gerar-icones.mjs` (favicon,
-  apple-icon, imagem de compartilhamento).
+  `src/data/fotos-de-produto.ts` e `src/data/segundas-fotos.ts`.
+  `scripts/marca/`: a vetorização da logo (`logo-final.mjs`,
+  `letreiro-curvas.mjs`) e `gerar-icones.mjs` (favicon, apple-icon, imagem
+  de compartilhamento).
 - `.claude/launch.json`: `visao-sul` (`npm run dev`, porta 3010) e
   `visao-sul-producao` (`next start -p 3110`). A 3000 é do amagejumpy.
 
@@ -57,7 +58,7 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
 | --- | --- | --- |
 | `/` | `(site)/page.tsx` | abertura 3D, a loja, marcas, categorias, Raio-X, vitrine, diferenciais, assistência, PC, empresas, Instagram, contato |
 | `/produtos` | `(site)/produtos/page.tsx` + `ui/catalogo.tsx` | vitrine com filtro na URL (`categoria`, `busca`, `ordem`) |
-| `/produtos/[slug]` | `(site)/produtos/[slug]/page.tsx` | ficha, Raio-X por botão, teste grátis, estática (`generateStaticParams`) |
+| `/produtos/[slug]` | `(site)/produtos/[slug]/page.tsx` | ficha, galeria com o segundo ângulo, Raio-X por botão, teste grátis, estática (`generateStaticParams`) |
 | `/assistencia` | `(site)/assistencia/page.tsx` | serviços, como funciona, chamado, perguntas |
 | `/empresas` | `(site)/empresas/page.tsx` | locação de impressoras, redes, suporte, equipamentos, proposta |
 | `/monte-seu-pc` | `(site)/monte-seu-pc/page.tsx` + `ui/montador-de-pc.tsx` | jogos → nível → cor → orçamento, com gabinete 3D |
@@ -68,8 +69,10 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
 
 - `components/layout/`: `cabecalho` (sem biblioteca de animação), `nav-principal`,
   `menu-movel` (Popover API), `alternar-tema`, `botao-pedido`,
-  `gaveta-do-pedido` (`<dialog>`), `botao-whatsapp`, `marca` (olho inline,
-  letreiro por `<use>` de `public/marca/letreiro.svg`), `rodape`.
+  `gaveta-do-pedido` (`<dialog>`; o `corpo-da-gaveta` carrega com o navegador
+  ocioso), `botao-whatsapp`, `marca` (olho inline, letreiro por `<use>` de
+  `public/marca/letreiro.svg`), `marcador-de-rolagem` (sem hover nos cartões
+  enquanto a página rola), `rodape`.
 - `components/sections/`: seções da página inicial. As de 3D vêm em trio:
   `abertura` (servidor) + `cena-do-olho` (carrega o 3D) + `controle-da-abertura`
   (lê a rolagem pelo percurso); idem `raio-x` + `cena-do-notebook` +
@@ -81,13 +84,15 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   ambiente) e `ritmo.tsx` (o limite de 60 quadros por segundo das cenas R3F).
 - `components/ui/`: `cartao-produto` (com o Raio-X no hover), `foto-do-produto`,
   `preco` (sempre com o selo "ilustrativo"), `botao-adicionar`, `inclinacao`,
-  `trilho-horizontal`, `catalogo`, `vitrine-do-produto`, `agendar-teste`,
-  `abrir-chamado`, `pedir-proposta`, `montador-de-pc`, `gabinete-ilustrado`
-  (o PC em CSS), `icones`.
+  `trilho-horizontal`, `catalogo`, `vitrine-do-produto` (a foto grande da
+  ficha, com a galeria) + `interruptor-do-raio-x`, `miniaturas-da-vitrine` e
+  `quadro-adiado`, `agendar-teste`, `abrir-chamado`, `pedir-proposta`,
+  `montador-de-pc`, `gabinete-ilustrado` (o PC em CSS), `so-na-tela`
+  (animação em loop só quando aparece), `icones`.
 - `data/`: todo texto e constante. `marca.ts` (os caminhos da logo), `site.ts`,
   `contato.ts`, `loja.ts`, `produtos.ts`, `categorias.ts`, `servicos.ts`,
-  `empresas.ts`, `diferenciais.ts`, `pc-gamer.ts`, `raio-x.ts` e
-  `fotos-de-produto.ts` (GERADO pelo script).
+  `empresas.ts`, `diferenciais.ts`, `pc-gamer.ts`, `raio-x.ts`,
+  `fotos-de-produto.ts` e `segundas-fotos.ts` (GERADOS pelo script).
 - `lib/`: `tema.ts` (+ `tema-script.ts`), `pedido.ts` (a sacola),
   `conversa.ts`, `abertura.ts` e `raio-x.ts` (o estado que o controle da
   rolagem escreve e o 3D lê), `rolagem-presa.ts` (o progresso de uma seção
@@ -134,6 +139,9 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   navegador).
 - O 3D nunca entra por import direto numa página: `next/dynamic` de
   componente, com fallback. `three` direto devolve ~150 KB a quem nem vê a cena.
+- `segundas-fotos.ts` só é lido no servidor. A `FotoDoProduto` vai no JS da
+  gaveta (em toda página): o segundo ângulo chega a ela por propriedade
+  (`outroAngulo`), nunca por import. Importado ali, a gaveta crescia 5 KB gz.
 - Nada de biblioteca de animação no cabeçalho.
 - DESEMPENHO (medido na Intel UHD do Vitor, 09 a 12/10/2026; detalhes em
   `docs/decisoes/desempenho.md`):
@@ -172,5 +180,7 @@ Abaixo do `latest` de propósito, as mesmas dos outros sites da Amage.
 ## Fluxo
 
 `npm run dev` (porta 3010), portões (`npm run typecheck`, `npm run lint`,
-`npm run build`) e, depois da proposta aprovada, trabalho por PR em branch
-curta em português. O merge na `main` publica na Vercel.
+`npm run build`) e PR em branch curta em português, com merge squash na
+`main` (um commit por PR). É assim desde 13/10/2026, pedido do Vitor para o
+versionamento ficar melhor; antes, os commits iam direto na `main`. O merge
+na `main` publica na Vercel.
