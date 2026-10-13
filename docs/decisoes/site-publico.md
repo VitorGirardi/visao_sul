@@ -75,6 +75,24 @@ auditoria tela a tela (computador e celular) achou e corrigiu:
   nome, e a página 404 ganhou o destino do "pular para o conteúdo". Sobram
   só os alertas da animação de entrada (texto ainda aparecendo).
 
+## Prévia do painel (13/10/2026)
+
+Para vender a fase 2 na reunião, o painel ganhou uma prévia em `/admin`, onde
+o painel de verdade vai morar, com dados de exemplo e sem backend (tudo vive
+no navegador; recarregar volta ao começo). O desenho segue o painel mais novo
+da Amage, o da Prime Collection, refeito em 09/2026 depois de o cliente
+achar o anterior "amador": painel sempre claro, 13 px, estado com forma (um
+quadradinho de cor com a palavra), o amarelo da marca só no gesto da pessoa
+e nada de toast ou rodinha. O "aviso" é laranja para não se confundir com o
+amarelo.
+
+O roteiro da demonstração está em `apresentacao.md`: o pedido que chega na
+hora, o link de pagamento com o Pix caindo sozinho, a bancada de chamados, o
+teste grátis que vira venda e o preço mudado aparecendo no cartão do site.
+A "mensagem que chegou" no pedido é a mesma que a rota `/whatsapp` monta
+hoje, e os botões de WhatsApp do painel só mostram e copiam a mensagem:
+com telefones de exemplo, abrir conversa poderia cair em alguém de verdade.
+
 ## 3D e rolagem (09/10/2026)
 
 O prime-collection tirou three, motion e lenis do site em produção por peso

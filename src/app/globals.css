@@ -108,6 +108,26 @@
   --radius-squircle: 2.5rem;
 
   --breakpoint-xs: 420px;
+
+  /* Estados do painel (`/admin`, sempre claro). O aviso é laranja, longe do
+     amarelo da marca, que no painel é só o gesto (13/10/2026). Texto sobre a
+     tinta: 4,7:1 ou mais. */
+  --color-ok: #3b6848;
+  --color-ok-tinta: #e5efe7;
+  --color-aviso: #b04a12;
+  --color-aviso-tinta: #fdebdd;
+  --color-erro: #a3392e;
+  --color-erro-tinta: #f7e1de;
+  --color-info: #3a5b86;
+  --color-info-tinta: #e3eaf4;
+}
+
+/* O painel é claro mesmo com o site no escuro: a moldura leva `data-tema="claro"`
+   e o fundo da página acompanha, para o "elástico" da rolagem não piscar
+   marinho. Fora de camada de propósito: vence o fundo do `<body>`. */
+html:has([data-painel]),
+body:has([data-painel]) {
+  background-color: #f4f3ef;
 }
 
 /* Botão compacto. É @utility (e não classe comum) para aceitar variantes: max-sm:btn-pequeno. */

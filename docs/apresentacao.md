@@ -47,10 +47,30 @@ Roteiro da reunião em que o Vitor mostra o protótipo (preparado em
 | 8 | Monte seu PC | Marcar 2 jogos, trocar o nível e a cor da luz | A loja indica a configuração e monta |
 | 9 | Empresas | Locação de impressoras | A especialidade de anos dele |
 | 10 | Celular | Abrir no celular dele, se ele quiser | Tudo cabe no celular de quem chega pelo Instagram |
-| 11 | Fase 2 | Contar o que vem depois | Painel para ele mudar preço e estoque e receber pedidos e chamados, e pagamento online (Pix e cartão) |
+| 11 | Fase 2 | Abrir a prévia do painel (abaixo) | O que hoje chega solto no WhatsApp vira pedido organizado, e o pagamento entra sozinho |
 
 Os preços são de exemplo e aparecem com o selo "ilustrativo". Vale dizer
 isso logo no começo: no ar, quem define o preço é ele.
+
+## A prévia do painel (2 minutos)
+
+Deixe aberta numa outra aba: `http://localhost:3110/admin` (o painel não tem
+link no site). Tudo nela é de exemplo e fica só no navegador: recarregar a
+página volta tudo ao começo, o que serve para ensaiar. Navegue pelo menu do
+painel, sem recarregar, para os passos ficarem guardados.
+
+| Tempo | Tela | O que fazer | O que falar |
+| --- | --- | --- | --- |
+| 0:00 | Visão geral | Clicar em "Simular pedido chegando": o sino acende e o pedido 0043 entra no topo | "Isto é o que hoje chega solto no seu WhatsApp" |
+| 0:15 | Pedido 0043 | Mostrar "A mensagem que chegou" e clicar em "Confirmar e mandar link de pagamento" | A mensagem com o link sai pronta para o cliente |
+| 0:30 | Pedido 0043 | Fechar a janela e esperar uns segundos: o Pix cai sozinho e o pedido vira "Pago" | "O dinheiro entra e o pedido anda sozinho. Essa é a fase 2" |
+| 0:45 | Chamados | Abrir a OS 0108 (esperando aprovação), "Avisar no WhatsApp" com o orçamento, depois "Cliente aprovou" | Nenhum conserto esquecido no fundo da bancada |
+| 1:10 | Testes grátis | Marcar "Virou venda" num teste da semana | O número de cima mostra quanto o teste grátis vende |
+| 1:30 | Produtos | Mudar o preço do HP Victus 15 | O cartão do site, ao lado, muda na hora: "você mexe aqui, o site muda" |
+| 1:50 | Celular | Abrir o painel no celular | Cabe no bolso, no balcão |
+
+Os botões de WhatsApp do painel não abrem conversa: com telefones de
+exemplo, eles mostram a mensagem pronta e copiam.
 
 ## Perguntas que fecham as pendências
 
