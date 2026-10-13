@@ -46,6 +46,13 @@ flutuar no tema escuro; produto branco (Deco, Chromecast) e a impressora (o
 papel é branco) ficam com fundo e ganham cartão claro. É prática de revenda,
 mas o uso final deve ser confirmado com a loja.
 
+Galeria na ficha (13/10/2026, pedido do Vitor): 18 produtos têm uma segunda
+foto oficial, de outro ângulo (`<slug>-2` nos originais), tratada pelo mesmo
+script. A foto grande da ficha virou um trilho com encaixe: arrasta com o dedo
+no celular, troca pelas miniaturas embaixo, e o Raio-X mostra o ângulo que
+está na tela. Sem biblioteca de carrossel: o arrasto é a rolagem do próprio
+navegador. Produto com uma foto só fica como era.
+
 ## 3D e rolagem (09/10/2026)
 
 O prime-collection tirou three, motion e lenis do site em produção por peso

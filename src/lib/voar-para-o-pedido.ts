@@ -13,7 +13,7 @@ export function voarParaOPedido(origem: HTMLElement | null) {
       easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
     });
   const reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const imagem = origem?.querySelector("img") ?? null;
+  const imagem = fotoNaTela(origem);
   if (reduzido || !imagem) return void pulsar();
 
   const de = imagem.getBoundingClientRect();
@@ -53,4 +53,20 @@ export function voarParaOPedido(origem: HTMLElement | null) {
     copia.remove();
     pulsar();
   };
+}
+
+/**
+ * A primeira foto com o meio dentro da caixa. Na galeria da ficha as outras
+ * fotos ficam ao lado, fora da caixa: a cópia sairia de fora da tela
+ * (13/10/2026).
+ */
+function fotoNaTela(origem: HTMLElement | null) {
+  if (!origem) return null;
+  const caixa = origem.getBoundingClientRect();
+  for (const imagem of origem.querySelectorAll("img")) {
+    const r = imagem.getBoundingClientRect();
+    const meio = r.left + r.width / 2;
+    if (r.width > 0 && meio > caixa.left && meio < caixa.right) return imagem;
+  }
+  return null;
 }

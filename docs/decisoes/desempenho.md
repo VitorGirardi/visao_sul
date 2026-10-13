@@ -127,6 +127,37 @@ que a thread principal está livre em todo quadro (o 3D em si desenha a 60).
 - **A foto que voa para a sacola** usa a imagem que já está na tela.
 - **O teste de WebGL** solta o contexto na hora.
 
+## Galeria da ficha (13/10/2026)
+
+O segundo ângulo de 18 produtos entrou na ficha. Medido contra o commit
+`beea7d5`, em produção, na ficha do HP Victus 15:
+
+| | antes | depois |
+| --- | --- | --- |
+| LCP no celular, 4G lento e CPU 4x (mediana de 7) | 2.156 ms | 2.144 ms |
+| LCP no celular, rede local (mediana de 7) | 280 ms | 236 ms |
+| LCP no computador, rede local (mediana de 18) | 280 ms | 276 ms |
+| HTML (gz) | 16,0 KB | 17,1 KB |
+| JS até o load | 159 KB | 160 KB |
+| fotos no celular até o load | 21 KB | 26 KB (as duas miniaturas) |
+| fotos no celular depois | 21 KB | 52 KB (mais a segunda foto) |
+
+Home e `/produtos` não mudaram (HTML igual, JS da gaveta +64 bytes gz).
+
+Dois tropeços no caminho, que viraram regra:
+
+- **O segundo ângulo fora do JS da gaveta.** No mesmo arquivo das capas, os
+  18 imports novos (endereço e borrão de cada foto) iam para o JS da gaveta,
+  que carrega em toda página: de 22,4 para 27,8 KB gz. O mapa novo,
+  `segundas-fotos.ts`, só é lido no servidor, e a `FotoDoProduto` recebe o
+  segundo ângulo por propriedade.
+- **A segunda foto depois da página pronta** (`ui/quadro-adiado.tsx`). O
+  `loading="lazy"` não segurou: a foto fica a uma foto de distância, dentro
+  da margem do Chrome, e baixava junto com a capa. No 4G lento ela dividia a
+  banda com a capa, e o LCP mediano foi de 2.260 para 2.468 ms (5 rodadas).
+  Agora ela entra no `load`, com o navegador ocioso, ou na hora em que a
+  pessoa rola o trilho.
+
 ## Para depois
 
 - Medir num celular de verdade (Android médio e iPhone) antes da reunião.
@@ -150,6 +181,16 @@ Ferramentas em `%TEMP%` (fora do repositório; refazer se sumirem):
   hidratação de `/produtos`.
 - `visaosul-pesquisa/prints.mjs`: prints num Chrome próprio. O Playwright
   MCP é compartilhado com outras sessões e não deve ser usado.
+- `visaosul-pesquisa/lcp.mjs <url-a> <url-b> <rodadas> [--lento] [--computador]`:
+  LCP alternando duas versões, com a mediana. `--lento` é 4G lento com CPU
+  4x. Uma rodada só engana: o LCP local oscila uns 40 ms para os dois lados.
+- `visaosul-pesquisa/prioridades.mjs <url> [celular]`: as fotos que a página
+  baixa, com a hora, a prioridade e o peso.
+- `visaosul-pesquisa/galeria.mjs`, `arrasto.mjs`, `galeria-extra.mjs`,
+  `cedo.mjs` e `voo-cartao.mjs`: o uso da galeria (miniatura, arrasto com o
+  dedo, Raio-X, foto que voa, teclado, troca de produto, toque antes do
+  load). O arrasto vale pelo `arrasto.mjs`, com toque cru: o gesto
+  sintético do `galeria.mjs` não move o trilho.
 
 Para o "antes", monte o commit antigo numa pasta separada:
 `git worktree add --detach <pasta> <commit>`, depois `npm ci`,

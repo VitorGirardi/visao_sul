@@ -12,6 +12,7 @@ import { categoriaPorSlug } from "@/data/categorias";
 import { linkDaConversa } from "@/data/contato";
 import { fotosDeProduto } from "@/data/fotos-de-produto";
 import { produtoPorSlug, produtos } from "@/data/produtos";
+import { segundasFotos } from "@/data/segundas-fotos";
 import { AVISO_DE_PRECO, NOME_DA_LOJA, urlAbsoluta } from "@/data/site";
 
 /** Uma página por produto, pronta no build (o catálogo de exemplo é fixo). */
@@ -39,6 +40,7 @@ export default async function PaginaDoProduto({ params }: PageProps<"/produtos/[
   const categoria = categoriaPorSlug(produto.categoria);
   const parecidos = produtos.filter((p) => p.categoria === produto.categoria && p.slug !== produto.slug).slice(0, 4);
   const complemento = parecidos.length < 4 ? produtos.filter((p) => p.categoria !== produto.categoria).slice(0, 4 - parecidos.length) : [];
+  const fotos = [fotosDeProduto[produto.slug], segundasFotos[produto.slug]?.foto].filter((f) => f !== undefined);
 
   const dados = {
     "@context": "https://schema.org",
@@ -46,7 +48,7 @@ export default async function PaginaDoProduto({ params }: PageProps<"/produtos/[
     name: produto.nome,
     brand: { "@type": "Brand", name: produto.marca },
     description: produto.resumo,
-    image: fotosDeProduto[produto.slug] ? urlAbsoluta(fotosDeProduto[produto.slug].src) : undefined,
+    image: fotos.length ? fotos.map((f) => urlAbsoluta(f.src)) : undefined,
     offers: { "@type": "Offer", priceCurrency: "BRL", price: produto.preco, availability: "https://schema.org/InStock", seller: { "@type": "Organization", name: NOME_DA_LOJA } },
   };
 

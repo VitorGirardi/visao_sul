@@ -34,5 +34,4 @@ Nada disso é trabalho de front: está do lado dele e trava o conteúdo.
 
 | O que | Observação |
 | --- | --- |
-| Medir no celular de verdade | medido no notebook do Vitor (GPU real) e com a CPU 4 vezes mais lenta imitando um celular (`docs/decisoes/desempenho.md`). Falta um Android médio e um iPhone de verdade antes da reunião |
-| Fotos de produto em segundo ângulo | 18 produtos têm `-2` em `referencias/produtos/originais`; a ficha pode ganhar galeria |
+| Medir no celular de verdade | medido no notebook do Vitor (GPU real) e com a CPU 4 vezes mais lenta imitando um celular (`docs/decisoes/desempenho.md`). Falta um Android médio e um iPhone de verdade antes da reunião. No celular, conferir também o arrasto da galeria da ficha |

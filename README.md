@@ -31,12 +31,13 @@ O material bruto fica em `referencias/` (fora do git). Para refazer as fotos
 do site a partir dele:
 
 ```bash
-npm run imagens                     # produtos, loja e posts
+npm run imagens                     # produtos (com o segundo ângulo), loja e posts
 node scripts/marca/gerar-icones.mjs # favicon e imagem de compartilhamento
 ```
 
 ## Deploy
 
-A `main` publica na Vercel. Com domínio próprio, defina
+Toda mudança entra por PR: branch curta em português, portões limpos e merge
+squash na `main`. A `main` publica na Vercel. Com domínio próprio, defina
 `NEXT_PUBLIC_URL_DO_SITE`; sem ela, as URLs absolutas saem do domínio da
 Vercel.
