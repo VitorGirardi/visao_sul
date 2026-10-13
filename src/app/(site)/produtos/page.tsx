@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { CartaoProduto } from "@/components/ui/cartao-produto";
 import { Catalogo, type ItemDoCatalogo } from "@/components/ui/catalogo";
 import { IconeCaminhao, IconeCalendario, IconeEscudo } from "@/components/ui/icones";
-import { categorias } from "@/data/categorias";
+import { categoriaPorSlug, categorias } from "@/data/categorias";
 import { produtos } from "@/data/produtos";
 import { AVISO_DE_PRECO } from "@/data/site";
-import { paraBusca } from "@/lib/utils";
+import { indiceDeBusca } from "@/lib/busca";
 
 export const metadata: Metadata = {
   title: "Produtos",
@@ -24,7 +24,8 @@ const porPreco = [...produtos].sort((a, b) => a.preco - b.preco).map((p) => p.sl
 const itens: ItemDoCatalogo[] = produtos.map((p) => ({
   slug: p.slug,
   categoria: p.categoria,
-  busca: paraBusca(`${p.nome} ${p.marca} ${p.destaques.join(" ")} ${p.categoria}`),
+  // o nome curto é o que se digita ("PS5 Slim Digital"); o da categoria traz "Wi-Fi", "Apple", "caça"
+  busca: indiceDeBusca(p.nome, p.nomeCurto, p.marca, ...p.destaques, p.categoria, categoriaPorSlug(p.categoria)?.nome ?? ""),
   porPreco: porPreco.indexOf(p.slug),
 }));
 const contagem = categorias.map((c) => ({ slug: c.slug, nome: c.nome, quantos: produtos.filter((p) => p.categoria === c.slug).length }));

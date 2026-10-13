@@ -103,7 +103,8 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
 - `data/`: todo texto e constante. `marca.ts` (os caminhos da logo), `site.ts`,
   `contato.ts`, `loja.ts`, `produtos.ts`, `categorias.ts` (com o `combinaCom`
   da ficha), `servicos.ts`,
-  `empresas.ts`, `diferenciais.ts`, `pc-gamer.ts`, `raio-x.ts`,
+  `empresas.ts`, `diferenciais.ts`, `pc-gamer.ts`, `raio-x.ts`, `busca.ts`
+  (os sinônimos de como o cliente escreve),
   `fotos-de-produto.ts` e `segundas-fotos.ts` (GERADOS pelo script),
   `amostra-do-painel.ts` (os dados de exemplo da prévia do painel).
 - `app/admin/`: a prévia do painel. `concha.tsx` (lateral, topo, abas do
@@ -116,7 +117,8 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   `conversa.ts`, `abertura.ts` e `raio-x.ts` (o estado que o controle da
   rolagem escreve e o 3D lê), `rolagem-presa.ts` (o progresso de uma seção
   sticky), `sessenta-quadros.ts` (o compasso único de no máximo 60 quadros por
-  segundo), `voar-para-o-pedido.ts`, `utils.ts`.
+  segundo), `busca.ts` (a busca da vitrine: índice, sinônimos, plural e erro
+  de digitação), `voar-para-o-pedido.ts`, `utils.ts`.
 - `fotos/`: imagens por import estático (produtos, loja, instagram).
 
 ### Padrões do frontend
