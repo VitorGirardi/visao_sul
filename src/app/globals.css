@@ -433,6 +433,12 @@ canvas {
   content-visibility: auto;
   contain-intrinsic-size: auto 1000px;
 }
+/* no celular as seções ficaram compactas (13/10/2026): o palpite acompanha */
+@media (max-width: 767px) {
+  .longe-da-tela {
+    contain-intrinsic-size: auto 700px;
+  }
+}
 
 /* ============================================================================
    MOVIMENTO
@@ -1084,11 +1090,20 @@ canvas {
     }
   }
   /* O percurso da rolagem presa (12/10/2026, no lugar do pin do GSAP): a
-     seção é sticky e fica parada enquanto se rola 170% da altura da tela.
-     Sem 3D (`data-sem3d`, posto pelo controle) ou com "menos movimento" não
-     há mergulho, então não há percurso: a seção rola como as outras. */
+     seção é sticky e fica parada enquanto se rola 170% da altura da tela
+     (100% no celular). Sem 3D (`data-sem3d`, posto pelo controle) ou com
+     "menos movimento" não há mergulho, então não há percurso: a seção rola
+     como as outras. */
   .abertura-percurso {
     height: calc(max(100svh, 640px) + 170svh);
+  }
+  /* No celular o mergulho cabe em uma tela de rolagem (13/10/2026: num
+     celular de verdade a home parecia não acabar; um gesto do dedo já rola
+     quase uma tela, e o alisamento segura o movimento). */
+  @media (max-width: 767px) {
+    .abertura-percurso {
+      height: calc(max(100svh, 640px) + 100svh);
+    }
   }
   .abertura-percurso[data-sem3d] {
     height: auto;
@@ -1327,6 +1342,12 @@ canvas {
     position: relative;
     font-size: clamp(3.6rem, 11vw, 9.5rem);
   }
+  /* no celular as quatro promessas ficam em grade 2 × 2 */
+  @media (max-width: 767px) {
+    .diferencial-destaque {
+      font-size: 2.25rem;
+    }
+  }
   .diferencial-contorno {
     color: transparent;
     -webkit-text-stroke: 1.5px var(--linha-forte);
@@ -1492,6 +1513,12 @@ canvas {
      (sem 3D ou com "menos movimento", nada fica preso e a lista aparece inteira) */
   .raio-x-percurso {
     height: calc(max(100svh, 640px) + 260svh);
+  }
+  /* no celular, 130% da tela (13/10/2026): cada peça ainda fica na tela por um gesto do dedo */
+  @media (max-width: 767px) {
+    .raio-x-percurso {
+      height: calc(max(100svh, 640px) + 130svh);
+    }
   }
   .raio-x-percurso[data-sem3d] {
     height: auto;

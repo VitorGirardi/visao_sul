@@ -8,9 +8,10 @@ import { acompanharPercurso } from "@/lib/rolagem-presa";
 
 /**
  * Transforma a rolagem pelo percurso do Raio-X (a seção fica presa por
- * `position: sticky` enquanto se rola 260% da altura da tela) no progresso
- * da cena, e escreve no CSS o `data-etapa`, que acende o passo certo da
- * lista. Sem 3D não há percurso (`data-sem3d`) e a lista aparece inteira.
+ * `position: sticky` enquanto se rola 260% da altura da tela, 130% no
+ * celular) no progresso da cena, e escreve no CSS o `data-etapa`, que acende
+ * o passo certo da lista. Sem 3D não há percurso (`data-sem3d`) e a lista
+ * aparece inteira.
  *
  * O brilho do céu e o fim (preço e botões) recebem a opacidade e o
  * deslocamento prontos, só quando mudam (13/10/2026). Antes era o `--p`

@@ -140,6 +140,10 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   camadas como propriedade pronta (`opacity`, `translate`), escrita pelo
   controle da cena só no que mudou. O CSS desenha a cena parada. Sem 3D ou
   com "menos movimento", o percurso perde a altura extra e nada fica preso.
+- **Celular compacto** (13/10/2026, a home tinha 23,5 telas e foi para
+  16,3): seção nova da home vem com respiro `py-14 md:py-32` e, no
+  celular, conteúdo em grade ou trilho de arrastar em vez de empilhado. O
+  computador não muda: tudo de celular fica abaixo de `md`.
 - **Entrada na rolagem** em CSS (`.revelar`, `.revelar-escala`, com
   `animation-timeline: view()` sob `@supports`). Nada começa escondido fora do
   `@supports`.

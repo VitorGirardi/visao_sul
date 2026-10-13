@@ -40,10 +40,10 @@ const COREOGRAFIA: [seletor: string, estilo: (p: number) => Estilo][] = [
 
 /**
  * Transforma a rolagem pelo percurso da abertura (a seção fica presa por
- * `position: sticky` enquanto se rola 170% da altura da tela) no progresso
- * do mergulho, de 0 a 1. O progresso vai para a cena 3D (`estadoDaAbertura`)
- * e para as camadas, pela coreografia acima. Também leva o mouse para o olho
- * seguir.
+ * `position: sticky` enquanto se rola 170% da altura da tela, 100% no
+ * celular) no progresso do mergulho, de 0 a 1. O progresso vai para a cena
+ * 3D (`estadoDaAbertura`) e para as camadas, pela coreografia acima. Também
+ * leva o mouse para o olho seguir.
  *
  * PROPRIEDADE PRONTA, NUNCA VARIÁVEL (13/10/2026). Antes, o `--p` era
  * escrito na seção e cada camada fazia a conta no CSS. Só que variável é

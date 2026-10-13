@@ -5,11 +5,16 @@ import { IconeSeta, iconesPorNome } from "@/components/ui/icones";
 import { servicos } from "@/data/servicos";
 import fotoDaPastaTermica from "@/fotos/instagram/pasta-termica.webp";
 
-/** A assistência técnica na página inicial: o que fazem e o chamado aberto ali mesmo. */
+/**
+ * A assistência técnica na página inicial: o que fazem e o chamado aberto ali
+ * mesmo. No celular os serviços ficam só com o nome, em duas colunas (a
+ * explicação de cada um está na página da assistência): a seção passava de
+ * duas telas e meia e escondia o chamado lá embaixo (13/10/2026).
+ */
 export function AssistenciaChamada() {
   return (
-    <section id="assistencia" className="longe-da-tela py-24 md:py-32" aria-labelledby="titulo-da-assistencia">
-      <div className="recipiente grid gap-14 lg:grid-cols-[1fr_minmax(0,30rem)] lg:gap-20">
+    <section id="assistencia" className="longe-da-tela py-14 md:py-32" aria-labelledby="titulo-da-assistencia">
+      <div className="recipiente grid gap-10 md:gap-14 lg:grid-cols-[1fr_minmax(0,30rem)] lg:gap-20">
         <div className="revelar">
           <p className="sobretitulo">Assistência técnica</p>
           <h2 id="titulo-da-assistencia" className="titulo-2 mt-4">
@@ -19,24 +24,24 @@ export function AssistenciaChamada() {
             Na bancada da loja ou na sua casa. Diagnóstico explicado, peça certa e a máquina de volta funcionando.
           </p>
 
-          <ul className="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+          <ul className="mt-7 grid grid-cols-2 gap-x-3 gap-y-3 md:mt-10 md:gap-x-8 md:gap-y-6">
             {servicos.map((s) => {
               const Icone = iconesPorNome[s.icone];
               return (
-                <li key={s.slug} className="flex gap-4">
-                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl border border-linha bg-fundo-2 text-destaque-texto">
+                <li key={s.slug} className="flex items-center gap-3 md:items-start md:gap-4">
+                  <span className="grid size-10 shrink-0 place-items-center rounded-2xl border border-linha bg-fundo-2 text-destaque-texto md:size-11">
                     <Icone tamanho={22} />
                   </span>
                   <div>
-                    <h3 className="font-display font-semibold tracking-tight">{s.titulo}</h3>
-                    <p className="mt-1 text-[0.94rem] leading-relaxed text-texto-2">{s.texto}</p>
+                    <h3 className="font-display text-sm font-semibold leading-tight tracking-tight md:text-base md:leading-normal">{s.titulo}</h3>
+                    <p className="mt-1 text-[0.94rem] leading-relaxed text-texto-2 max-md:hidden">{s.texto}</p>
                   </div>
                 </li>
               );
             })}
           </ul>
 
-          <figure className="mt-12 flex items-center gap-5 rounded-cartao border border-linha bg-fundo-2 p-4">
+          <figure className="mt-8 flex items-center gap-5 rounded-cartao border border-linha bg-fundo-2 p-4 md:mt-12">
             <Image
               src={fotoDaPastaTermica}
               alt="Placa de notebook com a pasta térmica aplicada errado, de um atendimento da Visão Sul"
@@ -52,7 +57,7 @@ export function AssistenciaChamada() {
             </figcaption>
           </figure>
 
-          <Link href="/assistencia" className="btn btn-contorno mt-8">
+          <Link href="/assistencia" className="btn btn-contorno mt-6 md:mt-8">
             Tudo sobre a assistência
             <IconeSeta tamanho={18} />
           </Link>

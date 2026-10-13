@@ -20,7 +20,7 @@ const posts: [StaticImageData, string][] = [
 
 export function Instagram() {
   return (
-    <section className="longe-da-tela py-24 md:py-28" aria-labelledby="titulo-instagram">
+    <section className="longe-da-tela py-14 md:py-28" aria-labelledby="titulo-instagram">
       <div className="recipiente">
         <div className="revelar flex flex-wrap items-end justify-between gap-6">
           <div>
@@ -34,16 +34,17 @@ export function Instagram() {
             {INSTAGRAM.usuario}
           </a>
         </div>
-        <ul className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
+        {/* três por linha também no celular: em duas colunas, os seis posts eram uma tela inteira */}
+        <ul className="mt-8 grid grid-cols-3 gap-2 md:mt-12 md:gap-3 lg:grid-cols-6">
           {posts.map(([foto, descricao]) => (
             <li key={foto.src} className="revelar-escala">
               <a
                 href={INSTAGRAM.href}
                 target="_blank"
                 rel="noopener"
-                className="group relative block aspect-square overflow-hidden rounded-2xl border border-linha"
+                className="group relative block aspect-square overflow-hidden rounded-xl border border-linha md:rounded-2xl"
               >
-                <Image src={foto} alt={descricao} fill sizes="(min-width: 1024px) 16vw, (min-width: 768px) 33vw, 50vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                <Image src={foto} alt={descricao} fill sizes="(min-width: 1024px) 16vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 <span className="absolute inset-0 grid place-items-center bg-black/50 text-white opacity-0 transition-opacity group-hover:opacity-100">
                   <IconeInstagram tamanho={28} />
                 </span>
