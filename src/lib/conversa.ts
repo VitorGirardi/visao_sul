@@ -84,6 +84,27 @@ function interesse(p: URLSearchParams): LinhaDaMensagem[] {
   return [`Tenho interesse no ${negrito(produto.nome)} (${formatarPreco(produto.preco)} no site).`, "Tem disponível?"];
 }
 
+/** O que a pessoa digitou na busca: uma linha, curta e sem os sinais de formatação do WhatsApp, porque vai em negrito. */
+function buscado(valor: string | null): string | undefined {
+  const limpo = (valor ?? "")
+    .replace(/[*_~`]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, TETO_CURTO)
+    .trim();
+  return limpo || undefined;
+}
+
+/**
+ * A busca da vitrine não achou nada (13/10/2026). A conversa já chega com o
+ * que a pessoa procurou: é pedido de produto que a loja ainda não mostra no
+ * site, e no painel vira a lista do que vale encomendar.
+ */
+function encomenda(p: URLSearchParams): LinhaDaMensagem[] {
+  const termo = buscado(p.get("busca"));
+  return [termo ? `Procurei ${negrito(termo)} no site e não achei.` : "Procurei um produto no site e não achei.", "Vocês conseguem encomendar?"];
+}
+
 function teste(p: URLSearchParams): LinhaDaMensagem[] {
   const produto = produtoPorSlug(p.get("produto") ?? "");
   const dia = diaPorExtenso(p.get("dia"));
@@ -148,6 +169,8 @@ export function montarConversa(p: URLSearchParams): LinhaDaMensagem[] {
       return pedido(p);
     case "produto":
       return interesse(p);
+    case "encomenda":
+      return encomenda(p);
     case "teste":
       return teste(p);
     case "chamado":

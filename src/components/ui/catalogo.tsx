@@ -154,10 +154,13 @@ export function Catalogo({
       {achados.size === 0 && (
         <div className="mt-6 flex flex-col items-center gap-4 rounded-cartao border border-dashed border-linha-forte px-6 py-16 text-center">
           <p className="font-display text-2xl font-semibold">Não achamos &ldquo;{busca}&rdquo; na vitrine</p>
-          <p className="max-w-md text-texto-2">A loja encomenda o que você precisa. Manda no WhatsApp que a gente procura para você.</p>
-          <a href={linkDaConversa("contato")} target="_blank" rel="noopener" className="btn btn-primario">
+          <p className="max-w-md text-texto-2">
+            Nem tudo o que a loja vende está no site. Manda no WhatsApp: a mensagem já sai com o que você buscou, e a loja responde se tem ou se consegue trazer.
+          </p>
+          {/* a conversa leva o termo buscado (13/10/2026): a loja já recebe o pedido, sem a pessoa digitar de novo */}
+          <a href={linkDaConversa("encomenda", { busca })} target="_blank" rel="noopener" className="btn btn-primario">
             <IconeWhatsApp />
-            Pedir para a loja
+            Perguntar no WhatsApp
           </a>
         </div>
       )}

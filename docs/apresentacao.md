@@ -40,7 +40,7 @@ Roteiro da reunião em que o Vitor mostra o protótipo (preparado em
 | 1 | Início | Esperar o olho 3D e rolar devagar | "Role para entrar na loja." O site abre pelo olho da marca e mergulha na foto da loja dele |
 | 2 | A loja | Parar no cartão do Marciano | "Quem atende é você. Online desde 2021, agora de portas abertas" |
 | 3 | Raio-X | Rolar pela cena do notebook | O diferencial: ver por dentro antes de levar. Cada peça acende com a ficha |
-| 4 | Vitrine | Passar o mouse nos cartões | O mesmo Raio-X em cada produto |
+| 4 | Vitrine | Passar o mouse nos cartões. Em "Ver produtos", buscar "cadeira gamer" | O mesmo Raio-X em cada produto. E quem não acha o que procura não vai embora: a conversa sai com o que a pessoa buscou |
 | 5 | Ficha do HP Victus | Trocar a foto pelas miniaturas, ligar "Ver no Raio-X", mostrar o teste grátis | "Teste grátis antes de comprar", a frase que mais aparece nos posts dele |
 | 6 | Pedido | Adicionar 2 produtos, abrir a sacola, enviar | O pedido chega pronto no WhatsApp dele, com itens, total, nome e entrega. É o momento de mostrar o celular dele recebendo |
 | 7 | Assistência | Abrir um chamado em 3 toques | Chamado em 30 segundos, mensagem pronta para a loja |
@@ -82,6 +82,8 @@ Cada resposta vira conteúdo do site (detalhes em `PENDENCIAS.md`):
   em Tapejara, teste grátis e atendimento a domicílio ("não importa a hora").
 - Na locação de impressoras: toner incluso? Manutenção sem custo extra?
 - Que serviços a assistência faz e não faz.
+- Ele encomenda o que não está na vitrine? A busca sem resultado já
+  pergunta isso por quem procura, e a home promete "a gente encomenda".
 - Preços reais, ou a tabela dele; usa algum sistema de estoque (Bling)?
 - Logo em vetor (o arquivo do designer), fotos da loja pronta e um domínio.
 

@@ -107,6 +107,26 @@ A "mensagem que chegou" no pedido é a mesma que a rota `/whatsapp` monta
 hoje, e os botões de WhatsApp do painel só mostram e copiam a mensagem:
 com telefones de exemplo, abrir conversa poderia cair em alguém de verdade.
 
+## Busca que vira encomenda (13/10/2026)
+
+Quando a busca da vitrine não acha nada, o botão "Perguntar no WhatsApp"
+abre a conversa já com o termo: "Procurei *xbox series s* no site e não
+achei. Vocês conseguem encomendar?". Antes ele abria um "Quero falar com a
+Visão Sul" genérico, e a pessoa tinha de digitar tudo de novo.
+
+O termo é texto livre, então a rota o trata como trata o nome e a
+observação dos formulários: uma linha só, no máximo 80 caracteres e sem os
+sinais de formatação do WhatsApp (`*`, `_`, `~`), porque vai em negrito.
+
+A mensagem pergunta, não promete: ninguém confirmou ainda que a loja faz
+encomenda (está no `PENDENCIAS.md`). O texto da tela diz que a loja
+"responde se tem ou se consegue trazer". Na fase 2, essas conversas viram a
+lista "buscaram e não acharam" do painel, que a prévia já mostra.
+
+O botão flutuante do WhatsApp passou a perceber também os caminhos que
+aparecem depois de a página abrir, como este, e sai de cena quando ele
+entra na tela.
+
 ## 3D e rolagem (09/10/2026)
 
 O prime-collection tirou three, motion e lenis do site em produção por peso

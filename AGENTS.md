@@ -63,7 +63,7 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
 | rota | arquivo | o que é |
 | --- | --- | --- |
 | `/` | `(site)/page.tsx` | abertura 3D, a loja, marcas, categorias, Raio-X, vitrine, diferenciais, assistência, PC, empresas, Instagram, contato |
-| `/produtos` | `(site)/produtos/page.tsx` + `ui/catalogo.tsx` | vitrine com filtro na URL (`categoria`, `busca`, `ordem`) |
+| `/produtos` | `(site)/produtos/page.tsx` + `ui/catalogo.tsx` | vitrine com filtro na URL (`categoria`, `busca`, `ordem`); a busca sem resultado vira conversa com o termo (assunto `encomenda`) |
 | `/produtos/[slug]` | `(site)/produtos/[slug]/page.tsx` | ficha, galeria com o segundo ângulo, Raio-X por botão, teste grátis, estática (`generateStaticParams`) |
 | `/assistencia` | `(site)/assistencia/page.tsx` | serviços, como funciona, chamado, perguntas |
 | `/empresas` | `(site)/empresas/page.tsx` | locação de impressoras, redes, suporte, equipamentos, proposta |
