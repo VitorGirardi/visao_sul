@@ -89,7 +89,9 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   `next/dynamic`: `olho-3d` (a logo extrudada, em three puro, sem R3F),
   `notebook-3d` (o Raio-X), `gabinete-3d` (o montador), `matcap.ts` (as
   texturas de luz pintadas em canvas que todas usam no lugar de luz e
-  ambiente) e `ritmo.tsx` (o limite de 60 quadros por segundo das cenas R3F).
+  ambiente), `ritmo.tsx` (o limite de 60 quadros por segundo das cenas R3F)
+  e `palco.tsx` (o lugar do `<Canvas>`, com só as peças do three que as
+  cenas desenham).
 - `components/ui/`: `cartao-produto` (com o Raio-X no hover; `densa` são as
   duas colunas do celular no catálogo e no "Combina com este"), `foto-do-produto`,
   `preco` (sempre com o selo "ilustrativo"), `botao-adicionar`, `inclinacao`,
@@ -156,6 +158,10 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   navegador).
 - O 3D nunca entra por import direto numa página: `next/dynamic` de
   componente, com fallback. `three` direto devolve ~150 KB a quem nem vê a cena.
+- Cena do R3F monta no `Palco` (`tres/palco.tsx`), nunca no `<Canvas>`: o
+  Canvas registra o three inteiro (`extend(THREE)`), uns 46 KB gz a mais.
+  Elemento novo numa cena (`<sphereGeometry>`, `<lineSegments>`) entra no
+  `extend` do Palco, senão o R3F para dizendo que não o conhece.
 - `segundas-fotos.ts` só é lido no servidor. A `FotoDoProduto` vai no JS da
   gaveta (em toda página): o segundo ângulo chega a ela por propriedade
   (`outroAngulo`), nunca por import. Importado ali, a gaveta crescia 5 KB gz.
