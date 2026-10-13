@@ -60,7 +60,7 @@ export function linkDaConversa(assunto: Assunto = "contato", campos: Record<stri
   return `${CAMINHO_DA_CONVERSA}?${query.toString()}`;
 }
 
-/** O endereço do WhatsApp de verdade, que só a rota `/whatsapp` monta. */
-export function enderecoNoWhatsApp(...linhas: LinhaDaMensagem[]) {
-  return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(mensagemParaALoja(...linhas))}`;
+/** O endereço do WhatsApp de verdade, que só a rota `/whatsapp` monta. `para` é o número de teste, quando houver. */
+export function enderecoNoWhatsApp(linhas: LinhaDaMensagem[], para: string = WHATSAPP) {
+  return `https://wa.me/${para}?text=${encodeURIComponent(mensagemParaALoja(...linhas))}`;
 }

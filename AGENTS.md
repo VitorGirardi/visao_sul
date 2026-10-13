@@ -39,7 +39,8 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   dois primeiros.
 - `docs/decisoes/site-publico.md`: as decisões, com data e motivo.
   `docs/decisoes/desempenho.md`: as medições e o porquê de cada regra de
-  desempenho.
+  desempenho. `docs/apresentacao.md`: o roteiro da reunião com o Marciano
+  (teste no celular, número de teste, ordem da demonstração, perguntas).
 - `referencias/` (FORA do git): o levantamento bruto. Instagram (legendas,
   posts), a foto da loja, a lâmina da logo, as fotos originais dos produtos
   com `fontes.json` (de onde veio cada uma) e `levantamento.md`.
@@ -48,9 +49,14 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   `src/data/fotos-de-produto.ts` e `src/data/segundas-fotos.ts`.
   `scripts/marca/`: a vetorização da logo (`logo-final.mjs`,
   `letreiro-curvas.mjs`) e `gerar-icones.mjs` (favicon, apple-icon, imagem
-  de compartilhamento).
+  de compartilhamento). `scripts/apresentar.mjs` (`npm run apresentar`):
+  build de produção servido na rede Wi-Fi, com os endereços e para onde vão
+  as mensagens do WhatsApp.
 - `.claude/launch.json`: `visao-sul` (`npm run dev`, porta 3010) e
   `visao-sul-producao` (`next start -p 3110`). A 3000 é do amagejumpy.
+- `WHATSAPP_DE_TESTE` no `.env.local` (fora do git): a rota `/whatsapp` manda
+  toda conversa para esse número, com "Teste do site" no começo. Sem ela, vai
+  para a loja.
 
 ### Rotas (`src/app`)
 

@@ -15,7 +15,12 @@ empresas e montador de PC gamer, com 3D e animação de rolagem.
 ```bash
 npm ci
 npm run dev          # http://localhost:3010
+npm run apresentar   # build + servidor na rede Wi-Fi, para abrir no celular
 ```
+
+Para a reunião com o Marciano, siga `docs/apresentacao.md`: ele explica o
+teste no celular e a chave `WHATSAPP_DE_TESTE` do `.env.local`, que manda as
+mensagens para o seu número em vez do da loja.
 
 ## Portões antes de subir
 
