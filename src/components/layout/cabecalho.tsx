@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AlternarTema } from "@/components/layout/alternar-tema";
 import { BotaoPedido } from "@/components/layout/botao-pedido";
+import { BuscaRapida } from "@/components/layout/busca-rapida";
 import { Marca } from "@/components/layout/marca";
 import { MenuMovel } from "@/components/layout/menu-movel";
 import { NavPrincipal } from "@/components/layout/nav-principal";
@@ -27,7 +28,9 @@ export function Cabecalho() {
         <div className="ml-auto flex items-center gap-1.5 md:gap-2">
           <NavPrincipal />
           <span className="mx-2 hidden h-6 w-px bg-linha lg:block" aria-hidden />
-          <AlternarTema />
+          <BuscaRapida />
+          {/* no celular o tema fica dentro do menu: a barra não tem lugar para os quatro botões */}
+          <AlternarTema className="max-sm:hidden" />
           <BotaoPedido />
           <a
             href={linkDaConversa()}
@@ -36,7 +39,8 @@ export function Cabecalho() {
             className="btn btn-primario btn-pequeno ml-1 hidden md:inline-flex"
           >
             <IconeWhatsApp tamanho={18} />
-            WhatsApp
+            {/* entre 1024 e 1279 px, com o menu ao lado, só o ícone (o nome fica para o leitor de tela) */}
+            <span className="lg:max-xl:sr-only">WhatsApp</span>
           </a>
           <MenuMovel />
         </div>

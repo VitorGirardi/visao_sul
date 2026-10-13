@@ -97,6 +97,13 @@ export const IconeFechar = (p: Props) => (
   </Base>
 );
 
+export const IconeLupa = (p: Props) => (
+  <Base {...p}>
+    <circle cx="11" cy="11" r="6.5" />
+    <path d="m16 16 4.5 4.5" />
+  </Base>
+);
+
 export const IconeMenu = (p: Props) => (
   <Base {...p}>
     <path d="M4 8h16M4 16h16" />

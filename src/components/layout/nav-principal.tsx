@@ -20,8 +20,9 @@ export function NavPrincipal() {
                 // "A loja" é a própria página inicial: sem prefetch, a home não baixa a si mesma (34 KB)
                 prefetch={item.href.startsWith("/#") ? false : undefined}
                 aria-current={atual ? "page" : undefined}
+                // entre 1024 e 1279 px a folga encolhe: com a lupa no topo, "Monte seu PC" quebrava em duas linhas
                 className={cn(
-                  "group relative inline-flex h-10 items-center rounded-full px-4 text-[0.94rem] font-semibold transition-colors hover:text-texto",
+                  "group relative inline-flex h-10 items-center whitespace-nowrap rounded-full px-3 text-[0.94rem] font-semibold transition-colors hover:text-texto xl:px-4",
                   atual ? "text-texto" : "text-texto-2",
                 )}
               >
