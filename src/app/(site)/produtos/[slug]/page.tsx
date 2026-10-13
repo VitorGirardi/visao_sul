@@ -93,6 +93,14 @@ export default async function PaginaDoProduto({ params }: PageProps<"/produtos/[
                 </li>
               ))}
             </ul>
+            {produto.categoria === "notebooks" && (
+              <p className="mt-4 text-sm text-texto-2">
+                Não sabe se é este?{" "}
+                <Link href="/qual-notebook" className="font-semibold text-texto underline underline-offset-4 hover:text-destaque-texto">
+                  Veja qual notebook é para você
+                </Link>
+              </p>
+            )}
 
             <div className="mt-8 rounded-cartao border border-linha bg-fundo-2 p-6">
               <Preco valor={produto.preco} de={produto.precoDe} tamanho="grande" />

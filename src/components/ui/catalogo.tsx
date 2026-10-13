@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useSyncExternalStore, type ReactNode } from "react";
-import { IconeFechar, IconeWhatsApp } from "@/components/ui/icones";
+import { IconeFechar, IconeSeta, IconeWhatsApp } from "@/components/ui/icones";
 import { linkDaConversa } from "@/data/contato";
 import { atendeABusca, termosDaBusca } from "@/lib/busca";
 
@@ -149,6 +150,20 @@ export function Catalogo({
           </button>
         )}
       </div>
+
+      {/* em dúvida entre os notebooks, o guia de duas perguntas (13/10/2026) */}
+      {categoria === "notebooks" && (
+        <Link
+          href="/qual-notebook"
+          className="mt-5 flex items-center justify-between gap-4 rounded-cartao border border-destaque/40 bg-destaque/10 px-5 py-4 transition-colors hover:border-destaque"
+        >
+          <span>
+            <span className="block font-display font-semibold">Em dúvida entre os notebooks?</span>
+            <span className="block text-sm text-texto-2">Duas perguntas e a loja indica o certo para você.</span>
+          </span>
+          <IconeSeta tamanho={20} className="shrink-0 text-destaque-texto" />
+        </Link>
+      )}
 
       <div ref={grade}>{children}</div>
 
