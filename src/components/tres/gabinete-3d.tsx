@@ -1,11 +1,12 @@
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
-import { Canvas, useFrame, useThree, type ThreeElements } from "@react-three/fiber";
+import { useFrame, useThree, type ThreeElements } from "@react-three/fiber";
 import { useEffect, useEffectEvent, useRef, useState, useSyncExternalStore } from "react";
 import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { matcap, MATCAPS, type ReceitaDeMatcap } from "@/components/tres/matcap";
+import { Palco } from "@/components/tres/palco";
 import { prepararRenderizador, Ritmo } from "@/components/tres/ritmo";
 import { useTema } from "@/lib/tema";
 
@@ -325,7 +326,7 @@ export default function Gabinete3D({ cor, porte, aoFicarPronto }: { cor: string;
 
   return (
     <div ref={caixa} className="absolute inset-0 transition-opacity duration-700" style={{ opacity: pronto ? 1 : 0 }}>
-      <Canvas
+      <Palco
         flat
         frameloop={ativo ? "demand" : "never"}
         dpr={[1, 1.25]}
@@ -349,7 +350,7 @@ export default function Gabinete3D({ cor, porte, aoFicarPronto }: { cor: string;
           }}
         />
         {ativo && <Ritmo />}
-      </Canvas>
+      </Palco>
     </div>
   );
 }

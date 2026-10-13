@@ -158,13 +158,31 @@ Dois tropeços no caminho, que viraram regra:
   Agora ela entra no `load`, com o navegador ocioso, ou na hora em que a
   pessoa rola o trilho.
 
+## 3D mais leve (13/10/2026)
+
+O `<Canvas>` do R3F registra o three inteiro (`extend(THREE)`) para aceitar
+qualquer elemento. As cenas do Raio-X e do Monte seu PC passaram a montar
+no `Palco` (`tres/palco.tsx`): uma raiz própria (`createRoot`) com `extend`
+só das nove peças que elas desenham, e sem o sistema de eventos do R3F
+(nenhuma cena usa clique em objeto; o OrbitControls ouve a própria tela).
+
+| | antes | depois |
+| --- | --- | --- |
+| chunk das cenas do R3F | 184 KB gz (739 KB) | 146 KB gz (585 KB) |
+| chunk do núcleo do three | 61 KB gz | 53 KB gz |
+| JS da home com o 3D (celular / computador) | 395 / 421 KB | 358 / 383 KB |
+| JS do Monte seu PC com o 3D (celular / computador) | 443 / 465 KB | 397 / 419 KB |
+| Raio-X, computador (média de 4) | 116 fps | 115 fps |
+| vitrine, computador (média de 4) | 134 fps | 134 fps |
+| tarefas longas da home parada (média de 9) | 429 ms | 413 ms |
+
+Medido contra o commit `89ed7e7`, as duas versões em produção, alternadas.
+Uma rodada só engana: o mergulho (a cena do olho, que não mudou) variou de
+66 a 95 fps entre rodadas da mesma versão.
+
 ## Para depois
 
 - Medir num celular de verdade (Android médio e iPhone) antes da reunião.
-- O chunk do 3D ainda leva o three inteiro, porque o `<Canvas>` do R3F
-  registra o catálogo todo. Dá para tirar com uma raiz própria
-  (`createRoot` + `extend` só do que se usa) no notebook e no gabinete:
-  estimados 25 a 35 KB gz.
 
 ## Como medir
 

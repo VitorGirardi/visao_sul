@@ -1,11 +1,12 @@
 "use client";
 
 import { RoundedBox } from "@react-three/drei";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { MATCAPS, matcap, type ReceitaDeMatcap } from "@/components/tres/matcap";
+import { Palco } from "@/components/tres/palco";
 import { prepararRenderizador, Ritmo } from "@/components/tres/ritmo";
 import { ANEL, LAMINA } from "@/data/marca";
 import { etapaAtual, etapasDoRaioX, type PecaDoRaioX } from "@/data/raio-x";
@@ -700,7 +701,7 @@ export default function Notebook3D({ aoFicarPronto }: { aoFicarPronto?: () => vo
     <div ref={caixa} className="absolute inset-0">
       {/* `flat` = sem tone mapping: o matcap já é a cor final, e o ACES desbotava o amarelo.
           `demand` + `Ritmo`: no máximo 60 quadros por segundo, mesmo na tela de 144 Hz */}
-      <Canvas
+      <Palco
         frameloop={visivel ? "demand" : "never"}
         dpr={[1, 1.25]}
         flat
@@ -712,7 +713,7 @@ export default function Notebook3D({ aoFicarPronto }: { aoFicarPronto?: () => vo
           <Notebook escuro={escuro} etiqueta={etiqueta} aoFicarPronto={aoFicarPronto} />
         </DepoisDoPrimeiroQuadro>
         {visivel && <Ritmo />}
-      </Canvas>
+      </Palco>
       {/* a etiqueta da peça acesa (posta no lugar por `posicionarEtiqueta`, a cada quadro) */}
       <div ref={etiqueta} className="pointer-events-none absolute left-0 top-0 z-20" style={{ willChange: "transform" }} aria-hidden />
     </div>
