@@ -7,25 +7,31 @@ import { cn, formatarPreco } from "@/lib/utils";
 import { AparelhoDoChamado, TD, TH } from "../comum";
 import { usePainel } from "../estado";
 import { etapasDoChamado, haDias, plural, prazo, proximaEtapa } from "../formato";
-import { Botao, Cartao, Chip, Filtros, JanelaDeMensagem, TituloDaPagina } from "../ui";
+import { Botao, BotaoLink, Cartao, Chip, Filtros, JanelaDeMensagem, TituloDaPagina } from "../ui";
 
 /**
  * OS CHAMADOS TÉCNICOS, por etapa da bancada (as do ERP de oficina da Amage,
  * encurtadas). Cada um anda com o verbo da vez, e o orçamento e o "está
- * pronto" saem como mensagem pronta para o cliente.
+ * pronto" saem como mensagem pronta para o cliente, sempre com o link da
+ * página do conserto (`/conserto/<número>`, 13/10/2026).
  */
 type Filtro = EtapaDoChamado | "abertos";
 
 const ORDEM: EtapaDoChamado[] = ["recebido", "diagnostico", "aprovacao", "conserto", "peca", "pronto", "entregue"];
 const primeiroNome = (cliente: string) => cliente.split(" ")[0];
 
+/** A página que o cliente acompanha (`/conserto/<número>`). Só roda no navegador: o painel inteiro é montado no cliente. */
+const paginaDoConserto = (c: Chamado) => `${window.location.origin}/conserto/${c.numero}`;
+
 function mensagem(c: Chamado) {
   const ola = `Olá, ${primeiroNome(c.cliente)}! Aqui é o Marciano, da Visão Sul.`;
   const aparelho = aparelhoPorValor(c.aparelho)?.rotulo.toLowerCase() ?? "aparelho";
-  if (c.etapa === "pronto") return `${ola}\nSeu ${aparelho} está pronto (chamado *${c.numero}*). ${c.local === "loja" ? "Pode passar na loja para retirar." : "Combino com você a hora de levar."}`;
+  // toda mensagem leva o link do conserto: o cliente acompanha sem precisar perguntar
+  const acompanhe = `\n\nAcompanhe o conserto por aqui: ${paginaDoConserto(c)}`;
+  if (c.etapa === "pronto") return `${ola}\nSeu ${aparelho} está pronto (chamado *${c.numero}*). ${c.local === "loja" ? "Pode passar na loja para retirar." : "Combino com você a hora de levar."}${acompanhe}`;
   if (c.etapa === "aprovacao" || c.etapa === "diagnostico")
-    return `${ola}\nOrçamento do chamado *${c.numero}* (${aparelho}, ${c.problema.toLowerCase()}):\n${c.anotacao ?? "Diagnóstico feito."}\nValor: *${c.orcamento ? formatarPreco(c.orcamento) : "a combinar"}*\n\nPosso fazer o conserto?`;
-  return `${ola}\nSobre o chamado *${c.numero}* (${aparelho}): ${etapasDoChamado[c.etapa].rotulo.toLowerCase()}. Qualquer novidade eu aviso por aqui.`;
+    return `${ola}\nOrçamento do chamado *${c.numero}* (${aparelho}, ${c.problema.toLowerCase()}):\n${c.anotacao ?? "Diagnóstico feito."}\nValor: *${c.orcamento ? formatarPreco(c.orcamento) : "a combinar"}*\n\nPosso fazer o conserto? Dá para aprovar pela página do conserto.${acompanhe}`;
+  return `${ola}\nSobre o chamado *${c.numero}* (${aparelho}): ${etapasDoChamado[c.etapa].rotulo.toLowerCase()}. Qualquer novidade eu aviso por aqui.${acompanhe}`;
 }
 
 export function ListaDeChamados() {
@@ -145,6 +151,10 @@ export function ListaDeChamados() {
               {escolhido.etapa !== "entregue" && (
                 <Botao onClick={() => setJanela({ titulo: "Avisar no WhatsApp", texto: mensagem(escolhido), para: `${escolhido.cliente}, ${escolhido.telefone}` })}>Avisar no WhatsApp</Botao>
               )}
+              {/* a página de exemplo mostra a etapa da amostra, não a que foi andada aqui */}
+              <BotaoLink href={`/conserto/${escolhido.numero}`} prefetch={false} target="_blank" rel="noopener">
+                Ver como o cliente vê
+              </BotaoLink>
             </div>
           </Cartao>
         ) : (

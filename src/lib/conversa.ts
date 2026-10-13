@@ -105,6 +105,23 @@ function encomenda(p: URLSearchParams): LinhaDaMensagem[] {
   return [termo ? `Procurei ${negrito(termo)} no site e não achei.` : "Procurei um produto no site e não achei.", "Vocês conseguem encomendar?"];
 }
 
+const SOBRE_A_OS: Record<string, string> = {
+  aprovar: "Aprovo o orçamento. Pode fazer o conserto.",
+  duvida: "Tenho uma dúvida sobre o orçamento.",
+  retirar: "Quero combinar a retirada.",
+};
+
+/**
+ * A resposta do cliente na página do conserto (13/10/2026, prévia da fase
+ * 2). Do navegador vem só o número, conferido no formato; quando o painel
+ * existir, é aqui que a aprovação anda o chamado sozinha.
+ */
+function ordemDeServico(p: URLSearchParams): LinhaDaMensagem[] {
+  const numero = /^\d{4}$/.test(p.get("numero") ?? "") ? p.get("numero") : null;
+  if (!numero) return ["Quero falar sobre um conserto."];
+  return [`Sobre o conserto *OS ${numero}*:`, SOBRE_A_OS[p.get("acao") ?? ""] ?? "Quero falar sobre ele."];
+}
+
 function teste(p: URLSearchParams): LinhaDaMensagem[] {
   const produto = produtoPorSlug(p.get("produto") ?? "");
   const dia = diaPorExtenso(p.get("dia"));
@@ -175,6 +192,8 @@ export function montarConversa(p: URLSearchParams): LinhaDaMensagem[] {
       return teste(p);
     case "chamado":
       return chamado(p);
+    case "os":
+      return ordemDeServico(p);
     case "empresa":
       return empresa(p);
     case "pc":
