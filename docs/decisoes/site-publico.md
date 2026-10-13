@@ -53,6 +53,20 @@ no celular, troca pelas miniaturas embaixo, e o Raio-X mostra o ângulo que
 está na tela. Sem biblioteca de carrossel: o arrasto é a rolagem do próprio
 navegador. Produto com uma foto só fica como era.
 
+## Fichas conferidas (13/10/2026)
+
+Antes de mostrar a um dono de loja de informática, as fichas dos 26 produtos
+foram conferidas item a item contra a página do fabricante (334 itens: 303
+certos, 8 errados, 23 sem como confirmar). Corrigido com fonte oficial: o
+PS5 Slim Digital de hoje tem 825 GB (não 1 TB), o iPhone 17 Pro não é o topo
+da linha (é o Pro Max), o iPhone 17 é o "padrão" (o de entrada é o 17e), o
+HyperX tem DTS Headphone:X, e a Epson rende 4.500 páginas em preto OU 7.500
+coloridas. Também foram ajustados textos que prometiam mais que a fonte
+(Chromecast só com HDMI, bateria do Garmin de até 68 h). As promessas da
+loja foram conferidas post a post: o "não importa a hora" virou "até no fim
+de semana", que é o que o post dizia. O que depende do Marciano está no
+`PENDENCIAS.md`; o relatório completo ficou fora do repositório.
+
 ## Acabamento antes da reunião (13/10/2026)
 
 O Vitor pediu o protótipo "perfeito" antes de mostrar ao Marciano. Uma

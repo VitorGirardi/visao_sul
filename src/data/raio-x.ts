@@ -23,7 +23,7 @@ export const etapasDoRaioX: { peca: PecaDoRaioX; rotulo: string; titulo: string;
     peca: "placa-de-video",
     rotulo: "RTX 4050 · 6 GB",
     titulo: "GeForce RTX 4050 com 6 GB",
-    texto: "Ray tracing e DLSS: jogos atuais em Full HD com folga.",
+    texto: "Ray tracing e DLSS: jogos atuais em Full HD com boa fluidez.",
     de: 0.53,
     ate: 0.64,
   },

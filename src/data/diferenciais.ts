@@ -9,6 +9,11 @@
  *   "Entrega gratuita! Receba em casa!" / "Entrega imediata!" (2023)
  *   "Abre o chamado e vamos até vocês! Não importa a hora!"  (18/10/2024)
  *
+ * Conferido post a post em 13/10/2026: o "não importa a hora" era uma
+ * entrega no fim de semana (não chamado técnico a qualquer hora), o teste
+ * grátis dos posts é de notebook e caixa JBL (não de console), e a entrega
+ * grátis não diz área. O texto segue isso.
+ *
  * `destaque` é a palavra grande da tela; não é número inventado.
  */
 export const diferenciais = [
@@ -20,16 +25,16 @@ export const diferenciais = [
   {
     destaque: "R$ 0",
     titulo: "Teste grátis antes de comprar.",
-    texto: "Agende, venha até a loja e teste o notebook, ouça a caixa de som, jogue no console. Só leva se gostar.",
+    texto: "Agende e venha testar o notebook ou ouvir a caixa de som na loja, antes de levar.",
   },
   {
     destaque: "Hoje",
     titulo: "Entrega imediata.",
-    texto: "Produto em estoque sai na hora, com entrega grátis em Tapejara. Receba em casa já configurado.",
+    texto: "Produto em estoque sai na hora, e a entrega é grátis: receba em casa, já configurado.",
   },
   {
     destaque: "Até você",
     titulo: "Atendimento a domicílio.",
-    texto: "Abriu o chamado, a gente vai até a sua casa ou empresa. Não importa a hora.",
+    texto: "Abriu o chamado, a gente vai até a sua casa ou empresa, até no fim de semana.",
   },
 ] as const;
