@@ -13,7 +13,8 @@ import { cn } from "@/lib/utils";
  *
  * No celular o quadro pequeno tem uns 130 px úteis: a seta e a chamada saem,
  * e a contagem sobe para baixo do nome. Com elas, "iPhone e Apple" quebrava
- * em três linhas e a foto cobria a contagem (13/10/2026).
+ * em três linhas e a foto cobria a contagem (13/10/2026). E os quadros são
+ * mais baixos, com a foto menor: o mosaico ocupava mais de duas telas.
  */
 /** Quadros largos e baixos: a foto fica menor, senão sai pelo teto. */
 const largo: Record<string, boolean> = { celulares: true, campo: true };
@@ -28,7 +29,7 @@ const contagem = (quantos: number) => `${quantos} ${quantos === 1 ? "produto" : 
 
 export function CategoriasEmDestaque() {
   return (
-    <section className="py-24 md:py-32" aria-labelledby="titulo-das-categorias">
+    <section className="py-14 md:py-32" aria-labelledby="titulo-das-categorias">
       <div className="recipiente">
         <div className="revelar flex flex-wrap items-end justify-between gap-6">
           <div>
@@ -43,7 +44,7 @@ export function CategoriasEmDestaque() {
           </Link>
         </div>
 
-        <div className="mt-12 grid auto-rows-[15rem] grid-cols-2 gap-3 md:auto-rows-[16.5rem] md:grid-cols-4 md:gap-4">
+        <div className="mt-8 grid auto-rows-[minmax(9.5rem,auto)] grid-cols-2 gap-3 md:mt-12 md:auto-rows-[16.5rem] md:grid-cols-4 md:gap-4">
           {categorias.map((categoria) => {
             const capa = produtoPorSlug(categoria.capa);
             const quantos = produtos.filter((p) => p.categoria === categoria.slug).length;
@@ -77,16 +78,16 @@ export function CategoriasEmDestaque() {
                       className={cn(
                         "categoria-capa pointer-events-none absolute",
                         grande
-                          ? "-bottom-[10%] -right-[4%] w-[58%] md:-bottom-[6%] md:-right-[6%] md:w-[82%]"
+                          ? "-bottom-[12%] -right-[4%] w-[46%] md:-bottom-[6%] md:-right-[6%] md:w-[82%]"
                           : largo[categoria.slug]
-                            ? "-bottom-[10%] right-[2%] w-[44%] md:w-[38%]"
-                            : "-bottom-[12%] -right-[10%] w-[66%]",
+                            ? "-bottom-[10%] right-[2%] w-[38%]"
+                            : "-bottom-[14%] -right-[8%] w-[50%] md:-bottom-[12%] md:-right-[10%] md:w-[66%]",
                       )}
                     >
                       {/* sizes medidos na largura real da capa em 390, 768 e 1440 px (antes vinha foto até 2,4 vezes maior) */}
                       <FotoDoProduto
                         produto={capa}
-                        sizes={grande ? "(min-width: 768px) 34vw, 52vw" : largo[categoria.slug] ? "(min-width: 768px) 16vw, 20vw" : "(min-width: 768px) 14vw, 29vw"}
+                        sizes={grande ? "(min-width: 768px) 34vw, 42vw" : largo[categoria.slug] ? "(min-width: 768px) 16vw, 17vw" : "(min-width: 768px) 14vw, 22vw"}
                       />
                     </div>
                   )}
@@ -96,7 +97,7 @@ export function CategoriasEmDestaque() {
           })}
           <Link
             href="/monte-seu-pc"
-            className="revelar-escala col-span-2 flex flex-col justify-between overflow-hidden rounded-cartao bg-destaque p-6 text-sobre-destaque transition-transform hover:-translate-y-1"
+            className="revelar-escala col-span-2 flex flex-col justify-between overflow-hidden rounded-cartao bg-destaque p-5 text-sobre-destaque transition-transform hover:-translate-y-1 md:p-6"
           >
             <p className="font-mono text-xs uppercase tracking-[0.2em]">Não achou?</p>
             <div className="flex items-end justify-between gap-4">

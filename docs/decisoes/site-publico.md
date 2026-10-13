@@ -107,6 +107,44 @@ A "mensagem que chegou" no pedido é a mesma que a rota `/whatsapp` monta
 hoje, e os botões de WhatsApp do painel só mostram e copiam a mensagem:
 com telefones de exemplo, abrir conversa poderia cair em alguém de verdade.
 
+## Home compacta no celular (13/10/2026)
+
+Aberta num celular de verdade, a home ficou "muito extensa". Medida: 23,5 telas
+de 844 px, das quais 4,3 de rolagem presa (o mergulho e o Raio-X). Sem tirar
+conteúdo e sem mexer no computador (prints da home, da assistência e de
+empresas idênticos pixel a pixel), ela foi para 16,3 telas:
+
+- **Rolagem presa mais curta:** o mergulho passa em uma tela de rolagem
+  (era 1,7) e o Raio-X em 1,3 (era 2,6). Um gesto do dedo rola quase uma
+  tela, e o alisamento segura o movimento; o Raio-X ainda passa pelas cinco
+  peças.
+- **Respiro de celular:** as seções tinham 96 px de folga em cima e embaixo;
+  agora 56 (`py-14 md:py-32`). Só isso somava mais de uma tela.
+- **Mesmo conteúdo, mais denso:** categorias em quadros mais baixos;
+  diferenciais em grade 2 × 2; serviços da assistência com ícone e nome em
+  duas colunas (a explicação de cada um fica na página da assistência);
+  empresas num trilho de arrastar, com o próximo cartão aparecendo na
+  borda; Instagram em três colunas; foto da loja e gabinete do PC menores.
+- **Rodapé:** navegação e categorias lado a lado, em todas as páginas (de
+  1,7 para 1,3 tela).
+
+| seção | antes | depois |
+| --- | --- | --- |
+| abertura (com o mergulho) | 2,7 | 2,0 |
+| a loja | 1,9 | 1,6 |
+| categorias | 2,3 | 1,5 |
+| Raio-X (com a rolagem presa) | 3,6 | 2,3 |
+| diferenciais | 1,6 | 0,9 |
+| assistência | 2,9 | 2,1 |
+| Monte seu PC | 1,6 | 1,3 |
+| empresas | 2,4 | 1,0 |
+| Instagram | 1,1 | 0,7 |
+| rodapé | 1,7 | 1,3 |
+| **home inteira** | **23,5** | **16,3** |
+
+O que sobrou é quase todo experiência (o mergulho e o Raio-X) e o
+formulário de chamado, que é o ponto de conversa da assistência.
+
 ## Busca que vira encomenda (13/10/2026)
 
 Quando a busca da vitrine não acha nada, o botão "Perguntar no WhatsApp"

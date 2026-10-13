@@ -18,12 +18,13 @@ export function ALoja() {
   return (
     <section
       id="loja"
-      className="relative z-10 -mt-10 overflow-hidden rounded-t-[2.5rem] border-t border-linha bg-fundo py-24 md:-mt-14 md:rounded-t-[3.5rem] md:py-32"
+      className="relative z-10 -mt-10 overflow-hidden rounded-t-[2.5rem] border-t border-linha bg-fundo py-14 md:-mt-14 md:rounded-t-[3.5rem] md:py-32"
       aria-labelledby="titulo-da-loja"
     >
       <div className="recipiente grid items-center gap-14 lg:grid-cols-[1.02fr_1fr] lg:gap-20">
         <div className="revelar relative mx-auto w-full max-w-[34rem] lg:max-w-none">
-          <figure className="relative aspect-[4/5] overflow-hidden rounded-squircle border border-linha shadow-[var(--sombra)]">
+          {/* mais baixa no celular: em 4 × 5 a foto sozinha passava de meia tela */}
+          <figure className="relative aspect-[6/5] overflow-hidden rounded-squircle border border-linha shadow-[var(--sombra)] md:aspect-[4/5]">
             <Image
               src={fotoDaLoja}
               alt="Interior da Visão Sul em Tapejara: prateleiras com PS5, caixas JBL, Alexa e roteadores, e o letreiro aceso no fundo"
@@ -53,7 +54,7 @@ export function ALoja() {
             assistência técnica e o atendimento direto com quem entende.
           </p>
 
-          <div className="cartao mt-9 flex gap-5 p-5 md:p-6">
+          <div className="cartao mt-7 flex gap-5 p-5 md:mt-9 md:p-6">
             <div className="relative grid size-16 shrink-0 place-items-center rounded-full bg-fundo-3 ring-2 ring-destaque/70 ring-offset-4 ring-offset-fundo-2">
               <Marca arranjo="simbolo" titulo="" className="w-9" />
             </div>
@@ -64,7 +65,7 @@ export function ALoja() {
             </div>
           </div>
 
-          <ul className="mt-8 grid gap-3 text-[0.97rem] text-texto-2 sm:grid-cols-2">
+          <ul className="mt-6 grid gap-3 text-[0.97rem] text-texto-2 sm:grid-cols-2 md:mt-8">
             <li className="flex items-center gap-3">
               <IconeLocal className="shrink-0 text-destaque-texto" />
               {enderecoOuEmBreve()}
@@ -85,7 +86,7 @@ export function ALoja() {
             </li>
           </ul>
 
-          <div className="mt-9 flex flex-wrap gap-3">
+          <div className="mt-7 flex flex-wrap gap-3 md:mt-9">
             <a href={linkDaConversa("teste")} target="_blank" rel="noopener" className="btn btn-primario">
               <IconeCalendario tamanho={18} />
               Agendar um teste grátis

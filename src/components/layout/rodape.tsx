@@ -7,14 +7,19 @@ import { enderecoOuEmBreve, horarioOuEmBreve } from "@/data/loja";
 import { navegacao } from "@/data/navegacao";
 import { AVISO_DE_PRECO, LEMA } from "@/data/site";
 
+/**
+ * O rodapé de toda página. No celular, as listas de navegação e de categorias
+ * ficam lado a lado (13/10/2026): empilhadas, o rodapé passava de uma tela e
+ * meia em cada página.
+ */
 export function Rodape() {
   return (
     <footer className="longe-da-tela relative overflow-hidden border-t border-linha bg-fundo-2">
       <div className="arcos pointer-events-none absolute inset-0 opacity-70" aria-hidden />
-      <div className="recipiente relative pb-10 pt-16 md:pt-24">
-        <div className="grid gap-12 lg:grid-cols-[1.2fr_2fr]">
+      <div className="recipiente relative pb-8 pt-12 md:pb-10 md:pt-24">
+        <div className="grid gap-10 md:gap-12 lg:grid-cols-[1.2fr_2fr]">
           <div className="max-w-sm">
-            <Marca arranjo="empilhada" className="w-48 md:w-56" />
+            <Marca arranjo="empilhada" className="w-40 md:w-56" />
             <p className="mt-6 font-display text-2xl font-semibold tracking-tight">{LEMA}</p>
             <p className="mt-3 text-texto-2">Online desde 2021. Agora também de portas abertas em Tapejara.</p>
             <a href={linkDaConversa()} target="_blank" rel="noopener" className="btn btn-primario mt-6">
@@ -23,8 +28,8 @@ export function Rodape() {
             </a>
           </div>
 
-          <div className="grid gap-10 sm:grid-cols-3">
-            <div>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-9 sm:grid-cols-3 sm:gap-10">
+            <div className="col-span-2 sm:col-span-1">
               <p className="rotulo-mono mb-4">A loja</p>
               <ul className="space-y-3 text-texto-2">
                 <li className="flex gap-2.5">
@@ -70,7 +75,7 @@ export function Rodape() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-3 border-t border-linha pt-6 text-xs text-texto-3 md:flex-row md:items-center md:justify-between">
+        <div className="mt-10 flex flex-col gap-3 border-t border-linha pt-6 text-xs text-texto-3 md:mt-16 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} Visão Sul Informática · Tapejara/RS</p>
           <p>{AVISO_DE_PRECO}</p>
           <p>Protótipo de site · Amage</p>

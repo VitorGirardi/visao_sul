@@ -7,7 +7,7 @@ import { maisProcurados } from "@/data/produtos";
 /** "Os mais procurados": a vitrine que anda de lado, com o Raio-X em cada cartão. */
 export function Vitrine() {
   return (
-    <section className="vitrine relative py-20 lg:py-0" aria-labelledby="titulo-da-vitrine">
+    <section className="vitrine relative py-14 md:py-20 lg:py-0" aria-labelledby="titulo-da-vitrine">
       <TrilhoHorizontal
         cabeca={
           <div className="flex flex-wrap items-end justify-between gap-6">
