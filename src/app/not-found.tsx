@@ -4,7 +4,8 @@ import { Marca } from "@/components/layout/marca";
 /** 404: o olho procurou e não achou. */
 export default function NaoEncontrada() {
   return (
-    <main className="relative grid min-h-svh place-items-center overflow-hidden px-6 text-center">
+    // o id é o destino do "pular para o conteúdo" do layout raiz
+    <main id="conteudo" className="relative grid min-h-svh place-items-center overflow-hidden px-6 text-center">
       <div className="grade-de-fundo absolute inset-0 opacity-60" aria-hidden />
       <div className="relative">
         <Marca arranjo="simbolo" titulo="" className="mx-auto w-28 drop-shadow-[0_0_30px_rgb(236_181_0/0.5)]" />

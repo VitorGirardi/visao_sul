@@ -53,6 +53,28 @@ no celular, troca pelas miniaturas embaixo, e o Raio-X mostra o ângulo que
 está na tela. Sem biblioteca de carrossel: o arrasto é a rolagem do próprio
 navegador. Produto com uma foto só fica como era.
 
+## Acabamento antes da reunião (13/10/2026)
+
+O Vitor pediu o protótipo "perfeito" antes de mostrar ao Marciano. Uma
+auditoria tela a tela (computador e celular) achou e corrigiu:
+
+- **Catálogo no celular em duas colunas** (`CartaoProduto densa`): com uma
+  coluna, os 26 produtos ocupavam 22 telas. O cartão denso perde as fichas e
+  o selo de teste, e o botão de adicionar vai para o canto da foto. O selo
+  "ilustrativo" fica.
+- **"Combina com este" por afinidade** (`combinaCom` em `data/categorias.ts`):
+  o HP Victus sugeria iPhone; agora sugere headset, teclado, monitor e HD.
+- **Quadros de categoria no celular**: sem seta nem chamada, com a contagem
+  embaixo do nome. "iPhone e Apple" quebrava em três linhas.
+- **Texto da vitrine pelo tipo de tela**: "passe o mouse" só onde existe
+  mouse; no toque, "toque em Ver no Raio-X".
+- **Botão flutuante do WhatsApp** some enquanto outro caminho para o WhatsApp
+  está na tela: cobria o botão do chamado técnico.
+- **Acessibilidade**: o texto terciário (`--texto-3`) passou de 4,5:1 nos dois
+  temas, o símbolo decorativo saiu do leitor de tela, a galeria ganhou foco e
+  nome, e a página 404 ganhou o destino do "pular para o conteúdo". Sobram
+  só os alertas da animação de entrada (texto ainda aparecendo).
+
 ## 3D e rolagem (09/10/2026)
 
 O prime-collection tirou three, motion e lenis do site em produção por peso

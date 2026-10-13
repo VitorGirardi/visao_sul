@@ -31,8 +31,10 @@ export function VitrineDoProduto({ produto }: { produto: Produto }) {
         <div className="relative overflow-hidden rounded-squircle border border-linha bg-fundo-2">
           <div className="raio-x relative">
             <div className="raio-x-fundo" aria-hidden />
+            {/* com duas fotos o trilho rola: precisa de foco (as setas do teclado trocam a foto) e de nome */}
             <div
               id={trilho}
+              {...(quadros.length > 1 ? { tabIndex: 0, role: "group", "aria-label": `Fotos do ${produto.nomeCurto}` } : {})}
               className="absolute inset-0 flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
               {quadros.map((outroAngulo, i) => {

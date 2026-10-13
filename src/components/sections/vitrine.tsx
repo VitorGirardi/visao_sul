@@ -17,9 +17,13 @@ export function Vitrine() {
                 Os mais <span className="acende">procurados</span>
               </h2>
               <p className="mt-4 flex items-center gap-2 text-texto-2">
-                <IconeRaio tamanho={18} className="text-destaque-texto" />
-                <span>
+                <IconeRaio tamanho={18} className="shrink-0 text-destaque-texto" />
+                {/* no toque não existe passar o mouse: o Raio-X do celular é o botão da ficha */}
+                <span className="[@media(hover:none)]:hidden">
                   Passe o mouse num produto e veja por dentro: é o <strong className="text-texto">Raio-X Visão Sul</strong>.
+                </span>
+                <span className="[@media(hover:hover)]:hidden">
+                  Abra um produto e toque em <strong className="text-texto">Ver no Raio-X</strong> para ver por dentro.
                 </span>
               </p>
             </div>

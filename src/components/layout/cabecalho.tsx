@@ -21,7 +21,8 @@ export function Cabecalho() {
       <div className="recipiente relative flex h-16 items-center gap-3 md:h-[4.5rem]">
         {/* sem prefetch: na home, o logo fazia a página baixar a si mesma */}
         <Link href="/" prefetch={false} className="-ml-1 shrink-0 rounded-lg p-1" aria-label="Visão Sul Informática, página inicial">
-          <Marca arranjo="horizontal" className="w-[142px] md:w-[168px]" titulo="Visão Sul Informática" />
+          {/* abaixo de 360 px a logo encolhe: com 142 px o botão do menu passava da borda */}
+          <Marca arranjo="horizontal" className="w-[124px] min-[360px]:w-[142px] md:w-[168px]" titulo="Visão Sul Informática" />
         </Link>
         <div className="ml-auto flex items-center gap-1.5 md:gap-2">
           <NavPrincipal />

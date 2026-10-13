@@ -65,3 +65,21 @@ export const categorias = [
 export type SlugDaCategoria = (typeof categorias)[number]["slug"];
 
 export const categoriaPorSlug = (slug: string) => categorias.find((c) => c.slug === slug);
+
+/**
+ * "COMBINA COM ESTE" NA FICHA: o que completa cada categoria, em ordem
+ * (13/10/2026). Antes a ficha mostrava a mesma categoria e completava com o
+ * começo do catálogo: o HP Victus sugeria dois iPhones. O próprio produto é
+ * pulado, e o que faltar vem da mesma categoria.
+ */
+export const combinaCom: Record<SlugDaCategoria, string[]> = {
+  notebooks: ["hyperx-cloud-stinger-2", "logitech-mk220", "monitor-gamer-24", "toshiba-canvio-basics"],
+  celulares: ["airpods-4", "jbl-go-4", "jbl-charge-5", "iphone-17", "iphone-16", "chromecast-google-tv"],
+  games: ["ps5-slim-digital", "dualsense-preto", "logitech-driving-force-shifter", "hyperx-cloud-stinger-2", "monitor-gamer-24"],
+  "som-e-casa": ["echo-dot-5", "jbl-go-4", "jbl-charge-5", "chromecast-google-tv", "tp-link-deco-m4", "echo-show-5"],
+  "pc-gamer": ["monitor-gamer-24", "hyperx-cloud-stinger-2", "logitech-mk220", "dualsense-preto"],
+  perifericos: ["monitor-gamer-24", "logitech-mk220", "hyperx-cloud-stinger-2", "toshiba-canvio-basics", "pc-gamer-visao"],
+  redes: ["echo-dot-5", "chromecast-google-tv", "echo-show-5", "xiaomi-robot-vacuum-s20-plus"],
+  impressoras: ["hp-15-touch", "acer-aspire-5", "toshiba-canvio-basics", "tp-link-deco-m4"],
+  campo: ["jbl-charge-5", "jbl-go-4", "iphone-16", "airpods-4"],
+};

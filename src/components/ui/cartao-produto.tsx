@@ -19,22 +19,31 @@ import { cn } from "@/lib/utils";
 export function CartaoProduto({
   produto,
   prioridade = false,
+  densa = false,
   className,
   ...dados
 }: {
   produto: Produto;
   prioridade?: boolean;
+  /**
+   * duas colunas no celular (catálogo e "Combina com este", 13/10/2026): sem
+   * as fichas e o selo de teste, e o botão de adicionar no canto da foto.
+   * Com uma coluna, os 26 produtos ocupavam 22 telas de rolagem.
+   */
+  densa?: boolean;
   className?: string;
   /** marcas para quem filtra os cartões no navegador (o catálogo) */
   [dado: `data-${string}`]: string | number;
 }) {
   // A foto ocupa de 240 a 295 px do cartão em qualquer grade acima de 640 px
   // (conta feita em 640, 768, 1024, 1280 e 1440). Com 256, a tela comum baixa
-  // a de 256 em vez da de 384; a de alta densidade dobra sozinha.
-  const sizes = "(min-width: 640px) 256px, 76vw";
+  // a de 256 em vez da de 384; a de alta densidade dobra sozinha. Na grade
+  // densa do celular a foto tem uns 40% da tela.
+  const sizes = densa ? "(min-width: 640px) 256px, 42vw" : "(min-width: 640px) 256px, 76vw";
   return (
     <Inclinacao className={cn("cartao-produto group relative", className)} {...dados}>
-      <article className="cartao-produto-corpo relative flex h-full flex-col overflow-hidden rounded-cartao border border-linha bg-fundo-2">
+      {/* @container: na grade densa o botão de adicionar desce até o pé da foto quadrada (100cqw) */}
+      <article className={cn("cartao-produto-corpo relative flex h-full flex-col overflow-hidden rounded-cartao border border-linha bg-fundo-2", densa && "@container")}>
         {/* sem prefetch: cada cartão que aparecia na tela baixava a ficha inteira (41 fetches em /produtos) */}
         <Link href={`/produtos/${produto.slug}`} prefetch={false} className="absolute inset-0 z-10" aria-label={produto.nome} />
 
@@ -56,35 +65,52 @@ export function CartaoProduto({
               </li>
             ))}
           </ul>
-          <div className="absolute left-4 top-4 flex flex-wrap gap-1.5">
+          <div className={cn("absolute left-4 top-4 flex flex-wrap gap-1.5", densa && "max-sm:left-2.5 max-sm:top-2.5")}>
             {produto.selo && (
-              <span className="rounded-full bg-destaque px-2.5 py-1 font-mono text-[0.62rem] font-semibold uppercase tracking-wider text-sobre-destaque">
+              <span
+                className={cn(
+                  "rounded-full bg-destaque px-2.5 py-1 font-mono text-[0.62rem] font-semibold uppercase tracking-wider text-sobre-destaque",
+                  densa && "max-sm:px-2 max-sm:text-[0.55rem]",
+                )}
+              >
                 {produto.selo}
               </span>
             )}
           </div>
           {produto.testeGratis && (
-            <span className="absolute bottom-3 left-4 rounded-full border border-linha bg-fundo/90 px-2.5 py-1 font-mono text-[0.6rem] uppercase tracking-wider text-texto-2">
+            <span
+              className={cn(
+                "absolute bottom-3 left-4 rounded-full border border-linha bg-fundo/90 px-2.5 py-1 font-mono text-[0.6rem] uppercase tracking-wider text-texto-2",
+                densa && "max-sm:hidden",
+              )}
+            >
               Teste grátis na loja
             </span>
           )}
         </div>
 
-        <div className="flex flex-1 flex-col gap-3 px-5 pb-5 pt-2">
+        <div className={cn("flex flex-1 flex-col gap-3 px-5 pb-5 pt-2", densa && "max-sm:gap-2 max-sm:px-3.5 max-sm:pb-4")}>
           <div>
             <p className="rotulo-mono">{produto.marca}</p>
-            <h3 className="mt-1 font-display text-[1.08rem] font-semibold leading-snug tracking-tight text-texto">{produto.nomeCurto}</h3>
+            <h3 className={cn("mt-1 font-display text-[1.08rem] font-semibold leading-snug tracking-tight text-texto", densa && "max-sm:text-[0.95rem]")}>
+              {produto.nomeCurto}
+            </h3>
           </div>
-          <ul className="flex flex-wrap gap-1.5">
+          <ul className={cn("flex flex-wrap gap-1.5", densa && "max-sm:hidden")}>
             {produto.destaques.slice(0, 3).map((d) => (
               <li key={d} className="rounded-full bg-fundo-3 px-2 py-0.5 text-[0.7rem] font-medium text-texto-2">
                 {d}
               </li>
             ))}
           </ul>
-          <div className="mt-auto flex items-end justify-between gap-3 pt-2">
-            <Preco valor={produto.preco} de={produto.precoDe} />
-            <BotaoAdicionar slug={produto.slug} compacto rotulo={`Adicionar ${produto.nomeCurto} ao pedido`} />
+          <div className={cn("mt-auto flex items-end justify-between gap-3 pt-2", densa && "max-sm:pt-0")}>
+            <Preco valor={produto.preco} de={produto.precoDe} densa={densa} />
+            <BotaoAdicionar
+              slug={produto.slug}
+              compacto
+              rotulo={`Adicionar ${produto.nomeCurto} ao pedido`}
+              className={densa ? "max-sm:absolute max-sm:right-2.5 max-sm:top-[calc(100cqw-2.75rem)] max-sm:size-9" : undefined}
+            />
           </div>
         </div>
       </article>

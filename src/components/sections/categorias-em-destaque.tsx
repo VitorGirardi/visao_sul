@@ -10,6 +10,10 @@ import { cn } from "@/lib/utils";
  * "O QUE VOCÊ PROCURA?": as categorias num mosaico (bento). Notebooks e
  * iPhone ganham os quadros grandes porque são o que mais aparece nos posts
  * da loja. Cada quadro leva à vitrine já filtrada.
+ *
+ * No celular o quadro pequeno tem uns 130 px úteis: a seta e a chamada saem,
+ * e a contagem sobe para baixo do nome. Com elas, "iPhone e Apple" quebrava
+ * em três linhas e a foto cobria a contagem (13/10/2026).
  */
 /** Quadros largos e baixos: a foto fica menor, senão sai pelo teto. */
 const largo: Record<string, boolean> = { celulares: true, campo: true };
@@ -19,6 +23,8 @@ const tamanho: Record<string, string> = {
   celulares: "md:col-span-2",
   campo: "md:col-span-2",
 };
+
+const contagem = (quantos: number) => `${quantos} ${quantos === 1 ? "produto" : "produtos"}`;
 
 export function CategoriasEmDestaque() {
   return (
@@ -52,16 +58,20 @@ export function CategoriasEmDestaque() {
                 >
                   <div className="relative z-10 flex items-start justify-between gap-3">
                     <div>
-                      <h3 className={cn("font-display font-bold tracking-tight", grande ? "text-3xl md:text-4xl" : "text-xl md:text-2xl")}>{categoria.nome}</h3>
-                      <p className="mt-1 text-sm text-texto-2">{categoria.chamada}</p>
+                      <h3 className={cn("font-display font-bold tracking-tight", grande ? "text-3xl md:text-4xl" : "text-lg leading-snug md:text-2xl")}>{categoria.nome}</h3>
+                      <p className={cn("mt-1 text-sm text-texto-2", !grande && "max-md:hidden")}>{categoria.chamada}</p>
+                      {!grande && <p className="mt-1.5 rotulo-mono md:hidden">{contagem(quantos)}</p>}
                     </div>
-                    <span className="grid size-10 shrink-0 place-items-center rounded-full border border-linha transition-colors group-hover:border-destaque group-hover:bg-destaque group-hover:text-sobre-destaque">
+                    <span
+                      className={cn(
+                        "grid size-10 shrink-0 place-items-center rounded-full border border-linha transition-colors group-hover:border-destaque group-hover:bg-destaque group-hover:text-sobre-destaque",
+                        !grande && "max-md:hidden",
+                      )}
+                    >
                       <IconeSetaDiagonal tamanho={18} />
                     </span>
                   </div>
-                  <p className="relative z-10 mt-auto rotulo-mono">
-                    {quantos} {quantos === 1 ? "produto" : "produtos"}
-                  </p>
+                  <p className={cn("relative z-10 mt-auto rotulo-mono", !grande && "max-md:hidden")}>{contagem(quantos)}</p>
                   {capa && (
                     <div
                       className={cn(
