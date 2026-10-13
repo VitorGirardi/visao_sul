@@ -69,6 +69,7 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
 | `/empresas` | `(site)/empresas/page.tsx` | locação de impressoras, redes, suporte, equipamentos, proposta |
 | `/monte-seu-pc` | `(site)/monte-seu-pc/page.tsx` + `ui/montador-de-pc.tsx` | jogos → nível → cor → orçamento, com gabinete 3D |
 | `/whatsapp` | `whatsapp/route.ts` | monta a mensagem (`lib/conversa.ts`) e responde 303 para o `wa.me`. **Toda conversa passa por aqui** |
+| `/admin` | `admin/` | PRÉVIA do painel (fase 2) com dados de exemplo, sem backend: visão geral, pedidos (e `pedidos/[numero]`), chamados, testes grátis e produtos. Layout próprio, `noindex`, sem link no site |
 | metadados | `icon.svg`, `apple-icon.png`, `opengraph-image.jpg`, `robots.ts`, `sitemap.ts`, `not-found.tsx` | |
 
 ### Pastas de apoio (`src/`)
@@ -101,7 +102,14 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   `contato.ts`, `loja.ts`, `produtos.ts`, `categorias.ts` (com o `combinaCom`
   da ficha), `servicos.ts`,
   `empresas.ts`, `diferenciais.ts`, `pc-gamer.ts`, `raio-x.ts`,
-  `fotos-de-produto.ts` e `segundas-fotos.ts` (GERADOS pelo script).
+  `fotos-de-produto.ts` e `segundas-fotos.ts` (GERADOS pelo script),
+  `amostra-do-painel.ts` (os dados de exemplo da prévia do painel).
+- `app/admin/`: a prévia do painel. `concha.tsx` (lateral, topo, abas do
+  celular; painel sempre claro com `data-tema="claro"` na moldura),
+  `estado.tsx` (a memória no navegador, o pedido simulado, o Pix que cai
+  sozinho e o relógio `useAgora`), `ui.tsx` (o kit no desenho do painel da
+  Prime: 13 px, estado com quadradinho, amarelo só no gesto, sem toast),
+  `formato.ts`, `comum.tsx` e uma pasta por área.
 - `lib/`: `tema.ts` (+ `tema-script.ts`), `pedido.ts` (a sacola),
   `conversa.ts`, `abertura.ts` e `raio-x.ts` (o estado que o controle da
   rolagem escreve e o 3D lê), `rolagem-presa.ts` (o progresso de uma seção
