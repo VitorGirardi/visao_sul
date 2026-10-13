@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { ComoComprar } from "@/components/ui/como-comprar";
 import { FotoDoProduto } from "@/components/ui/foto-do-produto";
 import { IconeFechar, IconeLixeira, IconeMais, IconeMenos, IconeSacola, IconeWhatsApp } from "@/components/ui/icones";
 import { CAMINHO_DA_CONVERSA } from "@/data/contato";
@@ -49,10 +50,9 @@ export default function CorpoDaGaveta({ fechar }: { fechar: () => void }) {
           <span className="grid size-20 place-items-center rounded-full border border-linha text-destaque">
             <IconeSacola tamanho={34} />
           </span>
-          <div>
-            <p className="font-display text-xl font-semibold">Seu pedido está vazio</p>
-            <p className="mt-2 text-texto-2">Escolha os produtos e mande tudo de uma vez para a loja pelo WhatsApp.</p>
-          </div>
+          <p className="font-display text-xl font-semibold">Seu pedido está vazio</p>
+          {/* a sacola vazia é quem mais pergunta "como funciona?" */}
+          <ComoComprar jeito="lista" className="w-full max-w-sm rounded-cartao border border-linha p-5" />
           <Link href="/produtos" onClick={fechar} className="btn btn-primario">
             Ver produtos
           </Link>
@@ -140,6 +140,7 @@ export default function CorpoDaGaveta({ fechar }: { fechar: () => void }) {
                 </p>
               </div>
             </div>
+            <ComoComprar jeito="linha" className="border-t border-linha pt-4" />
             <button type="submit" className="btn btn-primario w-full">
               <IconeWhatsApp />
               Enviar pedido no WhatsApp

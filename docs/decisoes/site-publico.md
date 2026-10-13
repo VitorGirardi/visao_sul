@@ -107,6 +107,22 @@ A "mensagem que chegou" no pedido é a mesma que a rota `/whatsapp` monta
 hoje, e os botões de WhatsApp do painel só mostram e copiam a mensagem:
 com telefones de exemplo, abrir conversa poderia cair em alguém de verdade.
 
+## Como comprar em três passos (13/10/2026)
+
+Quem nunca comprou pelo WhatsApp não sabe o que acontece depois de "Enviar
+pedido". Agora o caminho está escrito onde a dúvida aparece: na ficha do
+produto (abaixo do preço), na sacola vazia (no lugar da frase genérica) e,
+numa linha, logo acima do botão de enviar da sacola cheia.
+
+1. Você manda o pedido: ele chega pronto no WhatsApp da loja.
+2. A loja confirma: o Marciano confirma o preço do dia e a
+   disponibilidade e combina o pagamento.
+3. Retire ou receba: na loja em Tapejara ou em casa.
+
+Só o que a loja já faz: o preço do dia é o mesmo aviso de sempre, e as duas
+formas de receber são as da sacola. "Já configurado" fica de fora até o
+Marciano confirmar. Textos em `data/como-comprar.ts`.
+
 ## Busca no topo (13/10/2026)
 
 A busca só existia dentro da vitrine. Quem chegava pela home (quase todo
