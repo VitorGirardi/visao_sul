@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
-    "imagens": "node scripts/preparar-imagens.mjs"
+    "imagens": "node scripts/preparar-imagens.mjs",
+    "apresentar": "next build && node scripts/apresentar.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",
