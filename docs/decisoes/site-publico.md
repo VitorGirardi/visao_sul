@@ -165,6 +165,31 @@ O botão flutuante do WhatsApp passou a perceber também os caminhos que
 aparecem depois de a página abrir, como este, e sai de cena quando ele
 entra na tela.
 
+## Busca que entende o cliente (13/10/2026)
+
+"ps5", "wifi", "fone de ouvido" e "notbook" não achavam nada na vitrine,
+e o post da entrega de PS5 está na home: se o Marciano digitasse "ps5" na
+reunião, a vitrine ficava vazia. Duas causas: o índice não tinha o nome
+curto ("PS5 Slim Digital") nem o nome da categoria ("Redes e Wi-Fi"), e a
+busca era literal.
+
+Agora (`lib/busca.ts`, sinônimos em `data/busca.ts`):
+
+- o índice leva nome, nome curto, marca, destaques e categoria, e "Wi-Fi"
+  vira "wifi";
+- palavra com sinônimo vale pelo sinônimo: "ps5" e "play" acham o
+  PlayStation, "fone" acha headset e AirPods (e não o "microfone" do
+  controle), "laptop" acha notebook, "cachorro" acha a coleira;
+- termo de até 3 letras só vale no começo de uma palavra ("ps 5" não acha
+  a Epson nem o GPS);
+- "de", "para", "com" e afins não contam ("fone de ouvido");
+- plural e um erro de digitação nos termos de 5 letras ou mais
+  ("roteadores", "notbook").
+
+Os sinônimos só cobrem o que a vitrine tem. O que ela não tem (cadeira,
+Xbox, carregador) continua caindo na busca vazia, que pergunta da
+encomenda no WhatsApp.
+
 ## 3D e rolagem (09/10/2026)
 
 O prime-collection tirou three, motion e lenis do site em produção por peso

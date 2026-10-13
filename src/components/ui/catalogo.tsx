@@ -3,7 +3,7 @@
 import { useEffect, useRef, useSyncExternalStore, type ReactNode } from "react";
 import { IconeFechar, IconeWhatsApp } from "@/components/ui/icones";
 import { linkDaConversa } from "@/data/contato";
-import { paraBusca } from "@/lib/utils";
+import { atendeABusca, termosDaBusca } from "@/lib/busca";
 
 /**
  * A VITRINE COMPLETA, com filtro na URL (padrão do prime-collection: o
@@ -20,7 +20,7 @@ import { paraBusca } from "@/lib/utils";
 export type ItemDoCatalogo = {
   slug: string;
   categoria: string;
-  /** nome, marca, destaques e categoria, já em `paraBusca` */
+  /** nome, nome curto, marca, destaques e categoria, já em `indiceDeBusca` */
   busca: string;
   /** posição na ordem de menor preço (0 = o mais barato) */
   porPreco: number;
@@ -69,8 +69,9 @@ export function Catalogo({
   const busca = parametros.get("busca") ?? "";
   const ordem = parametros.get("ordem") ?? "relevancia";
 
-  const termos = paraBusca(busca).split(" ").filter(Boolean);
-  const achados = new Set(itens.filter((p) => (!categoria || p.categoria === categoria) && termos.every((t) => p.busca.includes(t))).map((p) => p.slug));
+  // sinônimos, plural e erro de digitação: ver lib/busca.ts
+  const termos = termosDaBusca(busca);
+  const achados = new Set(itens.filter((p) => (!categoria || p.categoria === categoria) && atendeABusca(p.busca, termos)).map((p) => p.slug));
   const chaveDosAchados = [...achados].join(",");
 
   // esconde e reordena os cartões do servidor (atributos que o React não controla)
