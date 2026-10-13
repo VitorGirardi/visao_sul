@@ -11,7 +11,10 @@ Nada disso é trabalho de front: está do lado dele e trava o conteúdo.
 | Endereço e horário da loja | 09/10 | `data/loja.ts` mostra "em breve" (o Vitor ainda não sabia). Entra no rodapé, na seção da loja, no JSON-LD e no Google Meu Negócio |
 | Preços reais (ou a tabela dele) | 09/10 | todos os preços são de EXEMPLO, com o selo "ilustrativo" |
 | A frase inteira da parede | 09/10 | "Tecnologia com compromisso" está legível; a terceira linha estava escondida atrás de uma caixa na foto |
-| Se as promessas continuam valendo | 09/10 | troca na hora em 30 dias (post de 03/2024), entrega grátis (2023), teste grátis e domicílio. Estão em `data/diferenciais.ts` |
+| Se as promessas continuam valendo | 09/10 | troca na hora em 30 dias (post de 03/2024), entrega grátis (2023), teste grátis e domicílio. Estão em `data/diferenciais.ts`, conferidas post a post em 13/10. Sem post nenhum: entregar "configurado" (está na ficha, na seção da loja e em empresas) |
+| Quais produtos têm teste grátis | 13/10 | os posts falam de notebook e caixa JBL; o catálogo marca `testeGratis` em 16 produtos (inclui console e headset) |
+| Qual PS5 ele vende | 13/10 | a ficha diz 825 GB, a Edição Digital vendida hoje (CFI-2100). Se for estoque antigo (CFI-2000), volta para 1 TB |
+| Configuração do Acer e do HP touch | 13/10 | o post só garante processador, vídeo e SSD. Memória, tamanho do SSD, tela e sistema dependem da máquina dele. No Acer, com um pente só de memória o vídeo é "Intel UHD", não "Iris Xe" |
 | Lista de serviços da assistência | 09/10 | `data/servicos.ts` detalha o que uma assistência faz; confirmar o que ele faz e o que não faz |
 | Planos da locação de impressoras | 09/10 | hoje tudo vira "pedir proposta" |
 | Foto dele (e autorização) | 09/10 | o cartão "Quem atende é o Marciano" usa o símbolo no lugar do rosto |
