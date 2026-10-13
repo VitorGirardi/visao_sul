@@ -107,6 +107,18 @@ A "mensagem que chegou" no pedido é a mesma que a rota `/whatsapp` monta
 hoje, e os botões de WhatsApp do painel só mostram e copiam a mensagem:
 com telefones de exemplo, abrir conversa poderia cair em alguém de verdade.
 
+## O Monte seu PC lembra a montagem (13/10/2026)
+
+Quem montava um PC, ia olhar outra coisa e voltava encontrava tudo em
+branco. Agora jogos, nível e cor ficam guardados no navegador (`visao-pc`,
+conferidos contra as listas do site ao ler) e voltam com o aviso "Voltamos
+com a montagem que você deixou", com "Começar de novo" ao lado.
+
+O jogo que vem da home (`?jogos=`) vale na chegada e sai do endereço logo
+depois: recarregar a página não desfaz o que a pessoa mudou. O montador só
+monta no navegador (o `useSearchParams` o tira do HTML estático), então
+ler o guardado no primeiro estado não descasa da hidratação.
+
 ## Como comprar em três passos (13/10/2026)
 
 Quem nunca comprou pelo WhatsApp não sabe o que acontece depois de "Enviar
