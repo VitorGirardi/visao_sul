@@ -5,8 +5,8 @@ import { ExtrudeGeometry, Group, MathUtils, Matrix4, Mesh, MeshMatcapMaterial, P
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
 import { MATCAPS, matcap } from "@/components/tres/matcap";
 import { ANEL, LAMINA, SIMBOLO } from "@/data/marca";
-import { estadoDaAbertura } from "@/lib/abertura";
-import { relogioDe60 } from "@/lib/sessenta-quadros";
+import { estadoDaAbertura, type CamadasDoFuro } from "@/lib/abertura";
+import { horaDoQuadro } from "@/lib/sessenta-quadros";
 
 /**
  * O OLHO DA VISÃO SUL EM 3D, a peça central da abertura.
@@ -19,13 +19,15 @@ import { relogioDe60 } from "@/lib/sessenta-quadros";
  *   1. o olho acompanha o mouse (e balança sozinho no celular);
  *   2. com a rolagem (`estadoDaAbertura.progresso`), ele encara a câmera e a
  *      câmera avança até atravessar o furo;
- *   3. a posição e o raio do furo NA TELA vão para a seção (`--portal-x/y/r`
- *      e `--portal-escala`), que recorta a foto da loja e abre os arcos.
+ *   3. a posição e o raio do furo NA TELA vão para as camadas que o
+ *      acompanham (`estadoDaAbertura.furo`): o recorte da foto da loja, o
+ *      lugar do brilho e o lugar e o tamanho dos arcos.
  *
  * Leveza (09/10/2026, o Vitor achou o site travado): material matcap (sem
  * luz, sem ambiente, sem material físico), no máximo 60 quadros por segundo
- * (a tela dele é de 144 Hz), parado fora da tela, e as variáveis do portal só
- * são escritas quando mudam de verdade. E three puro, sem o R3F: é a
+ * (a tela dele é de 144 Hz), parado fora da tela, e o furo só é escrito
+ * quando muda de verdade, sempre como propriedade pronta em cada camada,
+ * nunca como variável CSS herdada (13/10/2026). E three puro, sem o R3F: é a
  * primeira cena do site, e o R3F (o reconciliador do React e o catálogo do
  * three inteiro) pesava no carregamento justo de quem acabou de chegar. As
  * outras cenas, que entram depois e têm controles e etiquetas, continuam no
@@ -78,24 +80,25 @@ type Olho = {
   /** relógio próprio, só anda com a cena desenhando (o balanço não pula depois de uma pausa) */
   tempo: number;
   giro: { x: number; y: number };
-  /** último portal escrito no CSS */
+  /** último furo escrito nas camadas */
   escrito: { x: number; y: number; r: number };
 };
 
 /** Ponto de trabalho (fora do componente: muda todo quadro). */
 const CENTRO = new Vector3();
 
-function escreverPortal(olho: Olho, portal: HTMLElement, x: number, y: number, r: number) {
+function escreverFuro(olho: Olho, furo: CamadasDoFuro, x: number, y: number, r: number) {
   // Só escreve quando muda meio pixel: cada escrita é a foto da loja redesenhada.
   const { escrito } = olho;
   if (Math.abs(x - escrito.x) < 0.5 && Math.abs(y - escrito.y) < 0.5 && Math.abs(r - escrito.r) < 0.5) return;
   escrito.x = x;
   escrito.y = y;
   escrito.r = r;
-  portal.style.setProperty("--portal-x", `${x.toFixed(1)}px`);
-  portal.style.setProperty("--portal-y", `${y.toFixed(1)}px`);
-  portal.style.setProperty("--portal-r", `${r.toFixed(1)}px`);
-  portal.style.setProperty("--portal-escala", (Math.min(r, 4000) / RAIO_BASE_DOS_ARCOS).toFixed(3));
+  const centro = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
+  furo.foto.style.clipPath = `circle(${r.toFixed(1)}px at ${centro})`;
+  furo.brilho.style.translate = centro;
+  furo.arcos.style.translate = centro;
+  furo.arcos.style.scale = (Math.min(r, 4000) / RAIO_BASE_DOS_ARCOS).toFixed(3);
 }
 
 /** Tudo o que muda a cada quadro, numa função comum (o three é imperativo). */
@@ -130,8 +133,8 @@ function animarOlho(olho: Olho, delta: number) {
   giro.y += (alvoY - giro.y) * k;
   grupo.rotation.set(giro.x, giro.y, Math.sin(t * 0.4) * 0.03 * livre);
 
-  const portal = estadoDaAbertura.portal;
-  if (!portal) return;
+  const furo = estadoDaAbertura.furo;
+  if (!furo) return;
   grupo.updateMatrixWorld();
   camera.updateMatrixWorld();
   CENTRO.set(0, 0, 0).applyMatrix4(grupo.matrixWorld);
@@ -141,7 +144,7 @@ function animarOlho(olho: Olho, delta: number) {
   const y = (-CENTRO.y * 0.5 + 0.5) * altura;
   const meiaAltura = distancia * Math.tan(MathUtils.degToRad(camera.fov / 2));
   const raio = distancia > 0.02 ? (RAIO_DO_FURO / meiaAltura) * (altura / 2) : 20000;
-  escreverPortal(olho, portal, x, y, Math.min(raio, 20000));
+  escreverFuro(olho, furo, x, y, Math.min(raio, 20000));
 }
 
 /**
@@ -183,7 +186,6 @@ function montarOlho(caixa: HTMLDivElement, aoFicarPronto: () => void) {
   };
   medir();
 
-  const relogio = relogioDe60();
   let vivo = true;
   let pronto = false;
   let visivel = true;
@@ -193,7 +195,7 @@ function montarOlho(caixa: HTMLDivElement, aoFicarPronto: () => void) {
 
   const tique = (agora: number) => {
     pedido = requestAnimationFrame(tique);
-    if (!relogio.hora(agora)) return;
+    if (!horaDoQuadro(agora)) return;
     const delta = Math.min(Math.max(0, agora - ultimoQuadro) / 1000, 0.1);
     ultimoQuadro = agora;
     animarOlho(olho, delta);
@@ -207,7 +209,6 @@ function montarOlho(caixa: HTMLDivElement, aoFicarPronto: () => void) {
   const ligar = () => {
     if (!vivo || !pronto || !visivel || pedido) return;
     ultimoQuadro = performance.now();
-    relogio.zerar(ultimoQuadro);
     pedido = requestAnimationFrame(tique);
   };
   const desligar = () => {
@@ -261,5 +262,5 @@ export default function Olho3D({ aoFicarPronto }: { aoFicarPronto?: () => void }
     return montarOlho(el, () => avisar());
   }, []);
 
-  return <div ref={caixa} className="absolute inset-0" />;
+  return <div ref={caixa} className="abertura-olho absolute inset-0" />;
 }

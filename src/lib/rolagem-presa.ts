@@ -1,4 +1,4 @@
-import { relogioDe60 } from "@/lib/sessenta-quadros";
+import { horaDoQuadro } from "@/lib/sessenta-quadros";
 
 /**
  * ROLAGEM PRESA SEM BIBLIOTECA (12/10/2026, no lugar do `pin` + `scrub` do
@@ -21,7 +21,6 @@ import { relogioDe60 } from "@/lib/sessenta-quadros";
 export function acompanharPercurso(percurso: HTMLElement, presa: HTMLElement, aoMudar: (progresso: number) => void, alcance = 0.5) {
   // em `alcance` segundos falta 5% do caminho (e⁻³)
   const rapidez = 3 / alcance;
-  const relogio = relogioDe60();
   let curso = 1;
   let alvo = 0;
   let atual = -1;
@@ -30,7 +29,7 @@ export function acompanharPercurso(percurso: HTMLElement, presa: HTMLElement, ao
 
   const passo = (agora: number) => {
     pedido = requestAnimationFrame(passo);
-    if (!relogio.hora(agora)) return;
+    if (!horaDoQuadro(agora)) return;
     const dt = Math.min(0.1, Math.max(0, agora - ultimo) / 1000);
     ultimo = agora;
     atual += (alvo - atual) * (1 - Math.exp(-dt * rapidez));
@@ -52,7 +51,6 @@ export function acompanharPercurso(percurso: HTMLElement, presa: HTMLElement, ao
     }
     if (pedido || alvo === atual) return;
     ultimo = performance.now();
-    relogio.zerar(ultimo);
     pedido = requestAnimationFrame(passo);
   };
 
