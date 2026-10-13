@@ -65,6 +65,7 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
 | `/` | `(site)/page.tsx` | abertura 3D, a loja, marcas, categorias, Raio-X, vitrine, diferenciais, assistência, PC, empresas, Instagram, contato |
 | `/produtos` | `(site)/produtos/page.tsx` + `ui/catalogo.tsx` | vitrine com filtro na URL (`categoria`, `busca`, `ordem`); a busca sem resultado vira conversa com o termo (assunto `encomenda`) |
 | `/produtos/[slug]` | `(site)/produtos/[slug]/page.tsx` | ficha, galeria com o segundo ângulo, Raio-X por botão, teste grátis, estática (`generateStaticParams`) |
+| `/qual-notebook` | `(site)/qual-notebook/page.tsx` + `ui/guia-de-notebook.tsx` | duas perguntas e a loja indica um dos notebooks da vitrine (indicações e motivos em `data/qual-notebook.ts`) |
 | `/assistencia` | `(site)/assistencia/page.tsx` | serviços, como funciona, chamado, perguntas |
 | `/empresas` | `(site)/empresas/page.tsx` | locação de impressoras, redes, suporte, equipamentos, proposta |
 | `/monte-seu-pc` | `(site)/monte-seu-pc/page.tsx` + `ui/montador-de-pc.tsx` | jogos → nível → cor → orçamento, com gabinete 3D |
@@ -115,6 +116,8 @@ mapa deixar de bater com a árvore, corrija aqui, no lugar.
   `amostra-do-painel.ts` (os dados de exemplo da prévia do painel),
   `conserto.ts` (os textos da página do conserto, do lado do cliente),
   `como-comprar.ts` (os três passos da compra pelo WhatsApp),
+  `qual-notebook.ts` (as perguntas, a tabela de indicações e os motivos do
+  guia de notebook, tirados das fichas),
   `indice-de-busca.ts` (o índice de cada produto, o mesmo na vitrine e na
   busca do topo; só no servidor).
 - `app/admin/`: a prévia do painel. `concha.tsx` (lateral, topo, abas do

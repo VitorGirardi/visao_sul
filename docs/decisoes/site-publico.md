@@ -107,6 +107,25 @@ A "mensagem que chegou" no pedido é a mesma que a rota `/whatsapp` monta
 hoje, e os botões de WhatsApp do painel só mostram e copiam a mensagem:
 com telefones de exemplo, abrir conversa poderia cair em alguém de verdade.
 
+## Qual notebook é para você? (13/10/2026)
+
+Quem chega em dúvida entre os três notebooks da vitrine tem agora um guia
+em `/qual-notebook`, no estilo do Monte seu PC: "Para que você vai usar?"
+(estudar e o dia a dia, trabalhar com muita coisa aberta, jogar, editar
+foto e vídeo) e "O que pesa mais?" (gastar menos, mais desempenho). A
+indicação aparece na hora, com foto, preço, três motivos, sacola, ficha e
+teste grátis, e uma alternativa: outro notebook ou, para quem joga em casa
+gastando menos, o PC gamer de entrada do Monte seu PC (que sai por menos
+que o Victus). "Procura outro modelo?" leva à encomenda no WhatsApp.
+
+Os motivos saem só do resumo e dos destaques de cada ficha. A memória, o
+tamanho do SSD e a tela do Acer e do HP Touch dependem da máquina do
+Marciano (`PENDENCIAS.md`) e não entram como motivo. A tabela de
+indicações e os textos estão em `data/qual-notebook.ts`.
+
+Entradas: a vitrine filtrada em notebooks (um atalho acima da grade) e a
+ficha de cada notebook ("Não sabe se é este?"). A página está no sitemap.
+
 ## O Monte seu PC lembra a montagem (13/10/2026)
 
 Quem montava um PC, ia olhar outra coisa e voltava encontrava tudo em
