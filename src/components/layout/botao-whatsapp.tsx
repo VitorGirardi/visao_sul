@@ -15,7 +15,9 @@ const OUTROS_CAMINHOS = `a[href^="${CAMINHO_DA_CONVERSA}"], form[action="${CAMIN
  *
  * Sai de cena enquanto outro caminho para o WhatsApp está na tela
  * (13/10/2026): ele cobria o botão do chamado técnico e o fim das linhas de
- * texto, e ficava repetido do lado do "Comprar no WhatsApp".
+ * texto, e ficava repetido do lado do "Comprar no WhatsApp". Vale também
+ * para caminho que aparece depois, como o "Perguntar no WhatsApp" da busca
+ * que não achou nada.
  */
 export function BotaoWhatsApp() {
   const botao = useRef<HTMLAnchorElement>(null);
@@ -36,8 +38,20 @@ export function BotaoWhatsApp() {
     });
     // o próprio botão entra só para garantir a primeira contagem numa página sem outro caminho
     observador.observe(proprio);
-    for (const el of document.querySelectorAll(OUTROS_CAMINHOS)) if (el !== proprio) observador.observe(el);
-    return () => observador.disconnect();
+    const observar = (raiz: Element | Document) => {
+      if (raiz instanceof Element && raiz.matches(OUTROS_CAMINHOS)) observador.observe(raiz);
+      for (const el of raiz.querySelectorAll(OUTROS_CAMINHOS)) if (el !== proprio) observador.observe(el);
+    };
+    observar(document);
+    // o que entra depois na página também conta (o que sai, o observador já dá como fora da tela)
+    const novos = new MutationObserver((mudancas) => {
+      for (const mudanca of mudancas) for (const no of mudanca.addedNodes) if (no instanceof Element) observar(no);
+    });
+    novos.observe(document.body, { childList: true, subtree: true });
+    return () => {
+      observador.disconnect();
+      novos.disconnect();
+    };
   }, [caminho]);
 
   return (

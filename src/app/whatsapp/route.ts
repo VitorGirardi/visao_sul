@@ -16,9 +16,9 @@ if (informado && !NUMERO_DE_TESTE) console.warn("WHATSAPP_DE_TESTE ignorado: use
 
 /**
  * A PORTA DE TODA CONVERSA DO SITE. Recebe o que a página mandou (pedido,
- * interesse num produto, teste grátis, chamado técnico, proposta para
- * empresa, PC gamer), monta a mensagem no servidor e abre o WhatsApp da loja
- * com ela escrita.
+ * interesse num produto, busca que não achou nada, teste grátis, chamado
+ * técnico, proposta para empresa, PC gamer), monta a mensagem no servidor e
+ * abre o WhatsApp da loja com ela escrita.
  *
  * 303 e não 302/307: é a resposta certa para "terminei o formulário, agora vá
  * para lá" e garante que o destino é aberto com GET.

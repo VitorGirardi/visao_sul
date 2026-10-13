@@ -53,7 +53,7 @@ export function mensagemParaALoja(...linhas: LinhaDaMensagem[]): string {
  */
 export const CAMINHO_DA_CONVERSA = "/whatsapp";
 
-export type Assunto = "contato" | "produto" | "pedido" | "teste" | "chamado" | "empresa" | "pc";
+export type Assunto = "contato" | "produto" | "encomenda" | "pedido" | "teste" | "chamado" | "empresa" | "pc";
 
 export function linkDaConversa(assunto: Assunto = "contato", campos: Record<string, string> = {}) {
   const query = new URLSearchParams({ assunto, ...campos });
